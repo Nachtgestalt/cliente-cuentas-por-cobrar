@@ -6,7 +6,12 @@ import { HttpModule } from '@angular/http';
 
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {MaterialModule} from "./material.module";
+import {LayoutModule} from "@angular/cdk/layout";
 
+//Rutas
+import {APP_ROUTING} from "./app.routes";
+
+//Componentes
 import { AppComponent } from './app.component';
 import { SidenavComponent } from './components/shared/sidenav/sidenav.component';
 import { NavbarComponent } from './components/shared/navbar/navbar.component';
@@ -16,6 +21,7 @@ import { AgregarComponent } from './components/almacen/agregar/agregar.component
 
 // Servicios
 import { ProductosService } from './services/productos.service';
+import { ModificarComponent } from './components/almacen/modificar/modificar.component';
 
 
 @NgModule({
@@ -26,6 +32,7 @@ import { ProductosService } from './services/productos.service';
     HomeComponent,
     AlmacenComponent,
     AgregarComponent,
+    ModificarComponent,
   ],
   imports: [
     BrowserModule,
@@ -33,7 +40,9 @@ import { ProductosService } from './services/productos.service';
     MaterialModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpModule
+    HttpModule,
+    LayoutModule,
+    APP_ROUTING
   ],
   providers: [
     ProductosService,
