@@ -1,0 +1,10 @@
+.form-row-right{
+  width: 62%;
+  margin-top: 1.2rem;
+  margin-right: 8%;
+  align-self: flex-end;
+}
+
+.form-row-right > *{
+  width: 20%;
+}

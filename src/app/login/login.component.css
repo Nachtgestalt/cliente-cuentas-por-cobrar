@@ -1,0 +1,57 @@
+body{
+  background-color: #fff;
+}
+
+form {
+  font-family: 'Roboto', sans-serif;
+  width: 380px;
+  margin: 1em auto 0 auto;
+  padding: 1em 2em 2em 2em;
+  background: #fafafa;
+  border: 1px solid #ebebeb;
+  box-shadow: rgba(0,0,0,0.14902) 0px 1px 1px 0px,rgba(0,0,0,0.09804) 0px 1px 2px 0px;
+}
+
+#brand{
+  width: 380px;
+  margin: 0 auto 0 auto;
+  text-align: center;
+}
+
+h2{
+  font-family: 'Rubik Mono One', sans-serif;
+  font-size: 2rem;
+  font-weight: 400;
+  position: relative;
+  max-width: 60%;
+  left: 20%;
+}
+
+.brand{
+  position: relative;
+  max-width: 80%;
+  left: 10%;
+}
+
+.group {
+  position: relative;
+  margin-bottom: 45px;
+}
+
+.top-30{
+  margin-top: 30px;
+}
+
+h1{
+  font-weight: 400;
+  font-size: 28px;
+  line-height: 1.2;
+  margin-bottom: 10px;
+  padding: 0;
+  margin: 0;
+}
+
+.form-container > *{
+  margin-top: 1.5rem;
+  width: 100%;
+}

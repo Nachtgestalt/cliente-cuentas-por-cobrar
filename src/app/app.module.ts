@@ -1,46 +1,44 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import { HttpModule } from '@angular/http';
 
-
-import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
-import {MaterialModule} from "./material.module";
-import {LayoutModule} from "@angular/cdk/layout";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { LayoutModule } from "@angular/cdk/layout";
 
 //Rutas
 import {APP_ROUTING} from "./app.routes";
 
+//Modulos
+import {PagesModule} from "./pages/pages.module";
+
 //Componentes
 import { AppComponent } from './app.component';
-import { SidenavComponent } from './components/shared/sidenav/sidenav.component';
-import { NavbarComponent } from './components/shared/navbar/navbar.component';
-import { HomeComponent } from './components/home/home.component';
-import { AlmacenComponent } from './components/almacen/almacen.component';
-import { AgregarComponent } from './components/almacen/agregar/agregar.component';
+import { LoginComponent } from './login/login.component';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { ProgressComponent } from './pages/progress/progress.component';
+import { Graficas1Component } from './pages/graficas1/graficas1.component';
+
 
 // Servicios
-import { ProductosService } from './services/productos.service';
-import { ModificarComponent } from './components/almacen/modificar/modificar.component';
+import {ProductosService} from "./services/productos.service";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {MaterialModule} from "./material.module";
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    SidenavComponent,
-    NavbarComponent,
-    HomeComponent,
-    AlmacenComponent,
-    AgregarComponent,
-    ModificarComponent,
+    LoginComponent,
+    DashboardComponent,
+    ProgressComponent,
+    Graficas1Component,
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    MaterialModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpModule,
+    MaterialModule,
+    PagesModule,
     LayoutModule,
     APP_ROUTING
   ],

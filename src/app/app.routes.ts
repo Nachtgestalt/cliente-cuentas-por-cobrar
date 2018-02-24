@@ -1,16 +1,11 @@
 import {RouterModule, Routes} from "@angular/router";
-import {HomeComponent} from "./components/home/home.component";
-import {AlmacenComponent} from "./components/almacen/almacen.component";
 
-import {ALMACEN_ROUTES} from "./components/almacen/almacen.routes";
+import { LoginComponent } from "./login/login.component";
+import {NopagefoundComponent} from "./shared/nopagefound/nopagefound.component";
 
 const APP_ROUTES: Routes = [
-  {path: 'home', component: HomeComponent},
-  {path: 'almacen',
-    component: AlmacenComponent,
-    children : ALMACEN_ROUTES
-  },
-  {path: '**', pathMatch: 'full', redirectTo: 'home'}
+  {path: 'login', component: LoginComponent},
+  {path: '**', component: NopagefoundComponent}
 ];
 
 export const APP_ROUTING = RouterModule.forRoot(APP_ROUTES);

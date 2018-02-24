@@ -1,5 +1,44 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
+/*Reglas para las ventanas de agregar*/
+.main-container {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: space-around;
+}
+
+.main-container > * {
+  margin-top: 1rem;
+}
+
+.form-row > *{
+  margin-left: 2%;
+  margin-right: 7%;
+  width: 40%;
+}
+
+.form-column {
+  flex-direction: column;
+}
+
+.form-column > * {
+  margin-left: 2%;
+  margin-right: 7%;
+  width: 40%;
+}
+
+.form-column-right{
+  margin-top: 1.2rem;
+  margin-right: 8%;
+  align-self: flex-end;
+}
+
+.form-column-right > *{
+  width: 20%;
+}
+
+/***********/
 
 .top-30{
   margin-top: 5rem;

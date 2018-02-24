@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
+
 import {
   MatButtonModule,
   MatToolbarModule,
@@ -9,13 +10,17 @@ import {
   MatRadioModule,
   MatCardModule,
   MatMenuModule,
-  MatTabsModule
+  MatTabsModule,
+  MatFormFieldModule,
+  MatInputModule,
+  MatTableModule,
+  MatPaginatorModule
 } from '@angular/material';
+
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
 import {
   MatDialogModule,
-  MatDialog,
-  MatDialogRef
 } from "@angular/material/dialog";
 
 @NgModule({
@@ -29,7 +34,13 @@ import {
     MatRadioModule,
     MatCardModule,
     MatMenuModule,
-    MatTabsModule],
+    MatTabsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatTableModule,
+    MatPaginatorModule,
+    BrowserAnimationsModule
+  ],
 
   exports: [
     MatButtonModule,
@@ -41,6 +52,12 @@ import {
     MatRadioModule,
     MatCardModule,
     MatMenuModule,
-    MatTabsModule],
+    MatTabsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatTableModule,
+    MatPaginatorModule,
+    BrowserAnimationsModule
+  ],
 })
 export class MaterialModule { }

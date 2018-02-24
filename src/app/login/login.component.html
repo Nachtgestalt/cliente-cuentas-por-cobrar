@@ -1,0 +1,21 @@
+<div class="center row" id="brand">
+  <img class="brand" src="/assets/brand/fantomas.png" width="280" height="100" alt="">
+  <h2>Cuentas por cobrar</h2>
+</div>
+
+<div class="row">
+  <form (ngSubmit)="login()" >
+    <h1>Iniciar sesión</h1>
+    <div class="form-container">
+      <mat-form-field>
+        <input matInput placeholder="Ingresa tu usuario" [formControl]="email" required>
+        <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="Ingresa tu contraseña" [formControl]="email" required>
+        <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>
+      </mat-form-field>
+      <button mat-raised-button color="primary" type="submit">Iniciar sesión</button>
+    </div>
+  </form>
+</div>

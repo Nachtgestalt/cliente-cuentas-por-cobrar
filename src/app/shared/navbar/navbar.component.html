@@ -1,0 +1,47 @@
+<div class="example-container" [class.example-is-mobile]="mobileQuery.matches">
+  <mat-toolbar color="primary" class="example-toolbar">
+    <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
+    <a [routerLink]="['/home']">
+      <h1 class="example-app-name">Cuentas por cobrar</h1>
+    </a>
+    <span class="example-spacer"></span>
+    <button mat-icon-button [matMenuTriggerFor]="menu"  class="menu-button">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+
+    <mat-menu #menu="matMenu" >
+      <button mat-menu-item>
+        <mat-icon>settings</mat-icon>
+        <span>Configuración</span>
+      </button>
+      <button mat-menu-item>
+        <mat-icon>notifications_off</mat-icon>
+        <span>Desactivar notificaciones</span>
+      </button>
+      <button mat-menu-item (click)="logout()">
+        <mat-icon>exit_to_app</mat-icon>
+        <span>Cerrar sesión</span>
+      </button>
+    </mat-menu>
+  </mat-toolbar>
+
+  <mat-sidenav-container class="sidenav-container"
+                         [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
+    <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'push'"
+                 [fixedInViewport]="mobileQuery.matches" fixedTopGap="56" class="side-nav">
+      <mat-nav-list class="side-list">
+        <a mat-list-item [routerLink]="['/home']">Inicio</a>
+        <a mat-list-item [routerLink]="['/almacen']">Almacen</a>
+        <a mat-list-item [routerLink]="['/clientela']">Clientes</a>
+        <a mat-list-item routerLink=".">Cotizaciones</a>
+        <a mat-list-item routerLink=".">Inventario</a>
+      </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+
+</div>
+
+
