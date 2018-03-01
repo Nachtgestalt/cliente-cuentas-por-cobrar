@@ -1,6 +1,6 @@
 import {MediaMatcher} from '@angular/cdk/layout';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import {Router} from "@angular/router";
+import {ChangeDetectorRef, Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -8,25 +8,22 @@ import {Router} from "@angular/router";
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
-  mobileQuery: MediaQueryList;
 
-  private _mobileQueryListener: () => void;
+  @Output() openSideBar: EventEmitter<boolean> = new EventEmitter();
+  isOpen = false;
 
-  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private router: Router) {
-    this.mobileQuery = media.matchMedia('(max-width: 600px)');
-    this._mobileQueryListener = () => changeDetectorRef.detectChanges();
-    this.mobileQuery.addListener(this._mobileQueryListener);
-  }
+  constructor(private router: Router) {}
 
-  logout(){
+  logout() {
     this.router.navigate(['/login']);
   }
 
-  ngOnInit() {
+  openSide(event: boolean) {
+    this.isOpen = !this.isOpen;
+    this.openSideBar.emit( this.isOpen );
   }
 
-  ngOnDestroy(): void {
-    this.mobileQuery.removeListener(this._mobileQueryListener);
+  ngOnInit() {
   }
 
 }

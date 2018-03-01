@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
 //import { Router, ActivatedRoute } from '@angular/router';
-import { Producto } from './../interfaces/producto.interface';
+import { Producto } from '../../interfaces/producto.interface';
 import 'rxjs/add/operator/map';
 
 @Injectable()

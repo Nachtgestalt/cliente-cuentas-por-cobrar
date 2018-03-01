@@ -19,9 +19,9 @@ import { Graficas1Component } from './pages/graficas1/graficas1.component';
 
 
 // Servicios
-import {ProductosService} from "./services/productos.service";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {MaterialModule} from "./material.module";
+import {MaterialModule} from './material.module';
+import {ServiceModule} from './services/service.module';
 
 
 @NgModule({
@@ -40,10 +40,10 @@ import {MaterialModule} from "./material.module";
     MaterialModule,
     PagesModule,
     LayoutModule,
+    ServiceModule,
     APP_ROUTING
   ],
   providers: [
-    ProductosService,
   ],
   bootstrap: [AppComponent]
 })
