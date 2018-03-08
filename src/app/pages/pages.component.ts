@@ -8,7 +8,6 @@ import {MediaMatcher} from '@angular/cdk/layout';
 })
 export class PagesComponent implements OnInit {
   @Input() isOpen = false;
-  //@Output() openSideBar: EventEmitter<boolean> = new EventEmitter();
 
   mobileQuery: MediaQueryList;
 

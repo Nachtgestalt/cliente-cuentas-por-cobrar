@@ -1,8 +1,7 @@
-import {NgModule} from "@angular/core";
+import {NgModule} from '@angular/core';
 import {BrowserModule} from "@angular/platform-browser";
 import {RouterModule} from "@angular/router";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {HttpModule} from "@angular/http";
 
 import {ClientesComponent} from "./clientes/clientes.component";
 import {AgregarComponent} from "./almacen/agregar/agregar.component";
@@ -18,7 +17,14 @@ import {SharedModule} from "../shared/shared.module";
 import {MaterialModule} from "../material.module";
 
 
-import {PAGES_ROUTES} from "./pages.routes";
+import {PAGES_ROUTES} from './pages.routes';
+import { RecursosHumanosComponent } from './recursos-humanos/recursos-humanos.component';
+import { AgregarEmpleadoComponent } from './recursos-humanos/agregar-empleado/agregar-empleado.component';
+import { ModificarEmpleadoComponent } from './recursos-humanos/modificar-empleado/modificar-empleado.component';
+import { CuentasPorCobrarComponent } from './cuentas-por-cobrar/cuentas-por-cobrar.component';
+import { CuentasVendedorComponent } from './cuentas-por-cobrar/cuentas-vendedor/cuentas-vendedor.component';
+import { CuentasGeneralComponent } from './cuentas-por-cobrar/cuentas-general/cuentas-general.component';
+import { AsignarFoliosEmpleadoComponent } from './recursos-humanos/asignar-folios-empleado/asignar-folios-empleado.component';
 
 
 
@@ -31,7 +37,14 @@ import {PAGES_ROUTES} from "./pages.routes";
     ModificarComponent,
     ClientesComponent,
     AgregarClienteComponent,
-    ModificarClienteComponent
+    ModificarClienteComponent,
+    RecursosHumanosComponent,
+    AgregarEmpleadoComponent,
+    ModificarEmpleadoComponent,
+    CuentasPorCobrarComponent,
+    CuentasVendedorComponent,
+    CuentasGeneralComponent,
+    AsignarFoliosEmpleadoComponent
   ],
   exports: [
     HomeComponent,
@@ -49,7 +62,6 @@ import {PAGES_ROUTES} from "./pages.routes";
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpModule,
     PAGES_ROUTES
   ]
 }) export class PagesModule{}

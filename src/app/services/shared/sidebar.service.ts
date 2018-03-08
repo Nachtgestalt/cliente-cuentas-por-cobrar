@@ -15,6 +15,14 @@ export class SidebarService {
     {
       titulo: 'Clientes',
       url: '/clientela'
+    },
+    {
+      titulo: 'Cuentas por cobrar',
+      url: '/cuentas'
+    },
+    {
+      titulo: 'Recursos humanos',
+      url: '/nomina'
     }
   ];
 

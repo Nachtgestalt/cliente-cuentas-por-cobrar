@@ -1,10 +1,13 @@
 <mat-toolbar color="primary" class="example-toolbar">
   <button mat-icon-button (click)="openSide($event)"><mat-icon>menu</mat-icon></button>
-  <!--<button mat-icon-button><mat-icon>menu</mat-icon></button>-->
   <a [routerLink]="['/home']">
     <h1 class="example-app-name">Cuentas por cobrar</h1>
   </a>
   <span class="example-spacer"></span>
+  <div class="form-inline mr-4">
+    <input type="text" class="form-control mr-3 mb-2" placeholder="¿Que quieres buscar?">
+    <a class="search-btn"><i class="ti-search"></i></a>
+  </div>
   <button mat-icon-button [matMenuTriggerFor]="menu"  class="menu-button">
     <mat-icon>more_vert</mat-icon>
   </button>
@@ -18,7 +21,7 @@
       <mat-icon>notifications_off</mat-icon>
       <span>Desactivar notificaciones</span>
     </button>
-    <button mat-menu-item (click)="logout()">
+    <button mat-menu-item (click)="_userService.logout()">
       <mat-icon>exit_to_app</mat-icon>
       <span>Cerrar sesión</span>
     </button>

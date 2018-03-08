@@ -60,29 +60,29 @@ export class AgregarComponent implements OnInit {
     // this._agregarService.solicitar().subscribe();
   }
 
-  guardarCambios() {
-    if (this.id === 'nuevo') {
-      this._productosService.agregar(this.producto)
-        .subscribe(data => {
-          this.valido = true;
-          setTimeout(() => {
-            this.formulario.reset();
-            this.valido = false;
-            //this.router.navigate(['/dashboard/almacen/producto/nuevo']);
-          }, 2000);
-        });
-    } else {
-      this._productosService.actualizarProducto(this.producto, this.id)
-        .subscribe(data => {
-          this.actualizado = true;
-          setTimeout(() => {
-            this.formulario.reset();
-            this.valido = false;
-            //this.router.navigate(['/dashboard/almacen/productos']);
-          }, 2000);
-          console.log(data);
-        });
-    }
-  }
+  // guardarCambios() {
+  //   if (this.id === 'nuevo') {
+  //     this._productosService.agregar(this.producto)
+  //       .subscribe(data => {
+  //         this.valido = true;
+  //         setTimeout(() => {
+  //           this.formulario.reset();
+  //           this.valido = false;
+  //           //this.router.navigate(['/dashboard/almacen/producto/nuevo']);
+  //         }, 2000);
+  //       });
+  //   } else {
+  //     this._productosService.actualizarProducto(this.producto, this.id)
+  //       .subscribe(data => {
+  //         this.actualizado = true;
+  //         setTimeout(() => {
+  //           this.formulario.reset();
+  //           this.valido = false;
+  //           //this.router.navigate(['/dashboard/almacen/productos']);
+  //         }, 2000);
+  //         console.log(data);
+  //       });
+  //   }
+  // }
 
 }

@@ -1,6 +1,7 @@
 import {MediaMatcher} from '@angular/cdk/layout';
 import {ChangeDetectorRef, Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {Router} from '@angular/router';
+import {UserService} from "../../services/user/user.service";
 
 @Component({
   selector: 'app-navbar',
@@ -12,11 +13,8 @@ export class NavbarComponent implements OnInit {
   @Output() openSideBar: EventEmitter<boolean> = new EventEmitter();
   isOpen = false;
 
-  constructor(private router: Router) {}
-
-  logout() {
-    this.router.navigate(['/login']);
-  }
+  constructor(private router: Router,
+              public _userService: UserService) {}
 
   openSide(event: boolean) {
     this.isOpen = !this.isOpen;

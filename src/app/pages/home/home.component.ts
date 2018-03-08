@@ -7,7 +7,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  user: any;
+  userName = '';
+
+
+  constructor() {
+    this.user = JSON.parse(localStorage.getItem('user'));
+    this.userName = this.user.username.toUpperCase();
+    console.log(this.userName);
+  }
 
   ngOnInit() {
   }

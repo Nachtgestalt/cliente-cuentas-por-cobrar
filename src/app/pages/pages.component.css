@@ -1,9 +1,9 @@
 .example-container {
-  display: flex;
+  display: -ms-flexbox;
   flex-direction: column;
   position: absolute;
   top: 0;
   bottom: 0;
-  left: 0;
+  left: 0px;
   right: 0;
 }

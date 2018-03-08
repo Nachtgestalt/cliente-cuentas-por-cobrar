@@ -1,0 +1,41 @@
+.page-titles h3 {
+  margin-bottom: 0px;
+  margin-top: 0px;
+}
+
+.page-titles .breadcrumb {
+  padding: 0px;
+  margin-bottom: 0px;
+  background: transparent;
+  font-size: 14px;
+}
+
+.page-titles .breadcrumb li {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+.page-titles .breadcrumb .breadcrumb-item + .breadcrumb-item::before {
+  content: "\e649";
+  font-family: themify;
+  color: #a6b7bf;
+  font-size: 11px;
+}
+
+.page-titles .breadcrumb .breadcrumb-item.active {
+  color: #99abb4;
+}
+
+.p-relative {
+  position: relative;
+}
+
+.lstick {
+  width: 2px;
+  background: #398bf7;
+  height: 30px;
+  margin-left: -20px;
+  margin-right: 18px;
+  display: inline-block;
+  vertical-align: middle;
+}
