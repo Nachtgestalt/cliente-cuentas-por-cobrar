@@ -16,7 +16,8 @@ export class LoginComponent implements OnInit {
 
   user: User = {
     username: '',
-    password: ''
+    password: '',
+    role: ''
   };
 
   getErrorMessage() {

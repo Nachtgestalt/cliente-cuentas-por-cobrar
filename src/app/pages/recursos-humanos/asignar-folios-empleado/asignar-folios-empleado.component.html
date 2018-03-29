@@ -1,3 +1,57 @@
-<p>
-  asignar-folios-empleado works!
-</p>
+<mat-horizontal-stepper linear=true #stepper="matHorizontalStepper">
+  <mat-step [stepControl]="firstFormGroup">
+    <form [formGroup]="firstFormGroup">
+      <ng-template matStepLabel>Seleccionar un vendedor</ng-template>
+      <mat-form-field class="w-50">
+        <mat-select placeholder="Selecciona un vendedor" required formControlName="firstCtrl">
+          <mat-option *ngFor="let vendedor of vendedores" [value]="vendedor.value">
+            {{ vendedor.viewValue }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div>
+        <button mat-button matStepperNext>Next</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="secondFormGroup">
+    <form [formGroup]="secondFormGroup">
+      <ng-template matStepLabel>Seleccionar una temporada</ng-template>
+      <mat-form-field class="w-50">
+        <mat-select placeholder="Selecciona un vendedor" required formControlName="secondCtrl">
+          <mat-option *ngFor="let vendedor of vendedores" [value]="vendedor.value">
+            {{ vendedor.viewValue }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button matStepperNext>Next</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="secondFormGroup">
+    <form [formGroup]="secondFormGroup">
+      <ng-template matStepLabel>Seleccionar el tipo de folios</ng-template>
+      <mat-form-field class="w-50">
+        <mat-select placeholder="Selecciona un vendedor" required formControlName="secondCtrl">
+          <mat-option *ngFor="let vendedor of vendedores" [value]="vendedor.value">
+            {{ vendedor.viewValue }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button matStepperNext>Next</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Hecho</ng-template>
+    Folios asignados con exito
+    <div>
+      <button mat-button matStepperPrevious>Back</button>
+      <button mat-button (click)="stepper.reset()">Reset</button>
+    </div>
+  </mat-step>
+</mat-horizontal-stepper>

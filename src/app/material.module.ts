@@ -14,7 +14,9 @@ import {
   MatFormFieldModule,
   MatInputModule,
   MatTableModule,
-  MatPaginatorModule
+  MatPaginatorModule,
+  MatSelectModule,
+  MatStepperModule
 } from '@angular/material';
 
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
@@ -39,6 +41,8 @@ import {
     MatInputModule,
     MatTableModule,
     MatPaginatorModule,
+    MatSelectModule,
+    MatStepperModule,
     BrowserAnimationsModule
   ],
 
@@ -57,6 +61,8 @@ import {
     MatInputModule,
     MatTableModule,
     MatPaginatorModule,
+    MatSelectModule,
+    MatStepperModule,
     BrowserAnimationsModule
   ],
 })

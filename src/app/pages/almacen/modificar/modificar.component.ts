@@ -7,7 +7,7 @@ import {MatPaginator, MatSort, MatTableDataSource} from "@angular/material";
   styleUrls: ['./modificar.component.css']
 })
 export class ModificarComponent implements OnInit {
-  displayedColumns = ['id', 'name', 'progress', 'color'];
+  displayedColumns = ['id', 'name', 'progress', 'color', 'edit'];
   dataSource: MatTableDataSource<UserData>;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;

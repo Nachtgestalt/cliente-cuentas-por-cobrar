@@ -1,6 +1,6 @@
 <div class="example-header top-20">
   <mat-form-field>
-    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="¿Que estas buscando?">
   </mat-form-field>
 </div>
 
@@ -29,6 +29,12 @@
     <ng-container matColumnDef="color">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Color </mat-header-cell>
       <mat-cell *matCellDef="let row" [style.color]="row.color"> {{row.color}} </mat-cell>
+    </ng-container>
+
+    <!-- Color Column -->
+    <ng-container matColumnDef="edit">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Opciones </mat-header-cell>
+      <mat-cell *matCellDef="let row"> Aqui van unos botones </mat-cell>
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

@@ -1,58 +1,73 @@
 <div class="main-container">
-  <h5>Datos generales</h5>
-  <div class="form-column">
-    <mat-form-field>
-      <input matInput placeholder="Ingrese Clave" required>
-      <mat-error></mat-error>
-    </mat-form-field>
-    <mat-form-field>
-      <input matInput placeholder="Ingrese Nombre" required>
-    </mat-form-field>
-    <mat-form-field>
-      <input matInput placeholder="Ingrese Apellidos" required>
-    </mat-form-field>
-  </div>
+  <form *ngIf="active" [formGroup] = "forma" (ngSubmit)="agregar()" novalidate="novalidate">
+    <h5>Datos generales</h5>
+    <div class="form-column mt-3">
+      <mat-form-field>
+        <input matInput placeholder="Ingrese Clave" formControlName="clave" uppercase required>
+        <mat-error *ngIf="forma.get('clave').hasError('required')"> {{getErrorMessages()}} </mat-error>
+        <mat-error *ngIf="forma.get('clave').errors?.existeClave"> Esa clave ya existe </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="Ingrese Nombre" formControlName="nombre" uppercase required>
+        <mat-error *ngIf="!forma.get('nombre').valid"> {{getErrorMessages()}} </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="Ingrese Apellidos" formControlName="apellidos" required uppercase>
+      </mat-form-field>
+    </div>
 
-  <div class="form-column">
-    <mat-form-field>
-      <input matInput placeholder="Ingrese RFC">
-    </mat-form-field>
-    <mat-form-field>
-      <input matInput placeholder="Ingrese Telefono">
-    </mat-form-field>
-    <mat-form-field>
-      <input matInput placeholder="Ingrese E-mail">
-    </mat-form-field>
-  </div>
+    <div class="form-column mt-3">
+      <mat-form-field>
+        <input matInput placeholder="Ingrese RFC" formControlName="rfc" uppercase>
+        <mat-error *ngIf="forma.get('rfc').hasError('required')"> {{getErrorMessages()}} </mat-error>
+        <mat-error *ngIf="forma.get('rfc').errors?.existeRfc"> Ese rfc ya existe </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="tel" placeholder="Ingrese Telefono" formControlName="telefono">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="Ingrese E-mail"  formControlName="email">
+        <mat-error *ngIf="forma.get('email').hasError('required')"> {{getErrorMessages()}} </mat-error>
+        <mat-error *ngIf="forma.get('email').errors?.existeEmail"> Ese correo ya existe </mat-error>
+      </mat-form-field>
+    </div>
 
-  <mat-divider class="mt-3 mb-3"></mat-divider>
-  <!--Direccion-->
-  <h5>Dirección</h5>
-  <div class="form-column">
-    <mat-form-field hintLabel="(Calle, numero de casa)">
-      <input matInput placeholder="Ingrese direccion" required>
-      <mat-error></mat-error>
-    </mat-form-field>
-    <mat-form-field>
-      <input matInput placeholder="Ingrese colonia">
-    </mat-form-field>
-    <mat-form-field>
-      <input matInput placeholder="Ingrese codigo postal">
-    </mat-form-field>
-  </div>
+    <mat-divider class="mt-3 mb-3"></mat-divider>
+    <!--Direccion-->
+    <h5>Dirección</h5>
+    <div class="form-column mt-3">
+      <mat-form-field hintLabel="(Calle, numero de casa)">
+        <input matInput placeholder="Ingrese direccion" formControlName="direccion" required uppercase>
+        <mat-error></mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="Ingrese colonia" formControlName="colonia" uppercase>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput maxlength="5" placeholder="Ingrese codigo postal" #postalCode formControlName="codigo_postal">
+        <mat-hint align="end">{{postalCode.value.length}} / 5</mat-hint>
+      </mat-form-field>
+    </div>
 
-  <div class="form-column">
-    <mat-form-field>
-      <input matInput placeholder="Ingrese estado">
-    </mat-form-field>
-    <mat-form-field>
-      <input matInput placeholder="Ingrese municipio">
-    </mat-form-field>
-  </div>
+    <div class="form-column mt-3">
+      <mat-form-field>
+        <mat-select placeholder="Selecciona un estado" formControlName="estado">
+          <mat-option *ngFor="let estado of estados" [value]="estado.value">
+            {{ estado.viewValue }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="!forma. get('estado').valid"> {{getErrorMessages()}} </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="Ingrese municipio" formControlName="municipio" uppercase>
+      </mat-form-field>
+    </div>
 
-  <div class="form-column-right">
-    <button mat-raised-button color="primary">Guardar</button>
-  </div>
+    <div class="form-column-right">
+      <button mat-raised-button color="primary" type="submit" [disabled]="!forma.valid">Guardar</button>
+    </div>
+  </form>
+
 </div>
 
 

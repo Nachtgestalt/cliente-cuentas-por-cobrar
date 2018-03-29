@@ -16,6 +16,7 @@ import {CuentasPorCobrarComponent} from "./cuentas-por-cobrar/cuentas-por-cobrar
 import {CuentasVendedorComponent} from "./cuentas-por-cobrar/cuentas-vendedor/cuentas-vendedor.component";
 import {CuentasGeneralComponent} from "./cuentas-por-cobrar/cuentas-general/cuentas-general.component";
 import {AsignarFoliosEmpleadoComponent} from "./recursos-humanos/asignar-folios-empleado/asignar-folios-empleado.component";
+import {UsuariosComponent} from "./configuracion/usuarios/usuarios.component";
 
 
 const pagesRoutes: Routes = [
@@ -25,6 +26,7 @@ const pagesRoutes: Routes = [
     canActivate: [LoginGuardGuard],
     children: [
       {path: 'home', component: HomeComponent, data: {titulo: 'Inicio'}},
+      {path: 'configuracion', component: UsuariosComponent, data: {titulo: 'Configuracion'}},
       {
         path: 'almacen',
         component: AlmacenComponent,

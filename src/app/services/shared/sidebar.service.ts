@@ -23,6 +23,10 @@ export class SidebarService {
     {
       titulo: 'Recursos humanos',
       url: '/nomina'
+    },
+    {
+      titulo: 'Configuración',
+      url: '/configuracion'
     }
   ];
 

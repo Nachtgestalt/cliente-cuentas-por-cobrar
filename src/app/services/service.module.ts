@@ -9,6 +9,7 @@ import {
   UserService
 } from './service.index';
 import {HttpClientModule} from '@angular/common/http';
+import {VendedorService} from "./vendedor/vendedor.service";
 
 @NgModule({
   imports: [
@@ -20,6 +21,7 @@ import {HttpClientModule} from '@angular/common/http';
     SidebarService,
     SharedService,
     UserService,
+    VendedorService,
     LoginGuardGuard
   ],
   declarations: []
