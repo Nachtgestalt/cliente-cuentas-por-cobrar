@@ -15,7 +15,6 @@ export class HomeComponent implements OnInit {
   constructor() {
     this.user = JSON.parse(localStorage.getItem('user'));
     this.userName = this.user.username.toUpperCase();
-    console.log(this.userName);
   }
 
   ngOnInit() {

@@ -1,27 +1,27 @@
 import { Injectable } from '@angular/core';
-import {User} from '../../interfaces/user.interfaces';
-import {HttpClient} from '@angular/common/http';
-import {ActivatedRoute, Router} from '@angular/router';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {Vendedor} from '../../interfaces/vendedor.interface';
-import {FormControl} from '@angular/forms';
-import {Observable} from 'rxjs/Observable';
-
-class Obsevable {
-}
+import {URL_SERVICIOS} from '../../config/config';
+import 'rxjs/add/operator/map';
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 
 @Injectable()
 export class VendedorService {
   token = localStorage.getItem('token');
-  vendedorURL = 'http://localhost:8080/vendedores';
-  searchURL = 'http://localhost:8080/vendedores/search/';
+  vendedorURL = URL_SERVICIOS + '/vendedores';
+  searchURL = URL_SERVICIOS + '/vendedores/search/';
+
+  dataChange: BehaviorSubject<Vendedor[]> = new BehaviorSubject<Vendedor[]>([]);
 
 
-  constructor(public http: HttpClient,
-              private router: Router,
-              private activatedRoute: ActivatedRoute) { }
+  constructor(public http: HttpClient) { }
+
+  get data(): Vendedor[] {
+    return this.dataChange.value;
+  }
 
   agregarUsuario(vendedor: Vendedor) {
-    let url = this.vendedorURL + '/nuevo';
+    const url = this.vendedorURL + '/nuevo';
     const body = JSON.stringify(vendedor);
 
     console.log(body);
@@ -30,26 +30,48 @@ export class VendedorService {
   }
 
   obtenerVendedores() {
-    return this.http.get(this.vendedorURL, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}});
+    return this.http.get<Vendedor[]>(this.vendedorURL, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}})
+      .subscribe(data => {
+          this.dataChange.next(data);
+        },
+        (error: HttpErrorResponse) => {
+          console.log (error.name + ' ' + error.message);
+        });
   }
 
   existeClave(clave: string) {
-    let url = this.searchURL + 'clave=' + clave;
+    const url = this.searchURL + 'clave=' + clave;
     return this.http.get(url, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}});
   }
 
   existeRfc(rfc: string) {
-    let url = this.searchURL + 'rfc=' + rfc;
+    const url = this.searchURL + 'rfc=' + rfc;
     return this.http.get(url, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}});
   }
 
   existeUsername(username: string) {
-    let url = this.searchURL + 'username=' + username;
+    const url = this.searchURL + 'username=' + username;
     return this.http.get(url, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}});
   }
 
   existeEmail(email: string) {
-    let url = this.searchURL + 'email=' + email;
+    const url = this.searchURL + 'email=' + email;
     return this.http.get(url, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}});
+  }
+
+  deleteVendedor(clave: string) {
+    const url = `${this.vendedorURL}/${clave}`;
+    console.log('URL de borrado: ' + url);
+    return this.http.delete(url, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}});
+  }
+
+  obtenerVendedor(clave: string) {
+    const url = `${this.vendedorURL}/${clave}`;
+    return this.http.get(url, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}});
+  }
+
+  actualizarVendedor(vendedor: any, clave: string) {
+    const body = JSON.stringify(vendedor);
+    return this.http.put(this.vendedorURL, body, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}});
   }
 }

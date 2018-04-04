@@ -1,0 +1,106 @@
+<div class="main-container">
+  <form *ngIf="active" [formGroup] = "forma" (ngSubmit)="agregar()" novalidate="novalidate">
+    <h4>Datos de la escuela</h4>
+    <div class="row">
+      <mat-form-field class="col-md-4">
+        <input type="text" matInput placeholder="Clave:"
+               formControlName="clave"
+               [(ngModel)]="forma.value.clave" uppercase>
+      </mat-form-field>
+      <mat-form-field class="col-md-4">
+        <input type="text" matInput placeholder="Nombre:"
+               formControlName="nombre"
+               [(ngModel)]="forma.value.nombre" uppercase>
+      </mat-form-field>
+      <mat-form-field class="col-md-4">
+        <mat-select placeholder="Turno:" formControlName="turno">
+          <mat-option value="MATUTINO"> MATUTINO </mat-option>
+          <mat-option value="VESPERTINO"> VESPERTINO </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="row mt-3">
+      <mat-form-field class="col-md-4" hintLabel="(Calle y número)">
+        <input type="text" matInput placeholder="Dirección"
+               formControlName="direccion"
+               [(ngModel)]="forma.value.direccion" uppercase>
+      </mat-form-field>
+      <mat-form-field class="col-md-4">
+        <input type="text" matInput placeholder="Colonia"
+               formControlName="colonia"
+               [(ngModel)]="forma.value.colonia" uppercase>
+      </mat-form-field>
+      <mat-form-field class="col-md-4">
+        <input type="text" matInput maxlength="5" placeholder="Codigo Postal" #postalCode
+               formControlName="codigoPostal"
+               [(ngModel)]="forma.value.codigoPostal" numbers>
+        <mat-hint align="end">{{postalCode.value.length}} / 5</mat-hint>
+      </mat-form-field>
+    </div>
+
+    <div class="row mt-3">
+      <mat-form-field class="col-md-6">
+        <mat-select placeholder="Selecciona un estado" formControlName="estado">
+          <mat-option *ngFor="let estado of estados" [value]="estado.value">
+            {{ estado.viewValue }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="col-md-6">
+        <input matInput placeholder="Municipio"
+               formControlName="municipio"
+               [(ngModel)]="forma.value.municipio" uppercase>
+      </mat-form-field>
+    </div>
+
+    <div class="row mt-3">
+      <mat-form-field class="col-md-6">
+        <input type="text" matInput placeholder="Telefono:"
+               formControlName="telefono"
+               [(ngModel)]="forma.value.telefono" numbers>
+      </mat-form-field>
+      <mat-form-field class="col-md-6">
+        <input type="text" matInput placeholder="Correo electronico"
+               formControlName="email"
+               [(ngModel)]="forma.value.email">
+      </mat-form-field>
+    </div>
+
+    <hr>
+
+    <h4>Datos del director</h4>
+    <div formGroupName="director">
+      <div class="row">
+        <mat-form-field class="col-md-6">
+          <input type="text" matInput placeholder="Nombre:"
+                 formControlName="nombre"
+                 [(ngModel)]="forma.get('director.nombre').value" uppercase>
+        </mat-form-field>
+        <mat-form-field class="col-md-6">
+          <input type="text" matInput placeholder="Apellidos:"
+                 formControlName="apellidos"
+                 [(ngModel)]="forma.get('director.apellidos').value" uppercase>
+        </mat-form-field>
+      </div>
+      <div class="row">
+        <mat-form-field class="col-md-6">
+          <input type="number" matInput placeholder="Telefono:"
+                 formControlName="telefono"
+                 [(ngModel)]="forma.get('director.telefono').value" numbers>
+        </mat-form-field>
+        <mat-form-field class="col-md-6">
+          <input type="email" matInput placeholder="Correo electronico:"
+                 formControlName="email"
+                 [(ngModel)]="forma.get('director.email').value">
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="form-column-right">
+      <button type="submit" mat-raised-button color="primary">Guardar</button>
+    </div>
+  </form>
+</div>
+
+

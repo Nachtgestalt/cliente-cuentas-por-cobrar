@@ -3,27 +3,31 @@
     <h5>Datos generales</h5>
     <div class="form-column mt-3">
       <mat-form-field>
-        <input matInput placeholder="Ingrese Clave" formControlName="clave" uppercase required>
+        <input type="text" matInput placeholder="Ingrese Clave" formControlName="clave"
+               [(ngModel)]="forma.value.clave" uppercase required>
         <mat-error *ngIf="forma.get('clave').hasError('required')"> {{getErrorMessages()}} </mat-error>
         <mat-error *ngIf="forma.get('clave').errors?.existeClave"> Esa clave ya existe </mat-error>
       </mat-form-field>
       <mat-form-field>
-        <input matInput placeholder="Ingrese Nombre" formControlName="nombre" uppercase required>
+        <input type="text" matInput placeholder="Ingrese Nombre" formControlName="nombre"
+               [(ngModel)]="forma.value.nombre" uppercase required>
         <mat-error *ngIf="!forma.get('nombre').valid"> {{getErrorMessages()}} </mat-error>
       </mat-form-field>
       <mat-form-field>
-        <input matInput placeholder="Ingrese Apellidos" formControlName="apellidos" required uppercase>
+        <input matInput placeholder="Ingrese Apellidos" formControlName="apellidos" required
+               [(ngModel)]="forma.value.apellidos" uppercase>
       </mat-form-field>
     </div>
 
     <div class="form-column mt-3">
       <mat-form-field>
-        <input matInput placeholder="Ingrese RFC" formControlName="rfc" uppercase>
+        <input matInput placeholder="Ingrese RFC" formControlName="rfc"
+               [(ngModel)]="forma.value.rfc" uppercase>
         <mat-error *ngIf="forma.get('rfc').hasError('required')"> {{getErrorMessages()}} </mat-error>
         <mat-error *ngIf="forma.get('rfc').errors?.existeRfc"> Ese rfc ya existe </mat-error>
       </mat-form-field>
       <mat-form-field>
-        <input matInput type="tel" placeholder="Ingrese Telefono" formControlName="telefono">
+        <input matInput type="tel" placeholder="Ingrese Telefono" formControlName="telefono" numbers>
       </mat-form-field>
       <mat-form-field>
         <input matInput placeholder="Ingrese E-mail"  formControlName="email">
@@ -37,14 +41,17 @@
     <h5>Dirección</h5>
     <div class="form-column mt-3">
       <mat-form-field hintLabel="(Calle, numero de casa)">
-        <input matInput placeholder="Ingrese direccion" formControlName="direccion" required uppercase>
+        <input matInput placeholder="Ingrese direccion" formControlName="direccion" required
+               [(ngModel)]="forma.value.direccion" uppercase>
         <mat-error></mat-error>
       </mat-form-field>
       <mat-form-field>
-        <input matInput placeholder="Ingrese colonia" formControlName="colonia" uppercase>
+        <input matInput placeholder="Ingrese colonia" formControlName="colonia"
+               [(ngModel)]="forma.value.colonia" uppercase>
       </mat-form-field>
       <mat-form-field>
-        <input matInput maxlength="5" placeholder="Ingrese codigo postal" #postalCode formControlName="codigo_postal">
+        <input matInput maxlength="5" placeholder="Ingrese codigo postal" #postalCode
+               formControlName="codigo_postal" numbers>
         <mat-hint align="end">{{postalCode.value.length}} / 5</mat-hint>
       </mat-form-field>
     </div>
@@ -59,12 +66,13 @@
         <mat-error *ngIf="!forma. get('estado').valid"> {{getErrorMessages()}} </mat-error>
       </mat-form-field>
       <mat-form-field>
-        <input matInput placeholder="Ingrese municipio" formControlName="municipio" uppercase>
+        <input matInput placeholder="Ingrese municipio" formControlName="municipio"
+               [(ngModel)]="forma.value.municipio" uppercase>
       </mat-form-field>
     </div>
 
     <div class="form-column-right">
-      <button mat-raised-button color="primary" type="submit" [disabled]="!forma.valid">Guardar</button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="!forma.valid && empleadoActualizar">Guardar</button>
     </div>
   </form>
 

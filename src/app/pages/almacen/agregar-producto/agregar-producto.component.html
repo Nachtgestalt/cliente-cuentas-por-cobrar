@@ -1,0 +1,88 @@
+<div class="main-container">
+  <form *ngIf="active" [formGroup] = "forma" (ngSubmit)="agregar()" novalidate="novalidate">
+    <h3>Datos del maestro</h3>
+    <div class="row">
+      <mat-form-field class="col-md-5">
+        <input type="text" matInput placeholder="Clave de producto"
+               formControlName="clave_producto" [(ngModel)]="forma.value.clave_producto " uppercase>
+        <mat-error *ngIf="forma.get('clave_producto').hasError('required')"> {{getErrorMessages()}} </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field class="col-md-5">
+        <input type="text" matInput placeholder="ISBN"
+               formControlName="isbn" [(ngModel)]="forma.value.isbn " uppercase>
+        <mat-error *ngIf="forma.get('isbn').hasError('required')"> {{getErrorMessages()}} </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field class="col-md-5">
+        <input type="text" matInput placeholder="Título"
+               formControlName="titulo" [(ngModel)]="forma.value.titulo" uppercase>
+        <mat-error *ngIf="forma.get('titulo').hasError('required')"> {{getErrorMessages()}} </mat-error>
+      </mat-form-field>
+      <mat-form-field class="col-md-5">
+        <input type="text" matInput placeholder="Autor"
+               formControlName="autor" [(ngModel)]="forma.value.autor" uppercase>
+        <mat-error *ngIf="forma.get('autor').hasError('required')"> {{getErrorMessages()}} </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field class="col-md-5">
+        <input type="text" matInput placeholder="Editorial"
+               formControlName="editorial" [(ngModel)]="forma.value.editorial" uppercase>
+        <mat-error *ngIf="forma.get('editorial').hasError('required')"> {{getErrorMessages()}} </mat-error>
+      </mat-form-field>
+      <mat-form-field class="col-md-5">
+        <input type="text" matInput placeholder="Año"
+               formControlName="year" [(ngModel)]="forma.value.year" uppercase>
+        <mat-error *ngIf="forma.get('year').hasError('required')"> {{getErrorMessages()}} </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field class="col-md-5">
+        <mat-select placeholder="Nivel:" formControlName="nivel">
+          <mat-option *ngFor="let n of niveles" [value]="n.value">
+            {{n.viewValue}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="!forma.get('nivel').valid"> {{getErrorMessages()}} </mat-error>
+      </mat-form-field>
+      <mat-form-field class="col-md-5">
+        <mat-select placeholder="Grado:" formControlName="curso">
+          <mat-option *ngFor="let grado of grados" [value]="grado.value">
+            {{grado.viewValue}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="!forma.get('curso').valid"> {{getErrorMessages()}} </mat-error>
+      </mat-form-field>
+    </div>
+    <hr>
+    <h3>Datos para inventario</h3>
+    <div class="row">
+      <mat-form-field class="col-md-5">
+        <input type="number" matInput placeholder="Costo"
+               formControlName="costo" [(ngModel)]="forma.value.costo" numbers>
+        <span matPrefix>$&nbsp;</span>
+        <mat-error *ngIf="forma.get('costo').hasError('required')"> {{getErrorMessages()}} </mat-error>
+      </mat-form-field>
+      <mat-form-field class="col-md-5">
+        <input type="number" matInput placeholder="Precio"
+               formControlName="precio" [(ngModel)]="forma.value.precio" numbers>
+        <span matPrefix>$&nbsp;</span>
+        <mat-error *ngIf="forma.get('precio').hasError('required')"> {{getErrorMessages()}} </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field class="col-md-10">
+        <input type="number" matInput placeholder="Cantidad"
+               formControlName="cantidad" [(ngModel)]="forma.value.cantidad" numbers>
+        <mat-error *ngIf="forma.get('cantidad').hasError('required')"> {{getErrorMessages()}} </mat-error>
+      </mat-form-field>
+    </div>
+
+      <div class="form-row-right form-row">
+        <button mat-raised-button color="primary" type="submit">Guardar</button>
+      </div>
+  </form>
+</div>

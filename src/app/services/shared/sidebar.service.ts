@@ -9,20 +9,24 @@ export class SidebarService {
       url: '/home'
     },
     {
+      titulo: 'Recursos humanos',
+      url: '/nomina'
+    },
+    {
       titulo: 'Almacen',
       url: '/almacen'
     },
     {
-      titulo: 'Clientes',
-      url: '/clientela'
+      titulo: 'Escuelas',
+      url: '/escuelas'
+    },
+    {
+      titulo: 'Maestros',
+      url: '/maestros'
     },
     {
       titulo: 'Cuentas por cobrar',
       url: '/cuentas'
-    },
-    {
-      titulo: 'Recursos humanos',
-      url: '/nomina'
     },
     {
       titulo: 'Configuración',

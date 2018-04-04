@@ -14,7 +14,7 @@ export class RecursosHumanosComponent implements OnInit {
     this.routeLinks = [
       {
         label: 'Agregar',
-        link: './empleado',
+        link: './empleado/nuevo',
         index: 0
       },
       {

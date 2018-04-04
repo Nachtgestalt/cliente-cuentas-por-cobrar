@@ -7,6 +7,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 
 import * as _swal from 'sweetalert';
 import { SweetAlert } from 'sweetalert/typings/core';
+import {EscuelaService} from "../../../services/escuela/escuela.service";
 const swal: SweetAlert = _swal as any;
 
 @Component({
@@ -15,9 +16,12 @@ const swal: SweetAlert = _swal as any;
   styleUrls: ['./agregar-empleado.component.css']
 })
 export class AgregarEmpleadoComponent implements OnInit {
-  active: boolean = true ;
+  active: boolean = true;
   vendedorAgregado = false;
   forma: FormGroup;
+  empleadoActualizar = true;
+
+  clave: string;
 
   vendedor: Vendedor = {
     clave: '',
@@ -71,11 +75,25 @@ export class AgregarEmpleadoComponent implements OnInit {
   constructor(private  _vendedorService: VendedorService,
               private router: Router,
               private route: ActivatedRoute) {
-    this.crearForma();
+    this.route.params
+      .subscribe(parametros => {
+        this.clave = parametros['clave'];
+        if (this.clave !== 'nuevo') {
+          this.crearFormActualizar();
+          this.empleadoActualizar = false;
+          this._vendedorService.obtenerVendedor(this.clave)
+            .subscribe(vendedor => {
+              console.log(vendedor);
+              this.forma.setValue(vendedor);
+            });
+        } else {
+          this.empleadoActualizar = true;
+          this.crearForma();
+        }
+      });
   }
 
   ngOnInit() {
-
   }
 
   crearForma() {
@@ -94,24 +112,50 @@ export class AgregarEmpleadoComponent implements OnInit {
     });
   }
 
+  crearFormActualizar() {
+    this.forma = new FormGroup({
+      'clave': new FormControl('', Validators.required),
+      'nombre': new FormControl('', Validators.required),
+      'apellidos': new FormControl('', Validators.required),
+      'rfc': new FormControl('', null),
+      'telefono': new FormControl(''),
+      'email': new FormControl('', null),
+      'direccion': new FormControl('', Validators.required),
+      'colonia': new FormControl('', Validators.required),
+      'codigo_postal': new FormControl('', [Validators.maxLength(5)]),
+      'estado': new FormControl('', Validators.required),
+      'municipio': new FormControl('', Validators.required),
+    });
+  }
+
   agregar() {
-    this._vendedorService.agregarUsuario(this.forma.value)
-      .subscribe(res => {
-        console.log(res);
-        this.vendedorAgregado = true;
-        this.forma.reset();
-        this.active = false;
-        swal('Vendedor agregado', 'Vendedor agregado con exito', 'success');
-        setTimeout(() => this.active = true
-          // this.router.navigate(['/nomina/empleado']);
-        , 1000);
-      });
+    if (this.clave === 'nuevo') {
+      this._vendedorService.agregarUsuario(this.forma.value)
+        .subscribe(res => {
+          console.log(res);
+          this.vendedorAgregado = true;
+          this.forma.reset();
+          this.active = false;
+          swal('Vendedor agregado', 'Vendedor agregado con exito', 'success');
+          setTimeout(() => this.active = true, 1000);
+        });
+    } else {
+      this._vendedorService.actualizarVendedor(this.forma.value, this.clave)
+        .subscribe(res => {
+          console.log('esta madre se actualizo!');
+          this.forma.reset();
+          this.active = false;
+          swal('Vendedor actualizado', 'Vendedor actualizado con exito', 'success');
+          setTimeout(() => {
+            this.router.navigate(['/nomina/empleados']);
+          }, 1000);
+        });
+    }
   }
 
   validarClave(control: AbstractControl) {
     return this._vendedorService.existeClave(control.value)
       .map(res => {
-        console.log(res);
         return res ? {existeClave: true} : null;
       });
   }
@@ -119,7 +163,6 @@ export class AgregarEmpleadoComponent implements OnInit {
   validarRfc(control: AbstractControl) {
     return this._vendedorService.existeRfc(control.value)
       .map(res => {
-        console.log(res);
         return res ? {existeRfc: true} : null;
       });
   }
@@ -127,7 +170,6 @@ export class AgregarEmpleadoComponent implements OnInit {
   validarEmail(control: AbstractControl) {
     return this._vendedorService.existeEmail(control.value)
       .map(res => {
-        console.log(res);
         return res ? {existeEmail: true} : null;
       });
   }

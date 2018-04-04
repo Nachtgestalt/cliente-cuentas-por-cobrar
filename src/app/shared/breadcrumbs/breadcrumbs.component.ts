@@ -11,11 +11,15 @@ import {Title} from '@angular/platform-browser';
 export class BreadcrumbsComponent implements OnInit {
 
   lbltitle: string = '';
+  lblSubtitle = '';
+  breadcrumbs: any;
 
   constructor( private router: Router, public _title: Title) {
     this.getDataRoute()
       .subscribe( data => {
+        this.breadcrumbs = data;
         this.lbltitle = data.titulo;
+        this.lblSubtitle = data.subtitle
         this._title.setTitle(this.lbltitle);
       });
   }

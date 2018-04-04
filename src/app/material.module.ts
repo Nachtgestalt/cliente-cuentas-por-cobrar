@@ -16,7 +16,8 @@ import {
   MatTableModule,
   MatPaginatorModule,
   MatSelectModule,
-  MatStepperModule
+  MatStepperModule,
+  MatSortModule,
 } from '@angular/material';
 
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
@@ -43,6 +44,7 @@ import {
     MatPaginatorModule,
     MatSelectModule,
     MatStepperModule,
+    MatSortModule,
     BrowserAnimationsModule
   ],
 
@@ -63,6 +65,7 @@ import {
     MatPaginatorModule,
     MatSelectModule,
     MatStepperModule,
+    MatSortModule,
     BrowserAnimationsModule
   ],
 })

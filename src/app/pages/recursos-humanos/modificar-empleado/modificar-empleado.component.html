@@ -1,40 +1,49 @@
 <div class="example-header top-20">
   <mat-form-field>
-    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="¿Que estas buscando?">
+    <input matInput #filter placeholder="¿Que estas buscando?">
   </mat-form-field>
 </div>
 
 <div class="example-container mat-elevation-z8">
-  <mat-table [dataSource]="dataSource" matSort>
+  <mat-table #table [dataSource]="dataSource" matSort>
 
-    <!-- ID Column -->
-    <ng-container matColumnDef="id">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> ID </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.id}} </mat-cell>
+    <!-- Clave Column -->
+    <ng-container matColumnDef="clave">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Clave </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.clave}} </mat-cell>
     </ng-container>
 
-    <!-- Progress Column -->
-    <ng-container matColumnDef="progress">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Progress </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.progress}}% </mat-cell>
+    <!-- Nombre Column -->
+    <ng-container matColumnDef="nombre">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.nombre}} </mat-cell>
     </ng-container>
 
-    <!-- Name Column -->
-    <ng-container matColumnDef="name">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.name}} </mat-cell>
+    <!-- Apellidos Column -->
+    <ng-container matColumnDef="apellidos">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Apellidos </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.apellidos}} </mat-cell>
     </ng-container>
 
-    <!-- Color Column -->
-    <ng-container matColumnDef="color">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Color </mat-header-cell>
-      <mat-cell *matCellDef="let row" [style.color]="row.color"> {{row.color}} </mat-cell>
+    <!-- Telefono Column -->
+    <ng-container matColumnDef="telefono">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Telefono </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.telefono}} </mat-cell>
     </ng-container>
 
-    <!-- Color Column -->
+    <!-- Opciones Column -->
     <ng-container matColumnDef="edit">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Opciones </mat-header-cell>
-      <mat-cell *matCellDef="let row"> Aqui van unos botones </mat-cell>
+      <mat-header-cell *matHeaderCellDef> Opciones </mat-header-cell>
+      <mat-cell *matCellDef="let row; let i=index;">
+        <button (click)="deleteItem(i, row.clave, row.nombre, row.apellidos)" mat-icon-button>
+          <mat-icon>delete_forever</mat-icon>
+          {{row.index}}
+        </button>
+        <button [routerLink]="['/nomina/empleado', row.clave]"
+                mat-icon-button class="ml-4">
+          <mat-icon>mode_edit</mat-icon>
+        </button>
+      </mat-cell>
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
@@ -42,5 +51,13 @@
     </mat-row>
   </mat-table>
 
-  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+  <div class="no-results" [style.display]="dataSource.renderedData.length == 0 ? '' : 'none'">
+    Sin resultados
+  </div>
+
+  <mat-paginator #paginator
+                 [length]="dataSource.filteredData.length"
+                 [pageIndex]="0"
+                 [pageSize]="10"
+                 [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
 </div>

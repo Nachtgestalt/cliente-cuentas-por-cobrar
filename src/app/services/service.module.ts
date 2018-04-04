@@ -10,6 +10,8 @@ import {
 } from './service.index';
 import {HttpClientModule} from '@angular/common/http';
 import {VendedorService} from "./vendedor/vendedor.service";
+import {EscuelaService} from "./escuela/escuela.service";
+import {MaestroService} from "./maestro/maestro.service";
 
 @NgModule({
   imports: [
@@ -22,6 +24,8 @@ import {VendedorService} from "./vendedor/vendedor.service";
     SharedService,
     UserService,
     VendedorService,
+    EscuelaService,
+    MaestroService,
     LoginGuardGuard
   ],
   declarations: []

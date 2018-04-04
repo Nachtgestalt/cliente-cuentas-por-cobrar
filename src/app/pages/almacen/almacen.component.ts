@@ -14,7 +14,7 @@ export class AlmacenComponent implements OnInit {
     this.routeLinks = [
       {
         label: 'Agregar',
-        link: './producto',
+        link: './producto/nuevo',
         index: 0
       },
       {

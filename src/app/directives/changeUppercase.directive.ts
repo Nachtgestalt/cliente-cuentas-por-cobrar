@@ -1,16 +1,14 @@
-import { Directive, HostListener, Renderer, ElementRef } from '@angular/core';
-
+import {Directive, EventEmitter, HostListener, Output} from '@angular/core';
 @Directive({
-  selector: '[uppercase]'
+  selector: '[ngModel][uppercase]'
 })
-export class ChangeDirective{
 
-  constructor(
-    private renderer: Renderer,
-    private el: ElementRef
-  ){}
+export class UppercaseDirective {
+  @Output() ngModelChange: EventEmitter<any> = new EventEmitter();
+  value: any;
 
-  @HostListener('keyup') onKeyUp() {
-    this.el.nativeElement.value=this.el.nativeElement.value.toUpperCase();
+  @HostListener('input', ['$event']) onInputChange($event) {
+    this.value = $event.target.value.toUpperCase();
+    this.ngModelChange.emit(this.value);
   }
 }

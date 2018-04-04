@@ -3,11 +3,11 @@ import {BrowserModule} from '@angular/platform-browser';
 import {RouterModule} from '@angular/router';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
-import {ClientesComponent} from './clientes/clientes.component';
-import {AgregarComponent} from './almacen/agregar/agregar.component';
-import {ModificarClienteComponent} from './clientes/modificar-cliente/modificar-cliente.component';
-import {ModificarComponent} from './almacen/modificar/modificar.component';
-import {AgregarClienteComponent} from './clientes/agregar-cliente/agregar-cliente.component';
+import {EscuelasComponent} from './escuelas/escuelas.component';
+import {AgregarProductoComponent} from './almacen/agregar-producto/agregar-producto.component';
+import {ModificarEscuelaComponent} from './escuelas/modificar-escuela/modificar-escuela.component';
+import {ModificarProductoComponent} from './almacen/modificar-producto/modificar-producto.component';
+import {AgregarEscuelaComponent} from './escuelas/agregar-escuela/agregar-escuela.component';
 import {HomeComponent} from './home/home.component';
 import {AlmacenComponent} from './almacen/almacen.component';
 import {PagesComponent} from './pages.component';
@@ -26,7 +26,13 @@ import { CuentasVendedorComponent } from './cuentas-por-cobrar/cuentas-vendedor/
 import { CuentasGeneralComponent } from './cuentas-por-cobrar/cuentas-general/cuentas-general.component';
 import { AsignarFoliosEmpleadoComponent } from './recursos-humanos/asignar-folios-empleado/asignar-folios-empleado.component';
 import { UsuariosComponent } from './configuracion/usuarios/usuarios.component';
-import {ChangeDirective} from "../directives/changeUppercase.directive";
+import {UppercaseDirective} from '../directives/changeUppercase.directive';
+import {OnlyNumbersDirective} from '../directives/onlyNumbers.directive';
+import {DeleteVendedorDialogComponent} from '../dialogs/delete-vendedor/delete-vendedor.dialog.component';
+import {DeleteProductoDialogComponent} from "../dialogs/delete-producto/delete-producto.dialog.component";
+import { MaestrosComponent } from './maestros/maestros.component';
+import { AgregarMaestroComponent } from './maestros/agregar-maestro/agregar-maestro.component';
+import { ModificarMaestroComponent } from './maestros/modificar-maestro/modificar-maestro.component';
 
 
 
@@ -35,11 +41,11 @@ import {ChangeDirective} from "../directives/changeUppercase.directive";
     PagesComponent,
     HomeComponent,
     AlmacenComponent,
-    AgregarComponent,
-    ModificarComponent,
-    ClientesComponent,
-    AgregarClienteComponent,
-    ModificarClienteComponent,
+    AgregarProductoComponent,
+    ModificarProductoComponent,
+    EscuelasComponent,
+    AgregarEscuelaComponent,
+    ModificarEscuelaComponent,
     RecursosHumanosComponent,
     AgregarEmpleadoComponent,
     ModificarEmpleadoComponent,
@@ -48,16 +54,32 @@ import {ChangeDirective} from "../directives/changeUppercase.directive";
     CuentasGeneralComponent,
     AsignarFoliosEmpleadoComponent,
     UsuariosComponent,
-    ChangeDirective
+    // Directivas
+    UppercaseDirective,
+    OnlyNumbersDirective,
+    MaestrosComponent,
+    AgregarMaestroComponent,
+    ModificarMaestroComponent,
+    // Dialogs
   ],
   exports: [
     HomeComponent,
     AlmacenComponent,
-    AgregarComponent,
-    ModificarComponent,
-    ClientesComponent,
-    AgregarClienteComponent,
-    ModificarClienteComponent
+    AgregarProductoComponent,
+    ModificarProductoComponent,
+    EscuelasComponent,
+    AgregarEscuelaComponent,
+    ModificarEscuelaComponent,
+    RecursosHumanosComponent,
+    AgregarEmpleadoComponent,
+    ModificarEmpleadoComponent,
+    CuentasPorCobrarComponent,
+    CuentasVendedorComponent,
+    CuentasGeneralComponent,
+    AsignarFoliosEmpleadoComponent,
+    UsuariosComponent,
+    AgregarMaestroComponent,
+    ModificarMaestroComponent,
   ],
   imports: [
     SharedModule,
@@ -67,5 +89,9 @@ import {ChangeDirective} from "../directives/changeUppercase.directive";
     FormsModule,
     ReactiveFormsModule,
     PAGES_ROUTES
-  ]
+  ],
+  entryComponents: [
+    DeleteVendedorDialogComponent,
+    DeleteProductoDialogComponent
+    ]
 }) export class PagesModule {}

@@ -1,0 +1,81 @@
+<div class="example-header top-20">
+  <mat-form-field>
+    <input matInput #filter placeholder="¿Que estas buscando?">
+  </mat-form-field>
+</div>
+
+<div class="example-container mat-elevation-z8">
+  <mat-table #table [dataSource]="dataSource" matSort>
+
+    <!-- Clave Column -->
+    <ng-container matColumnDef="clave_producto">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Clave </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.clave_producto}} </mat-cell>
+    </ng-container>
+
+    <!-- Nombre Column -->
+    <ng-container matColumnDef="titulo">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Titulo </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.titulo}} </mat-cell>
+    </ng-container>
+
+    <!-- Apellidos Column -->
+    <ng-container matColumnDef="autor">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Autor </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.autor}} </mat-cell>
+    </ng-container>
+
+    <!-- Telefono Column -->
+    <ng-container matColumnDef="editorial">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Editorial </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.editorial}} </mat-cell>
+    </ng-container>
+
+    <!-- Telefono Column -->
+    <ng-container matColumnDef="year">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Año </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.year}} </mat-cell>
+    </ng-container>
+
+    <!-- Telefono Column -->
+    <ng-container matColumnDef="nivel">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Nivel </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.nivel}} </mat-cell>
+    </ng-container>
+
+    <!-- Telefono Column -->
+    <ng-container matColumnDef="grado">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Grado </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.curso}} </mat-cell>
+    </ng-container>
+
+    <!-- Opciones Column -->
+    <ng-container matColumnDef="edit">
+      <mat-header-cell *matHeaderCellDef> Opciones </mat-header-cell>
+      <mat-cell *matCellDef="let row; let i=index;">
+        <button (click)="deleteItem(i, row.clave_producto, row.titulo, row.autor)" mat-icon-button>
+          <mat-icon>delete_forever</mat-icon>
+          {{row.index}}
+        </button>
+        <button [routerLink]="['/almacen/producto', row.clave_producto]"
+                mat-icon-button class="ml-4">
+          <mat-icon>mode_edit</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;">
+    </mat-row>
+  </mat-table>
+
+  <div class="no-results" [style.display]="dataSource.renderedData.length == 0 ? '' : 'none'">
+    Sin resultados
+  </div>
+
+  <mat-paginator #paginator
+                 [length]="dataSource.filteredData.length"
+                 [pageIndex]="0"
+                 [pageSize]="10"
+                 [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+</div>

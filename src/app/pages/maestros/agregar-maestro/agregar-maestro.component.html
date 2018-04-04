@@ -1,0 +1,31 @@
+<div class="main-container">
+  <form *ngIf="active" [formGroup] = "forma" (ngSubmit)="agregar()" novalidate="novalidate">
+    <h4>Datos del profesor</h4>
+    <div class="row">
+      <mat-form-field class="col-md-5">
+        <input type="text" matInput placeholder="Nombre"
+               formControlName="nombre" [(ngModel)]="forma.value.nombre" uppercase>
+        <mat-error *ngIf="forma.get('nombre').hasError('required')"> {{getErrorMessages()}} </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field class="col-md-5">
+        <input type="text" matInput placeholder="Apellidos"
+               formControlName="apellidos" [(ngModel)]="forma.value.apellidos" uppercase>
+        <mat-error *ngIf="forma.get('apellidos').hasError('required')"> {{getErrorMessages()}} </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field class="col-md-5">
+        <input type="text" matInput placeholder="Teléfono:"
+               formControlName="telefono" [(ngModel)]="forma.value.telefono" uppercase>
+        <mat-error *ngIf="forma.get('telefono').hasError('required')"> {{getErrorMessages()}} </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="form-row-right form-row">
+      <button mat-raised-button color="primary" type="submit">Guardar</button>
+    </div>
+
+  </form>
+</div>

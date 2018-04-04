@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { LayoutModule } from "@angular/cdk/layout";
@@ -21,6 +22,9 @@ import { Graficas1Component } from './pages/graficas1/graficas1.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MaterialModule} from './material.module';
 import {ServiceModule} from './services/service.module';
+import {DeleteVendedorDialogComponent} from "./dialogs/delete-vendedor/delete-vendedor.dialog.component";
+import {DeleteProductoDialogComponent} from "./dialogs/delete-producto/delete-producto.dialog.component";
+import {DeleteEscuelaDialogComponent} from "./dialogs/delete-escuela/delete-escuela.dialog.component";
 
 
 @NgModule({
@@ -29,6 +33,9 @@ import {ServiceModule} from './services/service.module';
     LoginComponent,
     ProgressComponent,
     Graficas1Component,
+    DeleteVendedorDialogComponent,
+    DeleteProductoDialogComponent,
+    DeleteEscuelaDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -41,7 +48,13 @@ import {ServiceModule} from './services/service.module';
     ServiceModule,
     APP_ROUTING
   ],
+  entryComponents: [
+    DeleteVendedorDialogComponent,
+    DeleteProductoDialogComponent,
+    DeleteEscuelaDialogComponent
+  ],
   providers: [
+    {provide: LocationStrategy, useClass: HashLocationStrategy}
   ],
   bootstrap: [AppComponent]
 })

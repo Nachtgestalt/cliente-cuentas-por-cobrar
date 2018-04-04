@@ -1,6 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
-/*Reglas para las ventanas de agregar*/
+/*Reglas para las ventanas de agregar-producto*/
 .main-container {
   display: flex;
   flex-direction: column;
@@ -38,6 +38,14 @@
 }
 
 /***********/
+
+.no-results {
+  display: flex;
+  justify-content: center;
+  padding: 14px;
+  font-size: 14px;
+  font-style: italic;
+}
 
 .top-30{
   margin-top: 5rem;
