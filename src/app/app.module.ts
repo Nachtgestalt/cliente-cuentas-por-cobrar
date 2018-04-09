@@ -25,6 +25,7 @@ import {ServiceModule} from './services/service.module';
 import {DeleteVendedorDialogComponent} from "./dialogs/delete-vendedor/delete-vendedor.dialog.component";
 import {DeleteProductoDialogComponent} from "./dialogs/delete-producto/delete-producto.dialog.component";
 import {DeleteEscuelaDialogComponent} from "./dialogs/delete-escuela/delete-escuela.dialog.component";
+import {DeleteProfesorDialogComponent} from "./dialogs/delete-profesor/delete-profesor.dialog.component";
 
 
 @NgModule({
@@ -35,7 +36,8 @@ import {DeleteEscuelaDialogComponent} from "./dialogs/delete-escuela/delete-escu
     Graficas1Component,
     DeleteVendedorDialogComponent,
     DeleteProductoDialogComponent,
-    DeleteEscuelaDialogComponent
+    DeleteEscuelaDialogComponent,
+    DeleteProfesorDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -51,7 +53,8 @@ import {DeleteEscuelaDialogComponent} from "./dialogs/delete-escuela/delete-escu
   entryComponents: [
     DeleteVendedorDialogComponent,
     DeleteProductoDialogComponent,
-    DeleteEscuelaDialogComponent
+    DeleteEscuelaDialogComponent,
+    DeleteProfesorDialogComponent
   ],
   providers: [
     {provide: LocationStrategy, useClass: HashLocationStrategy}

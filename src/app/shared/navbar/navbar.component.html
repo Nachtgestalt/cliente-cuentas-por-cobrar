@@ -1,13 +1,30 @@
 <mat-toolbar color="primary" class="example-toolbar">
   <button mat-icon-button (click)="openSide($event)"><mat-icon>menu</mat-icon></button>
-  <a [routerLink]="['/home']">
+  <a [routerLink]="['/home']" class="title">
     <h1 class="example-app-name">Cuentas por cobrar</h1>
   </a>
   <span class="example-spacer"></span>
-  <div class="form-inline mr-4">
-    <input type="text" class="form-control mr-3 mb-2" placeholder="¿Que quieres buscar?">
-    <a class="search-btn"><i class="ti-search"></i></a>
-  </div>
+
+
+    <div class="search-box">
+      <input type="text" placeholder="Search" class="search-txt">
+      <a class="search-btn">
+        <i class="fa fa-search" aria-hidden="true"></i>
+      </a>
+    </div>
+
+  <!--<div class="container-box">-->
+    <!--<div class="search-box">-->
+      <!--<input type="text">-->
+      <!--<span></span>-->
+    <!--</div>-->
+  <!--</div>-->
+  <!--<form class="form-inline mr-4">-->
+    <!--<input type="text" class="form-control mb-2" placeholder="¿Que quieres buscar?">-->
+    <!--<button mat-icon-button class="mb-2">-->
+      <!--<mat-icon>search</mat-icon>-->
+    <!--</button>-->
+  <!--</form>-->
   <button mat-icon-button [matMenuTriggerFor]="menu"  class="menu-button">
     <mat-icon>more_vert</mat-icon>
   </button>

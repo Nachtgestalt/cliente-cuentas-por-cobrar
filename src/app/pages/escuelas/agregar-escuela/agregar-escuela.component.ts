@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Escuela} from '../../../interfaces/escuela.interface';
-import {Director} from "../../../interfaces/director.interface";
-import {ActivatedRoute, Router} from "@angular/router";
-import {EscuelaService} from "../../../services/escuela/escuela.service";
+import {Director} from '../../../interfaces/director.interface';
+import {ActivatedRoute, Router} from '@angular/router';
+import {EscuelaService} from '../../../services/escuela/escuela.service';
 
 
 @Component({
@@ -14,11 +14,13 @@ import {EscuelaService} from "../../../services/escuela/escuela.service";
 export class AgregarEscuelaComponent implements OnInit {
 
   active = true;
-  vendedorAgregado = false;
-  forma: FormGroup;
   escuelaActualizar = true;
 
+  forma: FormGroup;
+
   clave: string;
+
+  maestros = [];
 
   escuela: Escuela = {
     clave: '',
@@ -32,11 +34,13 @@ export class AgregarEscuelaComponent implements OnInit {
     telefono: '',
     email: '',
     director: {
+      iddirector: null,
       nombre: '',
       apellidos: '',
       telefono: '',
       email: ''
-    }
+    },
+    profesores: this.maestros
   };
 
   estados = [
@@ -86,7 +90,7 @@ export class AgregarEscuelaComponent implements OnInit {
           this._escuelaService.obtenerEscuela(this.clave)
             .subscribe(escuela => {
               console.log(escuela);
-              this.forma.setValue(this.escuela);
+              this.forma.setValue(escuela);
             });
         } else {
           this.escuelaActualizar = true;
@@ -102,19 +106,20 @@ export class AgregarEscuelaComponent implements OnInit {
     this.forma = new FormGroup({
       'clave': new FormControl('', [Validators.required]),
       'nombre': new FormControl('', [Validators.required]),
-      'turno': new FormControl('', Validators.required),
-      'direccion': new FormControl('', Validators.required),
-      'colonia': new FormControl('', Validators.required),
-      'codigoPostal': new FormControl('', Validators.required),
-      'estado': new FormControl('', Validators.required),
-      'municipio': new FormControl('', Validators.required),
-      'telefono': new FormControl('', Validators.required),
-      'email': new FormControl('', Validators.required),
+      'turno': new FormControl(''),
+      'direccion': new FormControl(''),
+      'colonia': new FormControl(''),
+      'codigoPostal': new FormControl(''),
+      'estado': new FormControl(''),
+      'municipio': new FormControl(''),
+      'telefono': new FormControl(''),
+      'email': new FormControl(''),
       'director': new FormGroup({
+        'iddirector': new FormControl(''),
         'nombre': new FormControl('', Validators.required),
         'apellidos': new FormControl('', Validators.required),
         'telefono': new FormControl('', Validators.required),
-        'email': new FormControl('', Validators.required)
+        'email': new FormControl('')
       })
     });
   }
@@ -124,42 +129,47 @@ export class AgregarEscuelaComponent implements OnInit {
     this.forma = new FormGroup({
       'clave': new FormControl('', [Validators.required]),
       'nombre': new FormControl('', [Validators.required]),
-      'turno': new FormControl('', Validators.required),
-      'direccion': new FormControl('', Validators.required),
-      'colonia': new FormControl('', Validators.required),
-      'codigoPostal': new FormControl('', Validators.required),
-      'estado': new FormControl('', Validators.required),
-      'municipio': new FormControl('', Validators.required),
-      'telefono': new FormControl('', Validators.required),
-      'email': new FormControl('', Validators.required),
+      'turno': new FormControl(''),
+      'direccion': new FormControl(''),
+      'colonia': new FormControl(''),
+      'codigoPostal': new FormControl(''),
+      'estado': new FormControl(''),
+      'municipio': new FormControl(''),
+      'telefono': new FormControl(''),
+      'email': new FormControl(''),
       'director': new FormGroup({
+        'iddirector': new FormControl(''),
         'nombre': new FormControl('', Validators.required),
         'apellidos': new FormControl('', Validators.required),
         'telefono': new FormControl('', Validators.required),
-        'email': new FormControl('', Validators.required)
+        'email': new FormControl('')
       })
     });
   }
 
   agregar() {
-    console.log(this.forma.value);
+    this.escuela = this.forma.value;
+    console.log(this.escuela);
     if (this.clave === 'nuevo') {
-      this._escuelaService.agregarEscuela(this.forma.value)
+      this._escuelaService.agregarEscuela(this.escuela)
         .subscribe(res => {
           this.escuelaActualizar = true;
           this.forma.reset();
           this.active = false;
           swal('Escuela agregada', 'Escuela agregado con exito', 'success');
-          setTimeout(() => this.active = true, 1000);
+          setTimeout(() => {
+            this.active = true;
+          }, 1000);
         });
     } else {
-      this._escuelaService.actualizarEscuela(this.forma.value, this.clave)
+      this._escuelaService.actualizarEscuela(this.forma.value)
         .subscribe(res => {
           this.forma.reset();
           this.active = false;
           swal('Escuela actualizada', 'Escuela actualizada con exito', 'success');
           setTimeout(() => {
-            this.router.navigate(['/almacen/productos']);
+            this.active = true;
+            this.router.navigate(['/clientes/escuelas']);
           }, 1000);
         });
     }

@@ -21,7 +21,17 @@ export class EscuelasComponent implements OnInit {
         label: 'Modificar escuela',
         link: './escuelas',
         index: 1
-      }
+      },
+      {
+        label: 'Agregar maestro',
+        link: './maestro/nuevo',
+        index: 2
+      },
+      {
+        label: 'Modificar maestro',
+        link: './maestros',
+        index: 3
+      },
     ];
   }
 

@@ -17,9 +17,9 @@ import {AsignarFoliosEmpleadoComponent} from './recursos-humanos/asignar-folios-
 import {UsuariosComponent} from './configuracion/usuarios/usuarios.component';
 import {AgregarEscuelaComponent} from './escuelas/agregar-escuela/agregar-escuela.component';
 import {ModificarEscuelaComponent} from './escuelas/modificar-escuela/modificar-escuela.component';
-import {MaestrosComponent} from "./maestros/maestros.component";
-import {AgregarMaestroComponent} from "./maestros/agregar-maestro/agregar-maestro.component";
-import {ModificarMaestroComponent} from "./maestros/modificar-maestro/modificar-maestro.component";
+import {MaestrosComponent} from './maestros/maestros.component';
+import {AgregarMaestroComponent} from './maestros/agregar-maestro/agregar-maestro.component';
+import {ModificarMaestroComponent} from './maestros/modificar-maestro/modificar-maestro.component';
 
 
 const pagesRoutes: Routes = [
@@ -42,12 +42,13 @@ const pagesRoutes: Routes = [
         data: {titulo: 'Almacen'}
       },
       {
-        path: 'escuelas',
+        path: 'clientes',
         component: EscuelasComponent,
         children: [
-          {path: 'escuela', component: AgregarEscuelaComponent, data: {titulo: 'Escuelas - Nueva escuela'}},
-          {path: 'escuela/:clave', component: AgregarEscuelaComponent, data: {titulo: 'Escuelas - Nueva escuela'}},
-          {path: 'escuelas', component: ModificarEscuelaComponent, data: {titulo: 'Escuelas - Modificar escuela'}},
+          {path: 'escuela/:clave', component: AgregarEscuelaComponent, data: {titulo: 'Escuela'}},
+          {path: 'escuelas', component: ModificarEscuelaComponent, data: {titulo: 'Escuela - Modificar escuela'}},
+          {path: 'maestro/:clave', component: AgregarMaestroComponent, data: {titulo: 'Maestro'}},
+          {path: 'maestros', component: ModificarMaestroComponent, data: {titulo: 'Maestro - Modificar'}},
           {path: '', redirectTo: 'escuela/nuevo', pathMatch: 'full'}
         ],
         data: {titulo: 'Clientes'}
@@ -56,9 +57,9 @@ const pagesRoutes: Routes = [
         path: 'maestros',
         component: MaestrosComponent,
         children: [
-          {path: 'maestro', component: AgregarMaestroComponent, data: {titulo: 'Escuelas - Nueva escuela'}},
-          {path: 'maestro/:clave', component: AgregarMaestroComponent, data: {titulo: 'Escuelas - Nueva escuela'}},
-          {path: 'maestros', component: ModificarMaestroComponent, data: {titulo: 'Escuelas - Modificar escuela'}},
+          {path: 'maestro', component: AgregarMaestroComponent, data: {titulo: 'Maestros'}},
+          {path: 'maestro/:clave', component: AgregarMaestroComponent, data: {titulo: 'Maestros '}},
+          {path: 'maestros', component: ModificarMaestroComponent, data: {titulo: 'Maestros - Modificar maestro'}},
           {path: '', redirectTo: 'maestro/nuevo', pathMatch: 'full'}
         ],
         data: {titulo: 'Clientes'}

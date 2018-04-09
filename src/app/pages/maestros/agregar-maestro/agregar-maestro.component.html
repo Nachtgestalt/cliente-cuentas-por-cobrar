@@ -1,30 +1,42 @@
-<div class="main-container">
+<div class="main-container mt-2 animated fadeIn fast">
+  <h5>Datos del maestro</h5>
   <form *ngIf="active" [formGroup] = "forma" (ngSubmit)="agregar()" novalidate="novalidate">
-    <h4>Datos del profesor</h4>
-    <div class="row">
+    <div class="row mt-2">
+      <mat-form-field class="col-md-5" formArrayName="escuelas">
+        <input type="text" placeholder="Escuela:" aria-label="Escuela:" matInput formControlName="0" [matAutocomplete]="auto"  required>
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+          <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+            {{option.clave + ' - ' }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+    <div class="row mt-2">
       <mat-form-field class="col-md-5">
         <input type="text" matInput placeholder="Nombre"
-               formControlName="nombre" [(ngModel)]="forma.value.nombre" uppercase>
+               formControlName="nombre" [(ngModel)]="forma.value.nombre" uppercase required>
         <mat-error *ngIf="forma.get('nombre').hasError('required')"> {{getErrorMessages()}} </mat-error>
       </mat-form-field>
     </div>
-    <div class="row">
+    <div class="row mt-2">
       <mat-form-field class="col-md-5">
         <input type="text" matInput placeholder="Apellidos"
-               formControlName="apellidos" [(ngModel)]="forma.value.apellidos" uppercase>
+               formControlName="apellidos" [(ngModel)]="forma.value.apellidos" uppercase required>
         <mat-error *ngIf="forma.get('apellidos').hasError('required')"> {{getErrorMessages()}} </mat-error>
       </mat-form-field>
     </div>
-    <div class="row">
+    <div class="row mt-2">
       <mat-form-field class="col-md-5">
         <input type="text" matInput placeholder="Teléfono:"
-               formControlName="telefono" [(ngModel)]="forma.value.telefono" uppercase>
+               formControlName="telefono" [(ngModel)]="forma.value.telefono" uppercase required>
         <mat-error *ngIf="forma.get('telefono').hasError('required')"> {{getErrorMessages()}} </mat-error>
       </mat-form-field>
     </div>
 
-    <div class="form-row-right form-row">
-      <button mat-raised-button color="primary" type="submit">Guardar</button>
+    <div class="row mt-4">
+      <div class="col float-right">
+        <button mat-raised-button color="primary" type="submit">Guardar</button>
+      </div>
     </div>
 
   </form>

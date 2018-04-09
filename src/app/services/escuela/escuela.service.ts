@@ -34,7 +34,7 @@ export class EscuelaService {
     return this.http.post(url, body, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}});
   }
 
-  actualizarEscuela(escuela: Escuela, clave: string) {
+  actualizarEscuela(escuela: Escuela) {
     const body = JSON.stringify(escuela);
     return this.http.put(this.escuelaURL, body, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}});
   }
@@ -47,6 +47,10 @@ export class EscuelaService {
         (error: HttpErrorResponse) => {
           console.log (error.name + ' ' + error.message);
         });
+  }
+
+  getEscuelas() {
+    return this.http.get<Escuela[]>(this.escuelaURL, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}})
   }
 
   borrarEscuela(clave: string) {

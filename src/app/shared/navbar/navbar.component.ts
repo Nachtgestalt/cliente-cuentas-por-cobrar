@@ -1,7 +1,10 @@
 import {MediaMatcher} from '@angular/cdk/layout';
 import {ChangeDetectorRef, Component, EventEmitter, HostListener, OnInit, Output} from '@angular/core';
 import {Router} from '@angular/router';
-import {UserService} from "../../services/user/user.service";
+import {UserService} from '../../services/user/user.service';
+
+declare var jquery: any;
+declare var $: any;
 
 @Component({
   selector: 'app-navbar',
@@ -22,6 +25,12 @@ export class NavbarComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  clickButtonSearch() {
+      $('.input').toggleClass('active').focus;
+      $(this).toggleClass('animate');
+      $('.input').val('');
   }
 
 }

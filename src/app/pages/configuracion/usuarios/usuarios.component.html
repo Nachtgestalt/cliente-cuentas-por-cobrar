@@ -1,17 +1,17 @@
-<div class="top-20">
+<div class="fadeIn fast mt-2">
   <h5>Cuenta</h5>
   <form [formGroup] = "forma" (ngSubmit)="agregar()" novalidate="novalidate">
-    <div class="form-column mt-3">
-      <mat-form-field>
-        <input matInput placeholder="Ingrese usuario" formControlName="username" required>
+    <div class="row mt-2">
+      <mat-form-field class="col-md-4">
+        <input matInput placeholder="Usuario" formControlName="username" required>
         <mat-error *ngIf="forma.get('username').hasError('required')"> {{getErrorMessages()}} </mat-error>
         <mat-error *ngIf="forma.get('username').errors?.existeUsername"> Ese usuario ya existe </mat-error>
       </mat-form-field>
-      <mat-form-field>
-        <input matInput type="password" placeholder="Ingrese contraseña" formControlName="password" required>
+      <mat-form-field class="col-md-4">
+        <input matInput type="password" placeholder="Contraseña" formControlName="password" required>
         <mat-error *ngIf="!forma. get('password').valid"> {{getErrorMessages()}} </mat-error>
       </mat-form-field>
-      <mat-form-field>
+      <mat-form-field class="col-md-4">
         <mat-select placeholder="Selecciona un rol" formControlName="role">
           <mat-option *ngFor="let role of roles" [value]="role.value">
             {{ role.viewValue }}

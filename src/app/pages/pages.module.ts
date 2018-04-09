@@ -33,6 +33,8 @@ import {DeleteProductoDialogComponent} from "../dialogs/delete-producto/delete-p
 import { MaestrosComponent } from './maestros/maestros.component';
 import { AgregarMaestroComponent } from './maestros/agregar-maestro/agregar-maestro.component';
 import { ModificarMaestroComponent } from './maestros/modificar-maestro/modificar-maestro.component';
+import {DeleteEscuelaDialogComponent} from "../dialogs/delete-escuela/delete-escuela.dialog.component";
+import {DeleteProfesorDialogComponent} from "../dialogs/delete-profesor/delete-profesor.dialog.component";
 
 
 
@@ -92,6 +94,8 @@ import { ModificarMaestroComponent } from './maestros/modificar-maestro/modifica
   ],
   entryComponents: [
     DeleteVendedorDialogComponent,
-    DeleteProductoDialogComponent
+    DeleteProductoDialogComponent,
+    DeleteEscuelaDialogComponent,
+    DeleteProfesorDialogComponent
     ]
 }) export class PagesModule {}

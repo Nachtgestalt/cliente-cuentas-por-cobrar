@@ -17,12 +17,8 @@ export class SidebarService {
       url: '/almacen'
     },
     {
-      titulo: 'Escuelas',
-      url: '/escuelas'
-    },
-    {
-      titulo: 'Maestros',
-      url: '/maestros'
+      titulo: 'Clientes',
+      url: '/clientes'
     },
     {
       titulo: 'Cuentas por cobrar',

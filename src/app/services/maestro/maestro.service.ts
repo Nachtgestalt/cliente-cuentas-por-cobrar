@@ -3,12 +3,12 @@ import {URL_SERVICIOS} from "../../config/config";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {Escuela} from "../../interfaces/escuela.interface";
 import {Maestro} from "../../interfaces/maestro.interface";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 
 @Injectable()
 export class MaestroService {
   token = localStorage.getItem('token');
-  escuelaURL = URL_SERVICIOS + '/profesores';
+  profesoresURL = URL_SERVICIOS + '/profesores';
 
   dataChange: BehaviorSubject<Maestro[]> = new BehaviorSubject<Maestro[]>([]);
   constructor(public http: HttpClient) { }
@@ -18,22 +18,39 @@ export class MaestroService {
   }
 
   obtenerMaestro(clave: string) {
-    const url = `${this.escuelaURL}/${clave}`;
+    const url = `${this.profesoresURL}/${clave}`;
     return this.http.get(url, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}});
   }
 
   agregarMaestro(maestro: Maestro) {
-    const url = this.escuelaURL + '/nuevo';
+    const url = this.profesoresURL + '/nuevo';
     const body = JSON.stringify(maestro);
-
-    console.log(body);
+    console.log('Esto se envia al agremar maestro: ' + body);
 
     return this.http.post(url, body, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}});
 
   }
 
-  actualizarMaestro(maestro: Maestro, clave: string) {
+  actualizarMaestro(maestro: Maestro) {
     const body = JSON.stringify(maestro);
-    return this.http.put(this.escuelaURL, body, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}});
+    console.log("Formulario para enviar al actualizar: "+ body);
+    return this.http.put(this.profesoresURL, body, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}});
+  }
+
+  obtenerMaestros() {
+    return this.http.get<Maestro[]>(this.profesoresURL, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}})
+      .subscribe(data => {
+        console.log(data)
+          this.dataChange.next(data);
+        },
+        (error: HttpErrorResponse) => {
+          console.log (error.name + ' ' + error.message);
+        });
+  }
+
+  deleteProfesor(idmaestro: number | string) {
+    const url = `${this.profesoresURL}/${idmaestro}`;
+    console.log('URL de borrado: ' + url);
+    return this.http.delete(url, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}});
   }
 }
