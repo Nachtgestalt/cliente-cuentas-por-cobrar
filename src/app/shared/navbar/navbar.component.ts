@@ -27,10 +27,9 @@ export class NavbarComponent implements OnInit {
   ngOnInit() {
   }
 
-  clickButtonSearch() {
-      $('.input').toggleClass('active').focus;
-      $(this).toggleClass('animate');
-      $('.input').val('');
+  goToConfiguration() {
+    this.router.navigate(['/configuracion']);
   }
+
 
 }

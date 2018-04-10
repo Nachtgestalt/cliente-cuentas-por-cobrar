@@ -28,18 +28,13 @@ export class LoginComponent implements OnInit {
   constructor(private _userService: UserService,
               private router: Router,
               public _title: Title) {
-    this._title.setTitle('Cuentas por cobrar - Login');
+    this._title.setTitle('Leirem - Login');
   }
 
   ngOnInit() {
     this.formulario = new FormGroup({
       username: new FormControl('', Validators.required ),
       password: new FormControl('', Validators.required)
-    });
-
-    this.formulario.setValue({
-      username: 'luis',
-      password: 'angel'
     });
   }
 
@@ -51,7 +46,10 @@ export class LoginComponent implements OnInit {
             this._userService.setInStorage(resp, data);
             this.router.navigate(['/home']);
           });
+      },
+      error => {
+        swal('Error al iniciar sesión', 'Usuario y/o contraseña invalidos', 'error');
+        console.log(error);
       });
   }
-
 }

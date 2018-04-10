@@ -85,7 +85,7 @@ export class AgregarProductoComponent implements OnInit {
       'editorial': new FormControl('', Validators.required),
       'nivel': new FormControl(''),
       'curso': new FormControl(''),
-      'descripcion': new FormControl('', Validators.required),
+      'descripcion': new FormControl(''),
       'precio': new FormControl('', Validators.required),
       'costo': new FormControl('', Validators.required),
       'cantidad': new FormControl('', Validators.required)
@@ -103,7 +103,7 @@ export class AgregarProductoComponent implements OnInit {
       'editorial': new FormControl('', Validators.required),
       'nivel': new FormControl(''),
       'curso': new FormControl(''),
-      'descripcion': new FormControl('', Validators.required),
+      'descripcion': new FormControl(''),
       'precio': new FormControl('', Validators.required),
       'costo': new FormControl('', Validators.required),
       'cantidad': new FormControl('', Validators.required)

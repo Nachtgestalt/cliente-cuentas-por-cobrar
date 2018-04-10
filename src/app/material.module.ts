@@ -18,7 +18,8 @@ import {
   MatSelectModule,
   MatStepperModule,
   MatSortModule,
-  MatAutocompleteModule
+  MatAutocompleteModule,
+  MatSnackBarModule,
 } from '@angular/material';
 
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
@@ -47,6 +48,7 @@ import {
     MatStepperModule,
     MatSortModule,
     MatAutocompleteModule,
+    MatSnackBarModule,
     BrowserAnimationsModule
   ],
 
@@ -69,6 +71,7 @@ import {
     MatStepperModule,
     MatSortModule,
     MatAutocompleteModule,
+    MatSnackBarModule,
     BrowserAnimationsModule
   ],
 })

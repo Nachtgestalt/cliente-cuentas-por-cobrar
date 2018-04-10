@@ -19,22 +19,16 @@
       <mat-cell *matCellDef="let row"> {{row.nombre + ' ' + row.apellidos}} </mat-cell>
     </ng-container>
 
-    <!-- Apellidos Column -->
-    <!--<ng-container matColumnDef="apellidos">-->
-      <!--<mat-header-cell *matHeaderCellDef mat-sort-header> Apellidos </mat-header-cell>-->
-      <!--<mat-cell *matCellDef="let row"> {{row.apellidos}} </mat-cell>-->
-    <!--</ng-container>-->
-
     <!-- Telefono Column -->
     <ng-container matColumnDef="telefono">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Telefono </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.telefono}} </mat-cell>
+      <mat-cell *matCellDef="let row"> {{ row.telefono }} </mat-cell>
     </ng-container>
 
     <!--Escuela Colum-->
     <ng-container matColumnDef="escuela">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Escuela </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.escuelas[0].clave + ' - ' + row.escuelas[0].nombre}} </mat-cell>
+      <mat-cell *matCellDef="let row"> {{ row.escuelas[0].nombre}} </mat-cell>
     </ng-container>
 
     <!--Escuela Colum-->

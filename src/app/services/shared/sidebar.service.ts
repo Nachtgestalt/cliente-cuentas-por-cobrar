@@ -20,10 +20,10 @@ export class SidebarService {
       titulo: 'Clientes',
       url: '/clientes'
     },
-    {
-      titulo: 'Cuentas por cobrar',
-      url: '/cuentas'
-    },
+    // {
+    //   titulo: 'Cuentas por cobrar',
+    //   url: '/cuentas'
+    // },
     {
       titulo: 'Configuración',
       url: '/configuracion'

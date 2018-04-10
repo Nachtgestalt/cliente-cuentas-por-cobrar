@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
 import {MaestroService} from '../../../services/maestro/maestro.service';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -15,7 +15,6 @@ import {map} from 'rxjs/operators/map';
   styleUrls: ['./agregar-maestro.component.css']
 })
 export class AgregarMaestroComponent implements OnInit{
-  filteredStates: Observable<any[]>;
   // Banderas de control
   active = true;
   maestroActualizar = true;
@@ -110,27 +109,34 @@ export class AgregarMaestroComponent implements OnInit{
   agregar() {
     let maestro: Maestro = this.forma.value;
     maestro.escuelas = [];
-    this.escuelaSeleccionada = this.forma.get('escuelas').value;
     // this.escuelaSeleccionada[0].profesores = [];
     console.log(maestro);
     if (this.clave === 'nuevo') {
-      this._maestroService.agregarMaestro(maestro)
-        .subscribe((res: Maestro) => {
-          console.log(this.escuelaSeleccionada[0]);
-          this.escuelaSeleccionada[0].profesores.push(res);
-          this._escuelaService.actualizarEscuela(this.escuelaSeleccionada[0])
-            .subscribe(data => {
-              this.maestroActualizar = true;
-              this.forma.reset();
-              this.active = false;
-            });
-          swal('Maestro agregado', 'Maestro agregado con exito', 'success');
-          setTimeout(() => {
-            this.active = true;
-            // this.router.navigate(['/clientes/maestros']);
-          }, 1000);
-        });
+      var arrayControl = this.forma.get('escuelas') as FormArray;
+      var isSchool = arrayControl.at(0);
+      if (typeof isSchool.value !== 'object') {
+        swal('Selección de escuela invalida', 'No ha seleccionado una escuela que sea valida', 'error');
+      } else {
+        this.escuelaSeleccionada = this.forma.get('escuelas').value;
+        console.log(this.escuelaSeleccionada);
+        this._maestroService.agregarMaestro(maestro)
+          .subscribe((res: Maestro) => {
+            this.escuelaSeleccionada[0].profesores.push(res);
+            this._escuelaService.actualizarEscuela(this.escuelaSeleccionada[0])
+              .subscribe(data => {
+                this.maestroActualizar = true;
+                this.forma.reset();
+                this.active = false;
+              });
+            swal('Maestro agregado', 'Maestro agregado con exito', 'success');
+            setTimeout(() => {
+              this.active = true;
+              // this.router.navigate(['/clientes/maestros']);
+            }, 1000);
+          });
+      }
     } else {
+      this.escuelaSeleccionada = this.forma.get('escuelas').value;
       this.forma.get('idprofesor').setValue(this.idProfesor);
       console.log(this.forma.value);
       this._maestroService.actualizarMaestro(this.forma.value)

@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {MatDialog, MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
+import {MatDialog, MatPaginator, MatSnackBar, MatSort, MatTableDataSource} from '@angular/material';
 import {VendedorService} from '../../../services/vendedor/vendedor.service';
 import {Vendedor} from '../../../interfaces/vendedor.interface';
 import {Router} from '@angular/router';
@@ -35,7 +35,8 @@ export class ModificarEmpleadoComponent implements OnInit, AfterViewInit {
   @ViewChild('filter') filter: ElementRef;
 
   constructor(private httpClient: HttpClient,
-              public dialog: MatDialog) {
+              public dialog: MatDialog,
+              public snackBar: MatSnackBar) {
   }
 
 
@@ -55,6 +56,7 @@ export class ModificarEmpleadoComponent implements OnInit, AfterViewInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result === 1) {
+        this.openSnackBar('Vendedor eliminado', 'Aceptar');
         const foundIndex = this.exampleDatabase.dataChange.value.findIndex(x => x.clave === this.id);
         // for delete we use splice in order to remove single object from DataService
         this.exampleDatabase.dataChange.value.splice(foundIndex, 1);
@@ -92,6 +94,12 @@ export class ModificarEmpleadoComponent implements OnInit, AfterViewInit {
         }
         this.dataSource.filter = this.filter.nativeElement.value;
       });
+  }
+
+  openSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 2000,
+    });
   }
 
   refresh() {

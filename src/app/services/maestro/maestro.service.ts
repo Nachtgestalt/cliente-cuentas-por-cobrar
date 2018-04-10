@@ -9,6 +9,20 @@ import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 export class MaestroService {
   token = localStorage.getItem('token');
   profesoresURL = URL_SERVICIOS + '/profesores';
+  escuelaVacia: Escuela = {
+    clave: '',
+    nombre: 'Sin asignar',
+    turno: '',
+    direccion: '',
+    colonia: '',
+    codigoPostal: '',
+    estado: '',
+    municipio: '',
+    telefono: '',
+    email: '',
+    director: null,
+    profesores: null
+  }
 
   dataChange: BehaviorSubject<Maestro[]> = new BehaviorSubject<Maestro[]>([]);
   constructor(public http: HttpClient) { }
@@ -38,10 +52,22 @@ export class MaestroService {
   }
 
   obtenerMaestros() {
+    let escuelasNombres: string = '';
     return this.http.get<Maestro[]>(this.profesoresURL, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}})
-      .subscribe(data => {
-        console.log(data)
-          this.dataChange.next(data);
+      .subscribe((data: Maestro[]) => {
+        console.log(data);
+        for (let maestro of data){
+          escuelasNombres = '';
+          if (maestro.escuelas.length === 0){
+            maestro.escuelas.push(this.escuelaVacia);
+          } else if (maestro.escuelas.length > 1) {
+            for (let escuela of maestro.escuelas) {
+              escuelasNombres += '*' + escuela.clave + ' - ' + escuela.nombre + '  ';
+            }
+            maestro.escuelas[0].nombre = escuelasNombres;
+          }
+        }
+        this.dataChange.next(data);
         },
         (error: HttpErrorResponse) => {
           console.log (error.name + ' ' + error.message);

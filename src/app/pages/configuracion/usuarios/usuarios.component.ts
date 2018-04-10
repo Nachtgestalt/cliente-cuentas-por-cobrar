@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { VendedorService } from '../../../services/vendedor/vendedor.service';
+import {UserService} from '../../../services/user/user.service';
 
 @Component({
   selector: 'app-usuarios',
@@ -16,7 +17,7 @@ export class UsuariosComponent implements OnInit {
     {value: 'HACIENDA_ROLE', viewValue: 'Hacienda'}
   ];
 
-  constructor(private  _vendedorService: VendedorService) {
+  constructor(private  _userService: UserService, private _vendedorService: VendedorService) {
     this.forma = new FormGroup({
       'username': new FormControl('', Validators.required, this.validarUsername.bind(this)),
       'password': new FormControl('', Validators.required),
@@ -28,7 +29,7 @@ export class UsuariosComponent implements OnInit {
   }
 
   agregar() {
-    this._vendedorService.agregarUsuario(this.forma.value)
+    this._userService.agregarUsuario(this.forma.value)
       .subscribe(res => {
         console.log(res);
       });

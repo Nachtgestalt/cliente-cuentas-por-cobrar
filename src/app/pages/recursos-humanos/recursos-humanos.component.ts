@@ -22,11 +22,11 @@ export class RecursosHumanosComponent implements OnInit {
         link: './empleados',
         index: 1
       },
-      {
-        label: 'Asignar folios',
-        link: './folios',
-        index: 2
-      }
+      // {
+      //   label: 'Asignar folios',
+      //   link: './folios',
+      //   index: 2
+      // }
     ];
   }
 

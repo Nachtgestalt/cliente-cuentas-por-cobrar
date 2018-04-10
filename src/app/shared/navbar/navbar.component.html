@@ -1,30 +1,16 @@
 <mat-toolbar color="primary" class="example-toolbar">
   <button mat-icon-button (click)="openSide($event)"><mat-icon>menu</mat-icon></button>
   <a [routerLink]="['/home']" class="title">
-    <h1 class="example-app-name">Cuentas por cobrar</h1>
+    <h1 class="example-app-name">Leirem</h1>
   </a>
   <span class="example-spacer"></span>
 
-
-    <div class="search-box">
-      <input type="text" placeholder="Search" class="search-txt">
-      <a class="search-btn">
-        <i class="fa fa-search" aria-hidden="true"></i>
-      </a>
-    </div>
-
-  <!--<div class="container-box">-->
-    <!--<div class="search-box">-->
-      <!--<input type="text">-->
-      <!--<span></span>-->
-    <!--</div>-->
-  <!--</div>-->
-  <!--<form class="form-inline mr-4">-->
-    <!--<input type="text" class="form-control mb-2" placeholder="¿Que quieres buscar?">-->
-    <!--<button mat-icon-button class="mb-2">-->
-      <!--<mat-icon>search</mat-icon>-->
-    <!--</button>-->
-  <!--</form>-->
+  <div class="search-box">
+    <input type="text" placeholder="Search" class="search-txt">
+    <a class="search-btn">
+      <i class="fa fa-search" aria-hidden="true"></i>
+    </a>
+  </div>
   <button mat-icon-button [matMenuTriggerFor]="menu"  class="menu-button">
     <mat-icon>more_vert</mat-icon>
   </button>
@@ -32,12 +18,12 @@
   <mat-menu #menu="matMenu" >
     <button mat-menu-item>
       <mat-icon>settings</mat-icon>
-      <span>Configuración</span>
+      <span> <a [routerLink]="['/configuracion']"> Configuración </a></span>
     </button>
-    <button mat-menu-item>
-      <mat-icon>notifications_off</mat-icon>
-      <span>Desactivar notificaciones</span>
-    </button>
+    <!--<button mat-menu-item>-->
+      <!--<mat-icon>notifications_off</mat-icon>-->
+      <!--<span>Desactivar notificaciones</span>-->
+    <!--</button>-->
     <button mat-menu-item (click)="_userService.logout()">
       <mat-icon>exit_to_app</mat-icon>
       <span>Cerrar sesión</span>

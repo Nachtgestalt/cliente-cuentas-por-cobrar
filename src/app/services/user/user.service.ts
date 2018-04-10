@@ -9,8 +9,7 @@ import {Observable} from 'rxjs/Observable';
 
 @Injectable()
 export class UserService {
-  usuarioURL = 'http://localhost:8080/usuarios/nuevo';
-  usuariosURL = 'http://localhost:8080/usuarios';
+  usuarioURL = URL_SERVICIOS + '/users';
   token: string;
   user: User;
 
@@ -65,19 +64,20 @@ export class UserService {
   }
 
   agregarUsuario(user: User) {
+    const url = URL_SERVICIOS + '/users/sign-up';
     const body = JSON.stringify(user);
 
     console.log(body);
 
-    return this.http.post(this.usuarioURL, body);
+    return this.http.post(url, body, {headers: {'Content-Type': 'application/json'}});
   }
 
   obtenerUsuarios() {
-    return this.http.get( this.usuariosURL);
+    return this.http.get( this.usuarioURL);
   }
 
   borrarUsuario(key$: string) {
-    const url = `${ this.usuariosURL}/${key$}`;
+    const url = `${ this.usuarioURL}/${key$}`;
     return this.http.delete(url);
   }
 

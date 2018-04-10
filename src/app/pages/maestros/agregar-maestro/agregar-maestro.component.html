@@ -6,7 +6,7 @@
         <input type="text" placeholder="Escuela:" aria-label="Escuela:" matInput formControlName="0" [matAutocomplete]="auto"  required>
         <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
           <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-            {{option.clave + ' - ' }}
+            {{option.clave + ' - ' + option.nombre}}
           </mat-option>
         </mat-autocomplete>
       </mat-form-field>

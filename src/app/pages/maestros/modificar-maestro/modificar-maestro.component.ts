@@ -2,7 +2,7 @@ import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {Escuela} from "../../../interfaces/escuela.interface";
 import {Observable} from "rxjs/Observable";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
-import {MatDialog, MatPaginator, MatSort} from "@angular/material";
+import {MatDialog, MatPaginator, MatSnackBar, MatSort} from "@angular/material";
 import {DataSource} from "@angular/cdk/collections";
 import {Maestro} from "../../../interfaces/maestro.interface";
 import {MaestroService} from "../../../services/maestro/maestro.service";
@@ -11,6 +11,7 @@ import {EscuelaService} from "../../../services/escuela/escuela.service";
 import {HttpClient} from "@angular/common/http";
 import {DeleteEscuelaDialogComponent} from "../../../dialogs/delete-escuela/delete-escuela.dialog.component";
 import {DeleteProfesorDialogComponent} from "../../../dialogs/delete-profesor/delete-profesor.dialog.component";
+import {onAction} from "sweetalert/typings/modules/actions";
 
 @Component({
   selector: 'app-modificar-maestro',
@@ -30,7 +31,8 @@ export class ModificarMaestroComponent implements OnInit {
   @ViewChild('filter') filter: ElementRef;
 
   constructor(private httpClient: HttpClient,
-              public dialog: MatDialog) { }
+              public dialog: MatDialog,
+              public snackBar: MatSnackBar) { }
 
   ngOnInit() {
     this.loadData();
@@ -44,6 +46,7 @@ export class ModificarMaestroComponent implements OnInit {
       .distinctUntilChanged()
       .subscribe(() => {
         if (!this.dataSource) {
+          console.log('Aqui viene la data: ' + this.dataSource);
           return;
         }
         this.dataSource.filter = this.filter.nativeElement.value;
@@ -75,11 +78,18 @@ export class ModificarMaestroComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result === 1) {
+        this.openSnackBar('Maestro eliminado', 'Aceptar');
         const foundIndex = this.exampleDatabase.dataChange.value.findIndex(x => x.idprofesor === this.id);
         // for delete we use splice in order to remove single object from DataService
         this.exampleDatabase.dataChange.value.splice(foundIndex, 1);
         this.refreshTable();
       }
+    });
+  }
+
+  openSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 2000,
     });
   }
 
