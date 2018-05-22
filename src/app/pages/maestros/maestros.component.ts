@@ -18,7 +18,7 @@ export class MaestrosComponent implements OnInit {
       },
       {
         label: 'Modificar',
-        link: './maestros',
+        link: './lista',
         index: 1
       }
     ];

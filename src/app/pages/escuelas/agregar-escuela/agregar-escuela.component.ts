@@ -4,6 +4,9 @@ import {Escuela} from '../../../interfaces/escuela.interface';
 import {Director} from '../../../interfaces/director.interface';
 import {ActivatedRoute, Router} from '@angular/router';
 import {EscuelaService} from '../../../services/escuela/escuela.service';
+import {ZonaService} from '../../../services/zona/zona.service';
+import {Vendedor} from '../../../interfaces/vendedor.interface';
+import {Zona} from '../../../interfaces/zona.interface';
 
 
 @Component({
@@ -40,8 +43,15 @@ export class AgregarEscuelaComponent implements OnInit {
       telefono: '',
       email: ''
     },
-    profesores: this.maestros
+    profesores: null,
+    zona: {
+      idzona: '',
+      vendedor: null
+    }
   };
+
+  zonaSelect: Zona[];
+
 
   estados = [
     {value: 'Aguascalientes', viewValue: 'Aguascalientes'},
@@ -80,7 +90,8 @@ export class AgregarEscuelaComponent implements OnInit {
 
   constructor(private  _escuelaService: EscuelaService,
               private router: Router,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              private _zonaService: ZonaService) {
     this.route.params
       .subscribe(parametros => {
         this.clave = parametros['clave'];
@@ -88,9 +99,10 @@ export class AgregarEscuelaComponent implements OnInit {
           this.crearFormaActualizar();
           this.escuelaActualizar = false;
           this._escuelaService.obtenerEscuela(this.clave)
-            .subscribe(escuela => {
+            .subscribe((escuela: Escuela) => {
               console.log(escuela);
               this.forma.setValue(escuela);
+              console.log(this.forma.value);
             });
         } else {
           this.escuelaActualizar = true;
@@ -100,10 +112,15 @@ export class AgregarEscuelaComponent implements OnInit {
   }
 
   ngOnInit() {
+    this._zonaService.getZonas()
+      .subscribe( (res: Zona[]) => {
+        this.zonaSelect = res;
+      });
   }
 
   crearForma() {
     this.forma = new FormGroup({
+      'zona': new FormControl('', [Validators.required]),
       'clave': new FormControl('', [Validators.required]),
       'nombre': new FormControl('', [Validators.required]),
       'turno': new FormControl(''),
@@ -120,13 +137,15 @@ export class AgregarEscuelaComponent implements OnInit {
         'apellidos': new FormControl('', Validators.required),
         'telefono': new FormControl('', Validators.required),
         'email': new FormControl('')
-      })
+      }),
+      'profesores': new FormControl(null)
     });
   }
 
   // Funcion creada para omitir los validadores asincronos.
   crearFormaActualizar() {
     this.forma = new FormGroup({
+      'zona': new FormControl('', [Validators.required]),
       'clave': new FormControl('', [Validators.required]),
       'nombre': new FormControl('', [Validators.required]),
       'turno': new FormControl(''),
@@ -143,13 +162,14 @@ export class AgregarEscuelaComponent implements OnInit {
         'apellidos': new FormControl('', Validators.required),
         'telefono': new FormControl('', Validators.required),
         'email': new FormControl('')
-      })
+      }),
+      'profesores': new FormControl(null)
     });
   }
 
   agregar() {
     this.escuela = this.forma.value;
-    console.log(this.escuela);
+    // console.log(this.escuela);
     if (this.clave === 'nuevo') {
       this._escuelaService.agregarEscuela(this.escuela)
         .subscribe(res => {

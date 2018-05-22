@@ -1,0 +1,30 @@
+<div class="container">
+  <h3 mat-dialog-title>{{mensajeDialog}}</h3>
+
+  <form [formGroup] = "forma">
+
+    <div class="form-group row">
+      <mat-form-field color="accent">
+        <input matInput #input class="form-control" placeholder="Nombre" [(ngModel)]="forma.value.idzona"
+               formControlName="idzona" [readonly]="data.edit" required uppercase>
+        <mat-error *ngIf="forma.get('idzona').hasError">{{getErrorMessages()}}</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="form-group row">
+      <mat-form-field formGroupName="vendedor">
+        <mat-select placeholder="Vendededor asignado:" formControlName="vendedor">
+          <mat-option *ngFor="let vendedor of vendedorSelect" [value]="vendedor">
+            {{vendedor.nombre + ' ' +vendedor.apellidos}}
+          </mat-option>
+        </mat-select>
+        <!--<mat-error *ngIf="forma.get('vendedor').get('clave').hasError">{{getErrorMessages()}}</mat-error>-->
+      </mat-form-field>
+    </div>
+
+    <div class="form-group row" mat-dialog-actions>
+      <button mat-button  [mat-dialog-close]="1" (click)="confirmAdd()">Guardar</button>
+      <button mat-button (click)="onNoClick()" tabindex="-1">Cancelar</button>
+    </div>
+  </form>
+</div>

@@ -4,14 +4,17 @@ import { CommonModule } from '@angular/common';
 import {
   ProductosService,
   SidebarService,
-  SharedService,
   LoginGuardGuard,
   UserService
 } from './service.index';
 import {HttpClientModule} from '@angular/common/http';
-import {VendedorService} from "./vendedor/vendedor.service";
-import {EscuelaService} from "./escuela/escuela.service";
-import {MaestroService} from "./maestro/maestro.service";
+import {VendedorService} from './vendedor/vendedor.service';
+import {EscuelaService} from './escuela/escuela.service';
+import {MaestroService} from './maestro/maestro.service';
+import {TemporadaService} from './temporada/temporada.service';
+import {ZonaService} from './zona/zona.service';
+import {FolioService} from './folio/folio.service';
+import {BloqueFoliosService} from './bloque-folios/bloque-folios.service';
 
 @NgModule({
   imports: [
@@ -21,12 +24,15 @@ import {MaestroService} from "./maestro/maestro.service";
   providers: [
     ProductosService,
     SidebarService,
-    SharedService,
     UserService,
     VendedorService,
     EscuelaService,
     MaestroService,
-    LoginGuardGuard
+    TemporadaService,
+    ZonaService,
+    LoginGuardGuard,
+    FolioService,
+    BloqueFoliosService
   ],
   declarations: []
 })

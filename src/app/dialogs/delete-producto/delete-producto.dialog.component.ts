@@ -23,7 +23,7 @@ export class DeleteProductoDialogComponent {
     console.log('Entre al delete')
     this._productoService.borrarProducto(this.data.clave)
       .subscribe(res => {
-        console.log('esta madre se borro!')
+        console.log('esta madre se borro!');
       });
   }
 

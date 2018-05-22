@@ -1,0 +1,51 @@
+<div class="container">
+  <h3 mat-dialog-title>{{mensajeDialog}}</h3>
+
+  <form [formGroup] = "forma">
+
+    <div class="form-group row">
+      <mat-form-field>
+        <mat-select placeholder="Tipo de folio:" formControlName="tipo">
+          <mat-option *ngFor="let tipoFolio of tipoFolios" [value]="tipoFolio.value">
+            {{tipoFolio.viewValue}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="forma.get('tipo').hasError">{{getErrorMessages()}}</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="form-group row">
+      <mat-form-field color="accent">
+        <input matInput #input class="form-control" placeholder="Inicio" type="number"
+               [(ngModel)]="forma.value.inicio"
+               formControlName="inicio" required>
+        <mat-error *ngIf="forma.get('inicio').hasError">{{getErrorMessages()}}</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="form-group row">
+      <mat-form-field color="accent">
+        <input matInput #input class="form-control" placeholder="Fin" type="number"
+               [(ngModel)]="forma.value.fin"
+               formControlName="fin" required>
+        <mat-error *ngIf="forma.get('fin').hasError">{{getErrorMessages()}}</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="form-group row">
+      <mat-form-field>
+        <mat-select placeholder="Temporada" formControlName="idtemporada">
+          <mat-option *ngFor="let temporada of temporadas" [value]="temporada">
+            {{temporada.nombre}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="forma.get('idtemporada').hasError">{{getErrorMessages()}}</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="form-group row" mat-dialog-actions>
+      <button mat-button [disabled]="!forma.valid" [mat-dialog-close]="1" (click)="confirmAdd()">Guardar</button>
+      <button mat-button (click)="onNoClick()" tabindex="-1">Cancelar</button>
+    </div>
+  </form>
+</div>

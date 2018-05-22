@@ -20,6 +20,12 @@ import {ModificarEscuelaComponent} from './escuelas/modificar-escuela/modificar-
 import {MaestrosComponent} from './maestros/maestros.component';
 import {AgregarMaestroComponent} from './maestros/agregar-maestro/agregar-maestro.component';
 import {ModificarMaestroComponent} from './maestros/modificar-maestro/modificar-maestro.component';
+import {ConfiguracionComponent} from './configuracion/configuracion.component';
+import {TemporadasComponent} from './configuracion/temporadas/temporadas.component';
+import {ClientesComponent} from './clientes/clientes.component';
+import {ZonasComponent} from './recursos-humanos/zonas/zonas.component';
+import {FoliosComponent} from './configuracion/folios/folios.component';
+import {VentasComponent} from './ventas/ventas.component';
 
 
 const pagesRoutes: Routes = [
@@ -29,7 +35,7 @@ const pagesRoutes: Routes = [
     canActivate: [LoginGuardGuard],
     children: [
       {path: 'home', component: HomeComponent, data: {titulo: 'Inicio'}},
-      {path: 'configuracion', component: UsuariosComponent, data: {titulo: 'Configuracion'}},
+      {path: 'ventas', component: VentasComponent, data: {titulo: 'Ventas'}},
       {
         path: 'almacen',
         component: AlmacenComponent,
@@ -43,24 +49,29 @@ const pagesRoutes: Routes = [
       },
       {
         path: 'clientes',
-        component: EscuelasComponent,
+        component: ClientesComponent,
         children: [
-          {path: 'escuela/:clave', component: AgregarEscuelaComponent, data: {titulo: 'Escuela'}},
-          {path: 'escuelas', component: ModificarEscuelaComponent, data: {titulo: 'Escuela - Modificar escuela'}},
-          {path: 'maestro/:clave', component: AgregarMaestroComponent, data: {titulo: 'Maestro'}},
-          {path: 'maestros', component: ModificarMaestroComponent, data: {titulo: 'Maestro - Modificar'}},
-          {path: '', redirectTo: 'escuela/nuevo', pathMatch: 'full'}
-        ],
-        data: {titulo: 'Clientes'}
-      },
-      {
-        path: 'maestros',
-        component: MaestrosComponent,
-        children: [
-          {path: 'maestro', component: AgregarMaestroComponent, data: {titulo: 'Maestros'}},
-          {path: 'maestro/:clave', component: AgregarMaestroComponent, data: {titulo: 'Maestros '}},
-          {path: 'maestros', component: ModificarMaestroComponent, data: {titulo: 'Maestros - Modificar maestro'}},
-          {path: '', redirectTo: 'maestro/nuevo', pathMatch: 'full'}
+          {
+            path: 'escuelas',
+            component: EscuelasComponent,
+            children: [
+              {path: 'escuela/:clave', component: AgregarEscuelaComponent, data: {titulo: 'Escuela'}},
+              {path: 'lista', component: ModificarEscuelaComponent, data: {titulo: 'Escuela - Modificar escuela'}},
+              {path: '**', redirectTo: 'escuela/nuevo', pathMatch: 'full'}
+            ],
+            data: {titulo: 'Escuelas'}
+          },
+          {
+            path: 'maestros',
+            component: MaestrosComponent,
+            children: [
+              {path: 'maestro/:clave', component: AgregarMaestroComponent, data: {titulo: 'Maestros'}},
+              {path: 'lista', component: ModificarMaestroComponent, data: {titulo: 'Maestro - Modificar maestro'}},
+              {path: '', redirectTo: 'maestro/nuevo', pathMatch: 'full'}
+            ],
+            data: {titulo: 'Maestros'}
+          },
+          {path: '**', redirectTo: 'escuelas', pathMatch: 'full'}
         ],
         data: {titulo: 'Clientes'}
       },
@@ -82,9 +93,21 @@ const pagesRoutes: Routes = [
           {path: 'empleado/:clave', component: AgregarEmpleadoComponent, data: {titulo: 'Recursos humanos'}},
           {path: 'empleados', component: ModificarEmpleadoComponent, data: {titulo: 'Recursos humanos', subtitle: 'Modificar empleado'}},
           {path: 'folios', component: AsignarFoliosEmpleadoComponent, data: {titulo: 'Recursos humanos', subtitle: 'Asignar folios'}},
+          {path: 'zonas', component: ZonasComponent, data: {titulo: 'Recursos humanos', subtitle: 'Zonas'}},
           {path: '**', redirectTo: 'empleado/nuevo', pathMatch: 'full'}
         ],
         data: {titulo: 'Recursos humanos'}
+      },
+      {
+        path: 'configuracion',
+        component: ConfiguracionComponent,
+        children: [
+          {path: 'temporadas', component: TemporadasComponent, data: {titulo: 'Administrar temporada'}},
+          {path: 'usuarios', component: UsuariosComponent, data: {titulo: 'Recursos humanos'}},
+          {path: 'folios', component: FoliosComponent, data: {titulo: 'Recursos humanos', subtitle: 'Asignar folios'}},
+          {path: '**', redirectTo: 'temporadas', pathMatch: 'full'}
+        ],
+        data: {titulo: 'Configuracion'}
       },
       {path: '', redirectTo: '/home', pathMatch: 'full'}
     ]

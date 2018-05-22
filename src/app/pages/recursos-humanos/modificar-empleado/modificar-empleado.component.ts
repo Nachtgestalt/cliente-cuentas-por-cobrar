@@ -55,12 +55,14 @@ export class ModificarEmpleadoComponent implements OnInit, AfterViewInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result === 1) {
+      if (result) {
         this.openSnackBar('Vendedor eliminado', 'Aceptar');
         const foundIndex = this.exampleDatabase.dataChange.value.findIndex(x => x.clave === this.id);
         // for delete we use splice in order to remove single object from DataService
         this.exampleDatabase.dataChange.value.splice(foundIndex, 1);
         this.refreshTable();
+      } else {
+        this.openSnackBar('Algo salio mal', 'Aceptar');
       }
     });
   }

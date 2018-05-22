@@ -29,12 +29,22 @@ import { UsuariosComponent } from './configuracion/usuarios/usuarios.component';
 import {UppercaseDirective} from '../directives/changeUppercase.directive';
 import {OnlyNumbersDirective} from '../directives/onlyNumbers.directive';
 import {DeleteVendedorDialogComponent} from '../dialogs/delete-vendedor/delete-vendedor.dialog.component';
-import {DeleteProductoDialogComponent} from "../dialogs/delete-producto/delete-producto.dialog.component";
+import {DeleteProductoDialogComponent} from '../dialogs/delete-producto/delete-producto.dialog.component';
 import { MaestrosComponent } from './maestros/maestros.component';
 import { AgregarMaestroComponent } from './maestros/agregar-maestro/agregar-maestro.component';
 import { ModificarMaestroComponent } from './maestros/modificar-maestro/modificar-maestro.component';
-import {DeleteEscuelaDialogComponent} from "../dialogs/delete-escuela/delete-escuela.dialog.component";
-import {DeleteProfesorDialogComponent} from "../dialogs/delete-profesor/delete-profesor.dialog.component";
+import {DeleteEscuelaDialogComponent} from '../dialogs/delete-escuela/delete-escuela.dialog.component';
+import {DeleteProfesorDialogComponent} from '../dialogs/delete-profesor/delete-profesor.dialog.component';
+import { ConfiguracionComponent } from './configuracion/configuracion.component';
+import { TemporadasComponent } from './configuracion/temporadas/temporadas.component';
+import {AddTemporadaComponent} from '../dialogs/add-temporada/add-temporada.dialog.component';
+import { ClientesComponent } from './clientes/clientes.component';
+import { ZonasComponent } from './recursos-humanos/zonas/zonas.component';
+import {AddZonaDialogComponent} from '../dialogs/add-zona/add-zona.dialog.component';
+import { FoliosComponent } from './configuracion/folios/folios.component';
+import {AddFolioDialogComponent} from '../dialogs/add-folio/add-folio.dialog.component';
+import {DeleteFolioDialogComponent} from '../dialogs/delete-folio/delete-folio.dialog..component';
+import { VentasComponent } from './ventas/ventas.component';
 
 
 
@@ -62,6 +72,12 @@ import {DeleteProfesorDialogComponent} from "../dialogs/delete-profesor/delete-p
     MaestrosComponent,
     AgregarMaestroComponent,
     ModificarMaestroComponent,
+    ConfiguracionComponent,
+    TemporadasComponent,
+    ClientesComponent,
+    ZonasComponent,
+    FoliosComponent,
+    VentasComponent,
     // Dialogs
   ],
   exports: [
@@ -82,6 +98,8 @@ import {DeleteProfesorDialogComponent} from "../dialogs/delete-profesor/delete-p
     UsuariosComponent,
     AgregarMaestroComponent,
     ModificarMaestroComponent,
+    UppercaseDirective,
+    OnlyNumbersDirective
   ],
   imports: [
     SharedModule,
@@ -96,6 +114,10 @@ import {DeleteProfesorDialogComponent} from "../dialogs/delete-profesor/delete-p
     DeleteVendedorDialogComponent,
     DeleteProductoDialogComponent,
     DeleteEscuelaDialogComponent,
-    DeleteProfesorDialogComponent
+    DeleteProfesorDialogComponent,
+    DeleteFolioDialogComponent,
+    AddTemporadaComponent,
+    AddZonaDialogComponent,
+    AddFolioDialogComponent,
     ]
 }) export class PagesModule {}

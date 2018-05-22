@@ -7,12 +7,14 @@
     <h1>Iniciar sesión</h1>
     <div class="form-container">
       <mat-form-field>
-        <input formControlName="username" name="username"  matInput placeholder="Ingresa tu usuario" required>
-        <mat-error *ngIf="formulario.value.username.invalid">{{getErrorMessage()}}</mat-error>
+        <input formControlName="username" name="username"  matInput placeholder="Ingresa tu usuario"
+               [(ngModel)]="formulario.value.username" required>
+        <mat-error *ngIf="!formulario.get('username').valid">{{getErrorMessage()}}</mat-error>
       </mat-form-field>
       <mat-form-field>
-        <input formControlName="password" name="password" matInput placeholder="Ingresa tu contraseña" type="password" required>
-        <mat-error *ngIf="formulario.value.password.invalid">{{getErrorMessage()}}</mat-error>
+        <input formControlName="password" name="password" matInput placeholder="Ingresa tu contraseña" type="password"
+               [(ngModel)]="formulario.value.password" required>
+        <mat-error *ngIf="!formulario.get('password').valid">{{getErrorMessage()}}</mat-error>
       </mat-form-field>
       <button mat-raised-button color="primary" type="submit">Iniciar sesión</button>
     </div>

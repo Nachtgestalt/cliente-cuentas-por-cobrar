@@ -52,6 +52,10 @@ export class ProductosService {
     console.log('URL de borrado: ' + url);
     return this.http.delete(url, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}});
   }
+
+  getAll() {
+    return this.http.get(this.productoURL, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}});
+  }
 }
 
 // solicitar(){

@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import {URL_SERVICIOS} from "../../config/config";
-import {BehaviorSubject} from "rxjs/BehaviorSubject";
-import {Escuela} from "../../interfaces/escuela.interface";
-import {Maestro} from "../../interfaces/maestro.interface";
-import {HttpClient, HttpErrorResponse} from "@angular/common/http";
+import {URL_SERVICIOS} from '../../config/config';
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {Escuela} from '../../interfaces/escuela.interface';
+import {Maestro} from '../../interfaces/maestro.interface';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 
 @Injectable()
 export class MaestroService {
@@ -21,8 +21,9 @@ export class MaestroService {
     telefono: '',
     email: '',
     director: null,
-    profesores: null
-  }
+    profesores: null,
+    zona: null
+  };
 
   dataChange: BehaviorSubject<Maestro[]> = new BehaviorSubject<Maestro[]>([]);
   constructor(public http: HttpClient) { }
@@ -47,21 +48,21 @@ export class MaestroService {
 
   actualizarMaestro(maestro: Maestro) {
     const body = JSON.stringify(maestro);
-    console.log("Formulario para enviar al actualizar: "+ body);
+    console.log('Formulario para enviar al actualizar: ' + body);
     return this.http.put(this.profesoresURL, body, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}});
   }
 
   obtenerMaestros() {
-    let escuelasNombres: string = '';
+    let escuelasNombres = '';
     return this.http.get<Maestro[]>(this.profesoresURL, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}})
       .subscribe((data: Maestro[]) => {
         console.log(data);
-        for (let maestro of data){
+        for (const maestro of data) {
           escuelasNombres = '';
-          if (maestro.escuelas.length === 0){
+          if (maestro.escuelas.length === 0) {
             maestro.escuelas.push(this.escuelaVacia);
           } else if (maestro.escuelas.length > 1) {
-            for (let escuela of maestro.escuelas) {
+            for (const escuela of maestro.escuelas) {
               escuelasNombres += '*' + escuela.clave + ' - ' + escuela.nombre + '  ';
             }
             maestro.escuelas[0].nombre = escuelasNombres;

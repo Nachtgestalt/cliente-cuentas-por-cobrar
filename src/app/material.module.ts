@@ -20,6 +20,7 @@ import {
   MatSortModule,
   MatAutocompleteModule,
   MatSnackBarModule,
+  MatDatepickerModule, MatNativeDateModule
 } from '@angular/material';
 
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
@@ -27,6 +28,7 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import {
   MatDialogModule,
 } from "@angular/material/dialog";
+import {MatMomentDateModule} from '@angular/material-moment-adapter';
 
 @NgModule({
   imports: [
@@ -49,7 +51,10 @@ import {
     MatSortModule,
     MatAutocompleteModule,
     MatSnackBarModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatMomentDateModule
   ],
 
   exports: [
@@ -72,7 +77,10 @@ import {
     MatSortModule,
     MatAutocompleteModule,
     MatSnackBarModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatMomentDateModule
   ],
 })
 export class MaterialModule { }

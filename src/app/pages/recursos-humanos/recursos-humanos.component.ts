@@ -13,20 +13,25 @@ export class RecursosHumanosComponent implements OnInit {
   constructor(private router: Router) {
     this.routeLinks = [
       {
-        label: 'Agregar',
+        label: 'Agregar empleado',
         link: './empleado/nuevo',
         index: 0
       },
       {
-        label: 'Modificar',
+        label: 'Modificar empleado',
         link: './empleados',
         index: 1
       },
-      // {
-      //   label: 'Asignar folios',
-      //   link: './folios',
-      //   index: 2
-      // }
+      {
+        label: 'Zonas',
+        link: './zonas',
+        index: 2
+      },
+      {
+        label: 'Asignar folios',
+        link: './folios',
+        index: 3
+      },
     ];
   }
 

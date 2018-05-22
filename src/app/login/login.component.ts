@@ -4,6 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import {User} from '../interfaces/user.interfaces';
 import {UserService} from '../services/service.index';
 import {Title} from '@angular/platform-browser';
+import {TemporadaService} from '../services/temporada/temporada.service';
 
 @Component({
   selector: 'app-login',
@@ -21,11 +22,11 @@ export class LoginComponent implements OnInit {
   };
 
   getErrorMessage() {
-    return this.formulario.value.username.hasError('required') ? 'Introduce tu usuario' :
-        '';
+    return ' Campo requerido ';
   }
 
   constructor(private _userService: UserService,
+              public _temporadaService: TemporadaService,
               private router: Router,
               public _title: Title) {
     this._title.setTitle('Leirem - Login');
@@ -42,10 +43,21 @@ export class LoginComponent implements OnInit {
     this._userService.autenticar(this.formulario.value)
       .subscribe((resp: any) => {
         this._userService.obtenerUsuario(this.formulario.value)
-          .subscribe((data: any) => {
-            this._userService.setInStorage(resp, data);
-            this.router.navigate(['/home']);
-          });
+          .subscribe(
+            (data: any) => {
+              this._userService.setInStorage(resp, data);
+              this.router.navigate(['/home']);
+            },
+            error1 => {},
+            () => {
+              this._temporadaService.getCurrentSeason().subscribe(
+                res => {
+                  console.log(res);
+                  this._userService.setSeasonInStorage(res);
+                }
+              );
+            }
+          );
       },
       error => {
         swal('Error al iniciar sesión', 'Usuario y/o contraseña invalidos', 'error');

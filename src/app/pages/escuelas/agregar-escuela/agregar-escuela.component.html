@@ -3,6 +3,16 @@
     <h5>Datos de la escuela</h5>
     <div class="row mt-2">
       <mat-form-field class="col-md-4">
+        <mat-select placeholder="Zona:" formControlName="zona">
+          <mat-option *ngFor="let zona of zonaSelect" [value]="zona">
+            {{zona.idzona}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="row mt-2">
+      <mat-form-field class="col-md-4">
         <input type="text" matInput placeholder="Clave:"
                formControlName="clave"
                [(ngModel)]="forma.value.clave" uppercase required>

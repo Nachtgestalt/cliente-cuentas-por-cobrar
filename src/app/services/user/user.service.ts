@@ -28,6 +28,10 @@ export class UserService {
     localStorage.setItem('user', JSON.stringify(user));
   }
 
+  setSeasonInStorage(season: any) {
+    localStorage.setItem('season', JSON.stringify(season));
+  }
+
   loadStorage () {
     if ( localStorage.getItem('token') ) {
       this.token = localStorage.getItem('token');
@@ -53,14 +57,14 @@ export class UserService {
     this.token = null;
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    localStorage.removeItem('season')
     this.router.navigate(['/login']);
   }
 
   obtenerUsuario(user: User) {
     const url = URL_SERVICIOS + '/users/logincheck';
     const body = JSON.stringify(user);
-    return this.http.post(url, body,
-      {headers: {'authorization': this.token, 'Content-Type': 'application/json'}});
+    return this.http.post(url, body, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}});
   }
 
   agregarUsuario(user: User) {
@@ -71,14 +75,4 @@ export class UserService {
 
     return this.http.post(url, body, {headers: {'Content-Type': 'application/json'}});
   }
-
-  obtenerUsuarios() {
-    return this.http.get( this.usuarioURL);
-  }
-
-  borrarUsuario(key$: string) {
-    const url = `${ this.usuarioURL}/${key$}`;
-    return this.http.delete(url);
-  }
-
 }

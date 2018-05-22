@@ -1,0 +1,61 @@
+<div class="example-header fadeIn fast">
+  <mat-form-field>
+    <input matInput #filter placeholder="¿Que estas buscando?">
+  </mat-form-field>
+</div>
+
+<div class="example-container mat-elevation-z8">
+  <mat-table #table [dataSource]="dataSource" matSort>
+
+    <!-- Nombre Column -->
+    <ng-container matColumnDef="nombre">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.nombre}} </mat-cell>
+    </ng-container>
+
+    <!-- Fecha inicio Column -->
+    <ng-container matColumnDef="fecha_inicio">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Fecha de inicio </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.fecha_inicio}} </mat-cell>
+    </ng-container>
+
+    <!-- Fecha fin Column -->
+    <ng-container matColumnDef="fecha_termino">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Fecha de termino </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.fecha_termino}} </mat-cell>
+    </ng-container>
+
+    <!-- Opciones Column -->
+    <ng-container matColumnDef="edit">
+      <mat-header-cell *matHeaderCellDef>
+        <button mat-icon-button color="primary" (click)="agregarTemporada()">
+          <mat-icon aria-label="Example icon-button with a heart icon">add</mat-icon>
+        </button>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row; let i=index;">
+        <button (click)="deleteItem(i, row.clave_producto, row.titulo, row.autor)" mat-icon-button>
+          <mat-icon>delete_forever</mat-icon>
+          {{row.index}}
+        </button>
+        <button (click)="startEdit(i, row.idtemporada, row.nombre, row.fecha_inicio, row.fecha_termino)"
+                mat-icon-button class="ml-4">
+          <mat-icon>mode_edit</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;">
+    </mat-row>
+  </mat-table>
+
+  <div class="no-results" [style.display]="dataSource.renderedData.length == 0 ? '' : 'none'">
+    Sin resultados
+  </div>
+
+  <mat-paginator #paginator
+                 [length]="dataSource.filteredData.length"
+                 [pageIndex]="0"
+                 [pageSize]="10"
+                 [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+</div>

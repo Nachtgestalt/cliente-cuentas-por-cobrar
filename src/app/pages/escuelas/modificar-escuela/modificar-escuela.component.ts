@@ -1,15 +1,12 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {MatDialog, MatPaginator, MatSnackBar, MatSort} from "@angular/material";
-import {BehaviorSubject} from "rxjs/BehaviorSubject";
-import {DataSource} from "@angular/cdk/collections";
-import {Observable} from "rxjs/Observable";
-import {EscuelaService} from "../../../services/escuela/escuela.service";
-import {Escuela} from "../../../interfaces/escuela.interface";
-import {HttpClient} from "@angular/common/http";
-import {ProductosService} from "../../../services/producto/productos.service";
-import {ProductoDataSource} from "../../almacen/modificar-producto/modificar-producto.component";
-import {DeleteProductoDialogComponent} from "../../../dialogs/delete-producto/delete-producto.dialog.component";
-import {DeleteEscuelaDialogComponent} from "../../../dialogs/delete-escuela/delete-escuela.dialog.component";
+import {MatDialog, MatPaginator, MatSnackBar, MatSort} from '@angular/material';
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {DataSource} from '@angular/cdk/collections';
+import {Observable} from 'rxjs/Observable';
+import {EscuelaService} from '../../../services/escuela/escuela.service';
+import {Escuela} from '../../../interfaces/escuela.interface';
+import {HttpClient} from '@angular/common/http';
+import {DeleteEscuelaDialogComponent} from '../../../dialogs/delete-escuela/delete-escuela.dialog.component';
 
 @Component({
   selector: 'app-modificar-escuela',

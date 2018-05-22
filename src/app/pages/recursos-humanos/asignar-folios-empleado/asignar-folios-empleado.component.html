@@ -1,57 +1,66 @@
-<mat-horizontal-stepper linear=true #stepper="matHorizontalStepper">
-  <mat-step [stepControl]="firstFormGroup">
-    <form [formGroup]="firstFormGroup">
+<form [formGroup]="formGroup">
+  <mat-horizontal-stepper formArrayName="formArray" #stepper="matHorizontalStepper" linear>
+    <mat-step formGroupName="0" [stepControl]="formArray.get([0])">
       <ng-template matStepLabel>Seleccionar un vendedor</ng-template>
       <mat-form-field class="w-50">
-        <mat-select placeholder="Selecciona un vendedor" required formControlName="firstCtrl">
-          <mat-option *ngFor="let vendedor of vendedores" [value]="vendedor.value">
-            {{ vendedor.viewValue }}
+        <mat-select placeholder="Selecciona un vendedor" formControlName="vendedor_clave" required>
+          <mat-option *ngFor="let vendedor of vendedores" [value]="vendedor">
+            {{ vendedor.clave + ' - ' + vendedor.nombre + ' ' + vendedor.apellidos }}
           </mat-option>
         </mat-select>
       </mat-form-field>
       <div>
-        <button mat-button matStepperNext>Next</button>
+        <button mat-button matStepperNext type="button">Siguiente</button>
       </div>
-    </form>
-  </mat-step>
-  <mat-step [stepControl]="secondFormGroup">
-    <form [formGroup]="secondFormGroup">
+    </mat-step>
+    <mat-step formGroupName="1" [stepControl]="formArray.get([1])">
       <ng-template matStepLabel>Seleccionar una temporada</ng-template>
       <mat-form-field class="w-50">
-        <mat-select placeholder="Selecciona un vendedor" required formControlName="secondCtrl">
-          <mat-option *ngFor="let vendedor of vendedores" [value]="vendedor.value">
-            {{ vendedor.viewValue }}
+        <mat-select placeholder="Selecciona una temporada" formControlName="folio_idfolios" required>
+          <mat-option *ngFor="let temporada of temporadas" [value]="temporada">
+            {{ temporada.nombre }}
           </mat-option>
         </mat-select>
       </mat-form-field>
-      <div>
-        <button mat-button matStepperPrevious>Back</button>
-        <button mat-button matStepperNext>Next</button>
+      <div *ngIf="hayFolios">
+        <ng-template matStepLabel>Seleccionar una temporada</ng-template>
+        <mat-form-field class="w-50">
+          <mat-select placeholder="Selecciona un tipo de folio" formControlName="tipo_folios" required>
+            <mat-option *ngFor="let folio of folios" [value]="folio">
+              {{ folio.tipo }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
-    </form>
-  </mat-step>
-  <mat-step [stepControl]="secondFormGroup">
-    <form [formGroup]="secondFormGroup">
+      <div>
+        <button mat-button matStepperPrevious type="button">Back</button>
+        <button mat-button matStepperNext type="button">Next</button>
+      </div>
+    </mat-step>
+    <mat-step formGroupName="2" [stepControl]="formArray.get([2])">
       <ng-template matStepLabel>Seleccionar el tipo de folios</ng-template>
-      <mat-form-field class="w-50">
-        <mat-select placeholder="Selecciona un vendedor" required formControlName="secondCtrl">
-          <mat-option *ngFor="let vendedor of vendedores" [value]="vendedor.value">
-            {{ vendedor.viewValue }}
-          </mat-option>
-        </mat-select>
+      <mat-form-field color="accent" class="w-50">
+        <input matInput #input class="form-control" placeholder="Inicio" type="number"
+               formControlName="inicio" required>
+        <!--<mat-error *ngIf="forma.get('inicio').hasError">{{getErrorMessages()}}</mat-error>-->
+      </mat-form-field>
+      <mat-form-field color="accent" class="w-50">
+        <input matInput #input class="form-control" placeholder="Fin" type="number"
+               formControlName="fin" required>
+        <!--<mat-error *ngIf="forma.get('inicio').hasError">{{getErrorMessages()}}</mat-error>-->
       </mat-form-field>
       <div>
-        <button mat-button matStepperPrevious>Back</button>
-        <button mat-button matStepperNext>Next</button>
+        <button mat-button matStepperPrevious type="button">Back</button>
+        <button mat-button matStepperNext type="button" [disabled]="!formGroup.valid" (click)="asignarFolios()">Next</button>
       </div>
-    </form>
-  </mat-step>
-  <mat-step>
-    <ng-template matStepLabel>Hecho</ng-template>
-    Folios asignados con exito
-    <div>
-      <button mat-button matStepperPrevious>Back</button>
-      <button mat-button (click)="stepper.reset()">Reset</button>
-    </div>
-  </mat-step>
-</mat-horizontal-stepper>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Hecho</ng-template>
+      Folios asignados con exito
+      <div>
+        <button mat-button matStepperPrevious type="button">Back</button>
+        <button mat-button type=button (click)="stepper.reset()">Reset</button>
+      </div>
+    </mat-step>
+  </mat-horizontal-stepper>
+</form>

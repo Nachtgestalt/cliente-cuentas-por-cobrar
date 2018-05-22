@@ -1,16 +1,21 @@
-<div class="main-container mt-2 animated fadeIn fast">
+<div *ngIf="active" class="main-container mt-2 animated fadeIn fast">
   <h5>Datos del maestro</h5>
-  <form *ngIf="active" [formGroup] = "forma" (ngSubmit)="agregar()" novalidate="novalidate">
-    <div class="row mt-2">
+  <form [formGroup] = "forma" (ngSubmit)="agregar()" novalidate="novalidate">
+    <div class="row mt-2" *ngFor="let escuela of forma.controls['escuelas'].controls; let i = index">
       <mat-form-field class="col-md-5" formArrayName="escuelas">
-        <input type="text" placeholder="Escuela:" aria-label="Escuela:" matInput formControlName="0" [matAutocomplete]="auto"  required>
+        <input type="text" placeholder="Escuela:" aria-label="Escuela:" matInput
+               [formControlName]="i" [(ngModel)]="forma.value.escuelas[i]" [matAutocomplete]="auto"  required>
         <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-          <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+          <mat-option *ngFor="let option of filteredOptions[i] | async" [value]="option">
             {{option.clave + ' - ' + option.nombre}}
           </mat-option>
         </mat-autocomplete>
       </mat-form-field>
+      <button type="button" mat-icon-button color="primary" (click)="agregarOtraEscuela(i+1)">
+        <mat-icon aria-label="Example icon-button with a heart icon">add</mat-icon>
+      </button>
     </div>
+
     <div class="row mt-2">
       <mat-form-field class="col-md-5">
         <input type="text" matInput placeholder="Nombre"

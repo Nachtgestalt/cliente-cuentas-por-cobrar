@@ -7,7 +7,6 @@ import {ActivatedRoute, Router} from '@angular/router';
 
 import * as _swal from 'sweetalert';
 import { SweetAlert } from 'sweetalert/typings/core';
-import {EscuelaService} from "../../../services/escuela/escuela.service";
 const swal: SweetAlert = _swal as any;
 
 @Component({
@@ -35,6 +34,7 @@ export class AgregarEmpleadoComponent implements OnInit {
     codigo_postal: '',
     estado: '',
     municipio: '',
+    zonas: null
   };
 
   estados = [

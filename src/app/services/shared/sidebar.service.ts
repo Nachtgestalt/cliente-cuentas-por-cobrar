@@ -9,6 +9,10 @@ export class SidebarService {
       url: '/home'
     },
     {
+      titulo: 'Ventas',
+      url: '/ventas'
+    },
+    {
       titulo: 'Recursos humanos',
       url: '/nomina'
     },

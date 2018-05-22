@@ -39,6 +39,10 @@ export class VendedorService {
         });
   }
 
+  getVendedores() {
+    return this.http.get(this.vendedorURL, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}});
+  }
+
   existeClave(clave: string) {
     const url = this.searchURL + 'clave=' + clave;
     return this.http.get(url, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}});

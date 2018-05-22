@@ -5,6 +5,7 @@ import {Escuela} from '../../interfaces/escuela.interface';
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {Vendedor} from "../../interfaces/vendedor.interface";
 import {Producto} from "../../interfaces/producto.interface";
+import {Director} from '../../interfaces/director.interface';
 
 @Injectable()
 export class EscuelaService {
@@ -22,7 +23,6 @@ export class EscuelaService {
   obtenerEscuela(clave: string) {
     const url = `${this.escuelaURL}/${clave}`;
     return this.http.get(url, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}});
-
   }
 
   agregarEscuela(escuela: Escuela) {
@@ -40,8 +40,24 @@ export class EscuelaService {
   }
 
   obtenerEscuelas() {
+    let director: Director = {
+      iddirector: null,
+      nombre: '',
+      apellidos: '',
+      email: '',
+      telefono: ''
+    }
+
     return this.http.get<Escuela[]>(this.escuelaURL, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}})
-      .subscribe(data => {
+      .subscribe((data: Escuela[]) => {
+        for (let escuela of data) {
+          if (escuela.director === null) {
+            escuela.director = director;
+            escuela.director.nombre = '';
+            escuela.director.apellidos = '';
+          }
+        }
+          console.log(data);
           this.dataChange.next(data);
         },
         (error: HttpErrorResponse) => {
@@ -55,7 +71,11 @@ export class EscuelaService {
 
   borrarEscuela(clave: string) {
     const url = `${this.escuelaURL}/${clave}`;
-    console.log('URL de borrado: ' + url);
     return this.http.delete(url, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}});
+  }
+
+  getEscuelasZona(zona) {
+    const url = `${this.escuelaURL}/zona=${zona}`;
+    return this.http.get(url, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}});
   }
 }

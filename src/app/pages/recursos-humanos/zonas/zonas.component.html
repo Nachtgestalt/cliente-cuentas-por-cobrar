@@ -1,0 +1,55 @@
+<div class="example-header fadeIn fast">
+  <mat-form-field>
+    <input matInput #filter placeholder="¿Que estas buscando?">
+  </mat-form-field>
+</div>
+
+<div class="example-container mat-elevation-z8">
+  <mat-table #table [dataSource]="dataSource" matSort>
+
+    <!-- Nombre Column -->
+    <ng-container matColumnDef="nombre">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.idzona}} </mat-cell>
+    </ng-container>
+
+    <!-- Vendedor Column -->
+    <ng-container matColumnDef="vendedor">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Vendedor encargado </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.vendedor.nombre + ' ' + row.vendedor.apellidos}} </mat-cell>
+    </ng-container>
+
+    <!-- Opciones Column -->
+    <ng-container matColumnDef="edit">
+      <mat-header-cell *matHeaderCellDef>
+        <button mat-icon-button color="primary" (click)="agregarZona()">
+          <mat-icon aria-label="Example icon-button with a heart icon">add</mat-icon>
+        </button>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row; let i=index;">
+        <!--<button (click)="deleteItem(i, row.idzona, row.vendedor)" mat-icon-button>-->
+          <!--<mat-icon>delete_forever</mat-icon>-->
+          <!--{{row.index}}-->
+        <!--</button>-->
+        <button (click)="startEdit(i, row.idzona, row.vendedor.clave, row.vendedor.nombre, row.vendedor.apellidos)"
+                mat-icon-button class="ml-4">
+          <mat-icon>mode_edit</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;">
+    </mat-row>
+  </mat-table>
+
+  <div class="no-results" [style.display]="dataSource.renderedData.length == 0 ? '' : 'none'">
+    Sin resultados
+  </div>
+
+  <mat-paginator #paginator
+                 [length]="dataSource.filteredData.length"
+                 [pageIndex]="0"
+                 [pageSize]="10"
+                 [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+</div>

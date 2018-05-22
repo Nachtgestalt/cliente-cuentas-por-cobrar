@@ -1,5 +1,6 @@
 import {Director} from './director.interface';
 import {Maestro} from './maestro.interface';
+import {Zona} from './zona.interface';
 
 export interface Escuela {
   clave: string;
@@ -14,4 +15,5 @@ export interface Escuela {
   email: string;
   director: Director;
   profesores: Maestro[];
+  zona: Zona;
 }

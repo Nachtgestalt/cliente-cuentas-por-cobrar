@@ -1,4 +1,5 @@
 import {User} from './user.interfaces';
+import {Zona} from './zona.interface';
 
 export interface Vendedor {
   clave: string;
@@ -12,4 +13,5 @@ export interface Vendedor {
   codigo_postal: string;
   estado: string;
   municipio: string;
+  zonas: Zona[];
 }

@@ -5,6 +5,18 @@ body{
   font-family: 'Roboto', sans-serif;
 }
 
+.mat-tab-link {
+  font-size: 1rem;
+}
+
+/*.mat-ink-bar {*/
+  /*background-color: rgb(96,125,139);*/
+/*}*/
+
+.mat-tab-group.mat-primary .mat-ink-bar, .mat-tab-nav-bar.mat-primary .mat-ink-bar{
+  background: rgb(96,125,139);
+}
+
 /*Reglas para las ventanas de agregar-producto*/
 .main-container {
   display: flex;

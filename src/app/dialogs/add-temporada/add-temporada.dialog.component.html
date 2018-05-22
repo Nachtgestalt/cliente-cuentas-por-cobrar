@@ -1,0 +1,41 @@
+<div class="container">
+  <h3 mat-dialog-title>{{mensajeDialog}}</h3>
+
+  <form [formGroup] = "forma">
+
+    <div class="form-group row">
+      <mat-form-field color="accent">
+        <input matInput #input class="form-control" placeholder="Nombre" [(ngModel)]="forma.value.nombre"
+               formControlName="nombre" required uppercase>
+        <mat-error *ngIf="forma.get('nombre').invalid">{{getErrorMessages()}}</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="form-group row">
+      <mat-form-field>
+        <input matInput [matDatepicker]="picker1" placeholder="Elige la fecha de inicio"
+               [(ngModel)]="forma.value.fecha_inicio"
+               formControlName="fecha_inicio" required>
+        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+        <mat-error *ngIf="forma.get('fecha_inicio').invalid">{{getErrorMessages()}}</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="form-group row">
+      <mat-form-field>
+        <input matInput [matDatepicker]="picker2" placeholder="Elige la fecha de termino"
+               [(ngModel)]="forma.value.fecha_termino"
+               formControlName="fecha_termino" required uppercase>
+        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+        <mat-datepicker #picker2></mat-datepicker>
+        <mat-error *ngIf="forma.get('fecha_termino').invalid">{{getErrorMessages()}}</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="form-group row" mat-dialog-actions>
+      <button mat-button [disabled]="!forma.valid" [mat-dialog-close]="1" (click)="confirmAdd()">Guardar</button>
+      <button mat-button (click)="onNoClick()" tabindex="-1">Cancelar</button>
+    </div>
+  </form>
+</div>

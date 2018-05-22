@@ -9,6 +9,7 @@ import {VendedorService} from "../../services/vendedor/vendedor.service";
   styleUrls: ['../../dialogs/delete-vendedor/delete-vendedor.dialog.css']
 })
 export class DeleteVendedorDialogComponent {
+  deleteOk: boolean;
 
   constructor(public dialogRef: MatDialogRef<DeleteVendedorDialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any, public _vendedorService: VendedorService) {}
@@ -20,7 +21,12 @@ export class DeleteVendedorDialogComponent {
   confirmDelete(): void {
     this._vendedorService.deleteVendedor(this.data.clave)
       .subscribe(res => {
-        console.log('esta madre se borro!')
-      });
+        this.deleteOk = true;
+        console.log('esta madre se borro!');
+      },
+      error1 => {
+        this.deleteOk = false;
+      }
+      );
   }
 }

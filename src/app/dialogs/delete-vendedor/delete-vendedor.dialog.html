@@ -11,6 +11,6 @@
 
   <div mat-dialog-actions>
     <button mat-button (click)="onNoClick()" tabindex="-1">Cancelar</button>
-    <button mat-button [mat-dialog-close]="1" (click)="confirmDelete()">Borrar</button>
+    <button mat-button [mat-dialog-close]="deleteOk" (click)="confirmDelete()">Borrar</button>
   </div>
 </div>

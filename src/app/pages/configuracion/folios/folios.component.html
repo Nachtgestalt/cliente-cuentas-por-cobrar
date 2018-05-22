@@ -1,0 +1,66 @@
+<div class="example-header fadeIn fast">
+  <mat-form-field>
+    <input matInput #filter placeholder="¿Que estas buscando?">
+  </mat-form-field>
+</div>
+
+<div class="example-container mat-elevation-z8">
+  <mat-table #table [dataSource]="dataSource" matSort>
+    <!-- Clave Column -->
+    <ng-container matColumnDef="temporada">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Temporada </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.idtemporada.nombre}} </mat-cell>
+    </ng-container>
+
+    <!-- Nombre Column -->
+    <ng-container matColumnDef="tipo">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Tipo de folio </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.tipo}} </mat-cell>
+    </ng-container>
+
+    <!-- Apellidos Column -->
+    <ng-container matColumnDef="inicio">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Inicio </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.inicio}} </mat-cell>
+    </ng-container>
+
+    <!-- Telefono Column -->
+    <ng-container matColumnDef="fin">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Fin </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.fin}} </mat-cell>
+    </ng-container>
+
+    <!-- Opciones Column -->
+    <ng-container matColumnDef="edit">
+      <mat-header-cell *matHeaderCellDef>
+        <button mat-icon-button color="primary" (click)="agregarFolio()">
+        <mat-icon aria-label="Example icon-button with a heart icon">add</mat-icon>
+      </button>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row; let i=index;">
+        <button (click)="deleteItem(i, row.clave_producto, row.titulo, row.autor)" mat-icon-button>
+          <mat-icon>delete_forever</mat-icon>
+          {{row.index}}
+        </button>
+        <button (click)="startEdit(i, row.idfolios, row.tipo, row.idtemporada.nombre, row.inicio, row.fin)"
+                mat-icon-button class="ml-4">
+          <mat-icon>mode_edit</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;">
+    </mat-row>
+  </mat-table>
+
+  <div class="no-results" [style.display]="dataSource.renderedData.length == 0 ? '' : 'none'">
+    Sin resultados
+  </div>
+
+  <mat-paginator #paginator
+                 [length]="dataSource.filteredData.length"
+                 [pageIndex]="0"
+                 [pageSize]="10"
+                 [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+</div>
