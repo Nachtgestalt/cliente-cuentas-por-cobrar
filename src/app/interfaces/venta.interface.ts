@@ -8,4 +8,11 @@ export interface Venta {
   idfolios: number;
   escuela_clave: string;
   idprofesor: string;
+  pedidos: [
+    {
+      idHistorial: string;
+      pedidos: number;
+      libro_clave: string;
+    }
+  ];
 }

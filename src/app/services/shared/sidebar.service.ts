@@ -21,6 +21,10 @@ export class SidebarService {
       url: '/almacen'
     },
     {
+      titulo: 'Entregas y devoluciones',
+      url: '/entregas'
+    },
+    {
       titulo: 'Clientes',
       url: '/clientes'
     },

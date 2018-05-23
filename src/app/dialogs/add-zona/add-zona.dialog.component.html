@@ -13,8 +13,8 @@
 
     <div class="form-group row">
       <mat-form-field formGroupName="vendedor">
-        <mat-select placeholder="Vendededor asignado:" formControlName="vendedor">
-          <mat-option *ngFor="let vendedor of vendedorSelect" [value]="vendedor">
+        <mat-select placeholder="Vendededor asignado:" formControlName="clave">
+          <mat-option *ngFor="let vendedor of vendedorSelect" [value]="vendedor.clave">
             {{vendedor.nombre + ' ' +vendedor.apellidos}}
           </mat-option>
         </mat-select>

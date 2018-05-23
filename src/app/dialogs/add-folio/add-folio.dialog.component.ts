@@ -73,14 +73,17 @@ export class AddFolioDialogComponent implements OnInit {
       console.log(this.forma.value);
       this.folio = this.forma.value;
       this.folio.idfolios = this.data.idfolios;
-      console.log(this.folio);
+      // console.log(this.folio);
       this._folioService.actualizarFolio(this.folio)
         .subscribe( res => {
           console.log(res);
         });
     } else {
       console.log(this.forma.value);
-      this._folioService.agregarFolio(this.forma.value)
+      this.folio = this.forma.value;
+      this.folio.idfolios = null;
+      console.log(this.folio);
+      this._folioService.agregarFolio(this.folio)
         .subscribe( res => {
           console.log(res);
         });

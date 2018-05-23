@@ -93,17 +93,17 @@
         <div class="row">
           <mat-form-field class="col-md-4">
             <input type="number" matInput placeholder="Vendedor"
-                   formControlName="folio" [(ngModel)]="forma.value.folio ">
+                   formControlName="comision_vendedor" [(ngModel)]="forma.value.comision_vendedor">
             <!--<mat-error *ngIf="forma.get('isbn').hasError('required')"> {{getErrorMessages()}} </mat-error>-->
           </mat-form-field>
           <mat-form-field class="col-md-4">
             <input type="number" matInput placeholder="Profesor"
-                   formControlName="folio" [(ngModel)]="forma.value.folio ">
+                   formControlName="comision_profesor" [(ngModel)]="forma.value.comision_profesor ">
             <!--<mat-error *ngIf="forma.get('isbn').hasError('required')"> {{getErrorMessages()}} </mat-error>-->
           </mat-form-field>
           <mat-form-field class="col-md-4">
             <input type="number" matInput placeholder="Director"
-                   formControlName="folio" [(ngModel)]="forma.value.folio ">
+                   formControlName="comision_director" [(ngModel)]="forma.value.comision_director">
             <!--<mat-error *ngIf="forma.get('isbn').hasError('required')"> {{getErrorMessages()}} </mat-error>-->
           </mat-form-field>
         </div>
@@ -173,3 +173,5 @@
 
   </form>
 </div>
+
+<iframe *ngIf="showPDF" [src]="pdfResult" width="100%"></iframe>

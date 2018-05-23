@@ -26,6 +26,7 @@ import {ClientesComponent} from './clientes/clientes.component';
 import {ZonasComponent} from './recursos-humanos/zonas/zonas.component';
 import {FoliosComponent} from './configuracion/folios/folios.component';
 import {VentasComponent} from './ventas/ventas.component';
+import {EntregasDevolucionesComponent} from './entregas-devoluciones/entregas-devoluciones.component';
 
 
 const pagesRoutes: Routes = [
@@ -86,6 +87,11 @@ const pagesRoutes: Routes = [
         data: {titulo: 'Cuentas por cobrar'}
       },
       {
+        path: 'entregas',
+        component: EntregasDevolucionesComponent,
+        data: {titulo: 'Entregas y devoluciones'}
+      },
+      {
         path: 'nomina',
         component: RecursosHumanosComponent,
         children: [
@@ -103,8 +109,8 @@ const pagesRoutes: Routes = [
         component: ConfiguracionComponent,
         children: [
           {path: 'temporadas', component: TemporadasComponent, data: {titulo: 'Administrar temporada'}},
-          {path: 'usuarios', component: UsuariosComponent, data: {titulo: 'Recursos humanos'}},
-          {path: 'folios', component: FoliosComponent, data: {titulo: 'Recursos humanos', subtitle: 'Asignar folios'}},
+          {path: 'usuarios', component: UsuariosComponent, data: {titulo: 'Administrar usuarios'}},
+          {path: 'folios', component: FoliosComponent, data: {titulo: 'Administrar folios', subtitle: 'Asignar folios'}},
           {path: '**', redirectTo: 'temporadas', pathMatch: 'full'}
         ],
         data: {titulo: 'Configuracion'}

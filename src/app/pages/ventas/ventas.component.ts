@@ -1,5 +1,5 @@
 import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
-import {FormArray, FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {VendedorService} from '../../services/vendedor/vendedor.service';
 import {Vendedor} from '../../interfaces/vendedor.interface';
 import 'rxjs/add/operator/takeWhile';
@@ -12,13 +12,15 @@ import {startWith} from 'rxjs/operators/startWith';
 import {map} from 'rxjs/operators/map';
 import {Maestro} from '../../interfaces/maestro.interface';
 import {Venta} from '../../interfaces/venta.interface';
-import {TemporadaService} from '../../services/temporada/temporada.service';
 import {FolioService} from '../../services/folio/folio.service';
 import {MY_FORMATS} from '../../dialogs/add-temporada/add-temporada.dialog.component';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
 import {MomentDateAdapter} from '@angular/material-moment-adapter';
 import {Producto} from '../../interfaces/producto.interface';
 import {ProductosService} from '../../services/producto/productos.service';
+import {Moment} from 'moment';
+import {VentaService} from '../../services/venta/venta.service';
+import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-ventas',
@@ -34,6 +36,7 @@ import {ProductosService} from '../../services/producto/productos.service';
   ],
 })
 export class VentasComponent implements OnInit, OnDestroy {
+
   zonas: Zona[] = [];
   forma: FormGroup;
   vendedores: Vendedor[];
@@ -50,7 +53,14 @@ export class VentasComponent implements OnInit, OnDestroy {
     fecha: '',
     folio: '',
     idfolios: null,
-    idprofesor: ''
+    idprofesor: '',
+    pedidos: [
+      {
+        libro_clave: null,
+        idHistorial: null,
+        pedidos: null
+      }
+    ]
   };
 
   vendedorFlag = false;
@@ -58,6 +68,7 @@ export class VentasComponent implements OnInit, OnDestroy {
   escuelaFlag = false;
   comisionesFlag = false;
   pedidosFlag = false;
+  showPDF = false;
 
   countBooks = 0;
 
@@ -67,14 +78,17 @@ export class VentasComponent implements OnInit, OnDestroy {
   filteredOptions: Observable<Escuela[]>;
 
   filteredOptionsProducto: Observable<Producto[]>[] = [];
+  pdfResult;
 
   constructor( private _vendedorService: VendedorService,
                private _zonaService: ZonaService,
                private _escuelaService: EscuelaService,
                private _folioService: FolioService,
                private _productoService: ProductosService,
+               private _ventaService: VentaService,
                private cdref: ChangeDetectorRef,
-               private formBuilder: FormBuilder) {
+               private formBuilder: FormBuilder,
+               private domSanitizer: DomSanitizer) {
 
     this.currentSeason = JSON.parse(localStorage.getItem('season'));
 
@@ -99,14 +113,14 @@ export class VentasComponent implements OnInit, OnDestroy {
         }
       );
 
-    // this._folioService.getFoliosTemporada(this.currentSeason.idtemporada)
-    //   .subscribe(
-    //     res => {
-    //       console.log(res);
-    //       this.reciboVenta = res[1];
-    //       this.venta.idfolios = res[1].idfolios;
-    //     }
-    //   );
+    this._folioService.getFoliosTemporada(this.currentSeason.idtemporada)
+      .subscribe(
+        res => {
+          console.log(res);
+          this.reciboVenta = res[1];
+          this.venta.idfolios = res[1].idfolios;
+        }
+      );
   }
 
   ngOnInit() {
@@ -160,6 +174,7 @@ export class VentasComponent implements OnInit, OnDestroy {
     this.forma.get('folio').valueChanges
       .subscribe( values => {
         if (values !== null) {
+          this.venta.folio = values;
           this.escuelaFlag = true;
         }
       });
@@ -184,8 +199,11 @@ export class VentasComponent implements OnInit, OnDestroy {
       'clave': new FormControl(),
       'escuela': new FormControl(),
       'maestro': new FormControl(),
-      'folio': new FormControl(),
+      'folio': new FormControl('', null, this.validarFolio.bind(this)),
       'fecha': new FormControl(),
+      'comision_profesor': new FormControl(),
+      'comision_vendedor': new FormControl(),
+      'comision_director': new FormControl(),
       'pedidos': new FormArray([this.createItem()])
     });
 
@@ -216,16 +234,6 @@ export class VentasComponent implements OnInit, OnDestroy {
         this.forma.get('pedidos.0').get('total').setValue( precio * res );
       }
     );
-
-    //
-    // this.filteredOptionsProducto[0].subscribe(
-    //   res => {
-    //     console.log(res);
-    //     if (res.length !== 0 ) {
-    //       this.forma.get('pedidos.0').get('price').setValue(res[0].precio);
-    //     }
-    //   }
-    // );
   }
 
   createItem(): FormGroup {
@@ -256,6 +264,64 @@ export class VentasComponent implements OnInit, OnDestroy {
   }
 
   confirmSell() {
+    // let tab = window.open();
+    let control = this.forma.controls['pedidos'].value;
+    const fechaForm: Moment = this.forma.get('fecha').value;
+    let fecha = fechaForm.format('YYYY[-]MM[-]DD');
+    this.venta.pedidos.pop();
+    for (let pedido of control) {
+      console.log(pedido)
+      this.venta.pedidos.push(
+        {
+          idHistorial: null,
+          libro_clave: pedido.title.claveProducto,
+          pedidos: pedido.amount
+        }
+      );
+    }
+    this.venta.fecha = fecha;
+    this.venta.comision_vendedor = this.forma.get('comision_vendedor').value;
+    this.venta.comision_profesor = this.forma.get('comision_profesor').value;
+    this.venta.comision_director = this.forma.get('comision_director').value;
+
+    console.log(this.venta);
+    // debugger;
+    this._ventaService.postVenta(this.venta)
+      .subscribe(
+        res => {
+          console.log(res);
+        },
+        error1 => {
+          swal('Error al realizar la venta', 'Algo ha salido mal', 'error');
+        },
+        () => {
+          swal('Venta realizada', 'Venta realizada con exito', 'success')
+            .then((value) => {
+              this._ventaService.getPFDVenta(this.venta.folio).subscribe(
+                (data: any) => {
+                  console.log(data);
+                  var fileURL = URL.createObjectURL(data);
+                  window.open(fileURL, 'reporte de venta');
+                  this.pdfResult = this.domSanitizer.bypassSecurityTrustResourceUrl(
+                    URL.createObjectURL(data)
+                  );
+                  console.log(this.pdfResult);
+                  // tab.location.href = this.pdfResult.changingThisBreaksApplicationSecurity;
+                  // if (this.pdfResult !== null) {
+                  //   setTimeout(() => , 1000);
+                  // }
+                  // this.showPDF = true;
+                }
+              );
+            });
+        }
+      );
+  }
+
+  downloadFile(data: Response) {
+    var blob = new Blob([data], { type: 'application/octet-stream' });
+    var url= window.URL.createObjectURL(blob);
+    window.open(url);
   }
 
   private setFormValuesAfterChangeZone(vendedor: any) {
@@ -271,8 +337,6 @@ export class VentasComponent implements OnInit, OnDestroy {
     const control = <FormArray>this.forma.controls['pedidos'];
     control.push(this.createItem());
     console.log(control.length);
-
-    this.cdref.detectChanges();
 
     this.filteredOptionsProducto[control.length - 1] = this.forma.get(`pedidos.${control.length - 1}`).get('title').valueChanges
       .pipe(
@@ -290,17 +354,19 @@ export class VentasComponent implements OnInit, OnDestroy {
 
     this.forma.get(`pedidos.${control.length - 1}`).get('amount').valueChanges.subscribe(
       (res: any) => {
-        const precio: any = Number(this.forma.get('pedidos.0').get('price').value);
+        let precio: any = Number(this.forma.get(`pedidos.${control.length - 1}`).get('price').value);
         this.forma.get(`pedidos.${control.length - 1}`).get('total').setValue( precio * res );
       }
     );
 
     this.forma.get(`pedidos.${control.length - 1}`).get('price').valueChanges.subscribe(
       (res: any) => {
-        const precio: any = Number(this.forma.get('pedidos.0').get('amount').value);
+        let precio: any = Number(this.forma.get(`pedidos.${control.length - 1}`).get('amount').value);
         this.forma.get(`pedidos.${control.length - 1}`).get('total').setValue( precio * res );
       }
     );
+
+    this.cdref.detectChanges();
   }
 
   deleteBook(index) {
@@ -308,5 +374,13 @@ export class VentasComponent implements OnInit, OnDestroy {
     const control = <FormArray>this.forma.controls['pedidos'];
     // remove the chosen row
     control.removeAt(index);
+    console.log(control);
+  }
+
+  validarFolio(control: AbstractControl) {
+    return this._ventaService.folioAsignadoVenta(control.value)
+      .map( res => {
+        return res ? {folioexiste: true} : null;
+      });
   }
 }

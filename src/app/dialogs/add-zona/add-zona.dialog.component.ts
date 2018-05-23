@@ -66,6 +66,7 @@ export class AddZonaDialogComponent implements OnInit {
           console.log(res);
         });
     } else {
+      console.log(this.forma.value);
       this._zonaService.agregarZona(this.forma.value)
         .subscribe( res => {
           console.log(res);

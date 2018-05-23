@@ -15,6 +15,8 @@ import {TemporadaService} from './temporada/temporada.service';
 import {ZonaService} from './zona/zona.service';
 import {FolioService} from './folio/folio.service';
 import {BloqueFoliosService} from './bloque-folios/bloque-folios.service';
+import {VentaService} from './venta/venta.service';
+import {InventarioService} from './inventario/inventario.service';
 
 @NgModule({
   imports: [
@@ -32,7 +34,9 @@ import {BloqueFoliosService} from './bloque-folios/bloque-folios.service';
     ZonaService,
     LoginGuardGuard,
     FolioService,
-    BloqueFoliosService
+    BloqueFoliosService,
+    VentaService,
+    InventarioService
   ],
   declarations: []
 })

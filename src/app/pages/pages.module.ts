@@ -45,6 +45,7 @@ import { FoliosComponent } from './configuracion/folios/folios.component';
 import {AddFolioDialogComponent} from '../dialogs/add-folio/add-folio.dialog.component';
 import {DeleteFolioDialogComponent} from '../dialogs/delete-folio/delete-folio.dialog..component';
 import { VentasComponent } from './ventas/ventas.component';
+import { EntregasDevolucionesComponent } from './entregas-devoluciones/entregas-devoluciones.component';
 
 
 
@@ -78,6 +79,7 @@ import { VentasComponent } from './ventas/ventas.component';
     ZonasComponent,
     FoliosComponent,
     VentasComponent,
+    EntregasDevolucionesComponent,
     // Dialogs
   ],
   exports: [
