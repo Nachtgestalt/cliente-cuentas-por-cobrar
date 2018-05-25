@@ -1,5 +1,5 @@
 import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
-import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {VendedorService} from '../../services/vendedor/vendedor.service';
 import {Vendedor} from '../../interfaces/vendedor.interface';
 import 'rxjs/add/operator/takeWhile';
@@ -21,6 +21,7 @@ import {ProductosService} from '../../services/producto/productos.service';
 import {Moment} from 'moment';
 import {VentaService} from '../../services/venta/venta.service';
 import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
+import {BloqueFoliosService} from '../../services/bloque-folios/bloque-folios.service';
 
 @Component({
   selector: 'app-ventas',
@@ -86,6 +87,7 @@ export class VentasComponent implements OnInit, OnDestroy {
                private _folioService: FolioService,
                private _productoService: ProductosService,
                private _ventaService: VentaService,
+               private _bloqueFoliosService: BloqueFoliosService,
                private cdref: ChangeDetectorRef,
                private formBuilder: FormBuilder,
                private domSanitizer: DomSanitizer) {
@@ -136,6 +138,8 @@ export class VentasComponent implements OnInit, OnDestroy {
         console.log(values);
         this.resetFormAfterChangeZone();
         this.setFormValuesAfterChangeZone(values);
+        this.forma.get('folio')
+          .setAsyncValidators(Validators.composeAsync([this.validarFolio.bind(this), this.validarFolioEnRango.bind(this)]));
         // Al tener elegida la zona cargamos la lista de escuelas que pertenecen
         this._escuelaService.getEscuelasZona(values.idzona)
           .takeWhile(() => this.isAlive)
@@ -173,6 +177,7 @@ export class VentasComponent implements OnInit, OnDestroy {
 
     this.forma.get('folio').valueChanges
       .subscribe( values => {
+        console.log(this.forma.get('folio'));
         if (values !== null) {
           this.venta.folio = values;
           this.escuelaFlag = true;
@@ -199,7 +204,7 @@ export class VentasComponent implements OnInit, OnDestroy {
       'clave': new FormControl(),
       'escuela': new FormControl(),
       'maestro': new FormControl(),
-      'folio': new FormControl('', null, this.validarFolio.bind(this)),
+      'folio': new FormControl('', [Validators.required]),
       'fecha': new FormControl(),
       'comision_profesor': new FormControl(),
       'comision_vendedor': new FormControl(),
@@ -285,7 +290,6 @@ export class VentasComponent implements OnInit, OnDestroy {
     this.venta.comision_director = this.forma.get('comision_director').value;
 
     console.log(this.venta);
-    // debugger;
     this._ventaService.postVenta(this.venta)
       .subscribe(
         res => {
@@ -300,28 +304,24 @@ export class VentasComponent implements OnInit, OnDestroy {
               this._ventaService.getPFDVenta(this.venta.folio).subscribe(
                 (data: any) => {
                   console.log(data);
-                  var fileURL = URL.createObjectURL(data);
-                  window.open(fileURL, 'reporte de venta');
+                  // var fileURL = URL.createObjectURL(data);
+                  // window.open(fileURL, 'reporte de venta');
                   this.pdfResult = this.domSanitizer.bypassSecurityTrustResourceUrl(
                     URL.createObjectURL(data)
                   );
+                  window.open(this.pdfResult.changingThisBreaksApplicationSecurity);
                   console.log(this.pdfResult);
-                  // tab.location.href = this.pdfResult.changingThisBreaksApplicationSecurity;
-                  // if (this.pdfResult !== null) {
-                  //   setTimeout(() => , 1000);
-                  // }
-                  // this.showPDF = true;
+                },
+                error1 => {
+                  swal('Algo ha salido mal', 'Error al generar reporte de venta', 'error');
+                },
+                () => {
+                  console.log('Todo ha salido OK!!')
                 }
               );
             });
         }
       );
-  }
-
-  downloadFile(data: Response) {
-    var blob = new Blob([data], { type: 'application/octet-stream' });
-    var url= window.URL.createObjectURL(blob);
-    window.open(url);
   }
 
   private setFormValuesAfterChangeZone(vendedor: any) {
@@ -374,13 +374,22 @@ export class VentasComponent implements OnInit, OnDestroy {
     const control = <FormArray>this.forma.controls['pedidos'];
     // remove the chosen row
     control.removeAt(index);
-    console.log(control);
+    // console.log(control);
   }
 
   validarFolio(control: AbstractControl) {
     return this._ventaService.folioAsignadoVenta(control.value)
       .map( res => {
+        console.log('Folio asignado: ', res);
         return res ? {folioexiste: true} : null;
+      });
+  }
+
+  validarFolioEnRango(control: AbstractControl) {
+    return this._bloqueFoliosService.folioInRange(this.venta.vendedor_clave, control.value)
+      .map( res => {
+        console.log('Folio en rango: ', res);
+        return res ? null : {folioExisteEnRango: true};
       });
   }
 }

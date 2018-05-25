@@ -29,7 +29,7 @@
     <ng-container matColumnDef="edit">
       <mat-header-cell *matHeaderCellDef> Acción </mat-header-cell>
       <mat-cell *matCellDef="let row; let i=index;">
-        <button (click)="deleteItem(i, row.idHistorial, row.folio, row.titulo, row.cantidad)" mat-raised-button color="primary">
+        <button (click)="confirm(i, row.idHistorial, row.folio, row.titulo, row.cantidad)" mat-raised-button color="primary">
           <mat-icon>done</mat-icon>
           Confirmar
           {{row.index}}

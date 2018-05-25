@@ -43,8 +43,9 @@
         <div class="form-group row">
           <mat-form-field class="col-md-6">
             <input type="text" matInput placeholder="Folio"
-                   formControlName="folio" [(ngModel)]="forma.value.folio ">
-            <!--<mat-error *ngIf="forma.get('isbn').hasError('required')"> {{getErrorMessages()}} </mat-error>-->
+                   formControlName="folio" [(ngModel)]="forma.value.folio " required>
+            <mat-error *ngIf="forma.get('folio').hasError('folioexiste')"> Folio asignado a una venta </mat-error>
+            <mat-error *ngIf="forma.get('folio').hasError('folioExisteEnRango')"> Folio no le pertenece al vendedor </mat-error>
           </mat-form-field>
           <mat-form-field class="col-md-6">
             <input matInput [matDatepicker]="picker1" placeholder="Elige la fecha"
@@ -78,7 +79,7 @@
           <mat-form-field class="col-md-6">
             <mat-select placeholder="Selecciona un maestro" formControlName="maestro">
               <mat-option *ngFor="let maestro of maestros" [value]="maestro">
-                {{ maestro.nombre }}
+                {{ maestro.nombre + ' ' + maestro.apellidos}}
               </mat-option>
             </mat-select>
             <!--<mat-error *ngIf="forma.get('idtemporada').hasError">{{getErrorMessages()}}</mat-error>-->

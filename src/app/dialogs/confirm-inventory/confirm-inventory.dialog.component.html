@@ -1,0 +1,40 @@
+<div class="container">
+  <h3 mat-dialog-title>{{mensajeDialog}}</h3>
+
+  <form [formGroup] = "forma">
+
+    <div class="form-group row">
+      <!--<label>{{data.folio}}</label>-->
+      <!--<label>{{data.titulo}}</label>-->
+      <!--<label>{{data.cantidad}}</label>-->
+      <mat-form-field color="accent">
+        <input matInput #input class="form-control" placeholder="Folio de venta:" [(ngModel)]="forma.value.folio"
+               formControlName="folio" [readonly]="true" required uppercase>
+        <!--<mat-error *ngIf="forma.get('folio').hasError">{{getErrorMessages()}}</mat-error>-->
+      </mat-form-field>
+    </div>
+
+    <div class="form-group row">
+      <mat-form-field color="accent">
+        <input matInput #input class="form-control" placeholder="Titulo:" [(ngModel)]="forma.value.titulo"
+               formControlName="titulo" [readonly]="true" required uppercase>
+        <!--<mat-error *ngIf="forma.get('folio').hasError">{{getErrorMessages()}}</mat-error>-->
+      </mat-form-field>
+    </div>
+
+    <div class="form-group row">
+      <mat-form-field color="accent">
+        <input matInput #input class="form-control" placeholder="Cantidad a devolver:"
+               type="number"
+               [(ngModel)]="forma.value.cantidad"
+               formControlName="cantidad" [readonly]="!data.entrega" required>
+        <!--<mat-error *ngIf="forma.get('folio').hasError">{{getErrorMessages()}}</mat-error>-->
+      </mat-form-field>
+    </div>
+
+    <div class="form-group row" mat-dialog-actions>
+      <button mat-button  [mat-dialog-close]="1" (click)="confirmAdd()">Guardar</button>
+      <button mat-button (click)="onNoClick()" tabindex="-1">Cancelar</button>
+    </div>
+  </form>
+</div>

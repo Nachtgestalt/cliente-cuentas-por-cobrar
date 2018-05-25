@@ -46,6 +46,7 @@ import {AddFolioDialogComponent} from '../dialogs/add-folio/add-folio.dialog.com
 import {DeleteFolioDialogComponent} from '../dialogs/delete-folio/delete-folio.dialog..component';
 import { VentasComponent } from './ventas/ventas.component';
 import { EntregasDevolucionesComponent } from './entregas-devoluciones/entregas-devoluciones.component';
+import {ConfirmInventoryDialogComponent} from '../dialogs/confirm-inventory/confirm-inventory.dialog.component';
 
 
 
@@ -121,5 +122,6 @@ import { EntregasDevolucionesComponent } from './entregas-devoluciones/entregas-
     AddTemporadaComponent,
     AddZonaDialogComponent,
     AddFolioDialogComponent,
+    ConfirmInventoryDialogComponent
     ]
 }) export class PagesModule {}

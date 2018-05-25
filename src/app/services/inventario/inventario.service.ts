@@ -18,7 +18,7 @@ export class InventarioService {
   }
 
   agregarProducto(producto: Producto) {
-    const url = this.productoURL + '/nuevo';
+    const url = this.inventarioURL + '/nuevo';
     const body = JSON.stringify(producto);
 
     console.log(body);
@@ -28,7 +28,7 @@ export class InventarioService {
 
   obtenerInventario() {
     return this.http.get<Inventario[]>(this.inventarioURL, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}})
-      .map( res => {
+      .map( (res: any) => {
           let inventarios: Inventario[] = [];
 
           for (let pedido of res) {
@@ -53,23 +53,23 @@ export class InventarioService {
   }
 
   obtenerProducto(clave: string) {
-    const url = `${this.productoURL}/${clave}`;
+    const url = `${this.inventarioURL}/${clave}`;
     return this.http.get(url, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}});
   }
 
   actualizarProducto(producto: Producto, clave: string) {
     const body = JSON.stringify(producto);
-    return this.http.put(this.productoURL, body, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}});
+    return this.http.put(this.inventarioURL, body, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}});
   }
 
   borrarProducto(clave: string) {
-    const url = `${this.productoURL}/${clave}`;
+    const url = `${this.inventarioURL}/${clave}`;
     console.log('URL de borrado: ' + url);
     return this.http.delete(url, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}});
   }
 
   getAll() {
-    return this.http.get(this.productoURL, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}});
+    return this.http.get(this.inventarioURL, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}});
   }
 }
 

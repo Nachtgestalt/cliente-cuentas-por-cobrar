@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators, NgForm } from '@angular/forms';
-import { ProductosService } from '../../../services/producto/productos.service';
-import { Http, Headers } from '@angular/http';
-import { Producto} from '../../../interfaces/producto.interface';
+import {Component, OnInit} from '@angular/core';
+import {FormGroup, FormControl, Validators, NgForm} from '@angular/forms';
+import {ProductosService} from '../../../services/producto/productos.service';
+import {Http, Headers} from '@angular/http';
+import {Producto} from '../../../interfaces/producto.interface';
 import {ActivatedRoute, Router} from '@angular/router';
+import {Stock} from '../../../interfaces/stock.interface';
+import {StockService} from '../../../services/stock/stock.service';
 
 @Component({
   selector: 'app-agregar',
@@ -51,6 +53,7 @@ export class AgregarProductoComponent implements OnInit {
   ];
 
   constructor(private _productosService: ProductosService,
+              private _stockService: StockService,
               private router: Router,
               private route: ActivatedRoute) {
     this.route.params
@@ -113,13 +116,29 @@ export class AgregarProductoComponent implements OnInit {
   agregar() {
     if (this.clave === 'nuevo') {
       this._productosService.agregarProducto(this.forma.value)
-        .subscribe(res => {
-          this.productoActualizar = true;
-          this.forma.reset();
-          this.active = false;
-          swal('Producto agregado', 'Producto agregado con exito', 'success');
-          setTimeout(() => this.active = true, 1000);
-        });
+        .subscribe(
+          (res: any) => {
+            console.log(res);
+            let stock: Stock = {
+              idstock: null,
+              cantidad: this.forma.get('cantidad').value,
+              libro: res.clave_producto,
+              fecha_entrada: '',
+              stock_actual: null
+            };
+            this._stockService.postStock(stock).subscribe(
+              data => {
+                console.log(data);
+              }
+            )
+            this.productoActualizar = true;
+            this.forma.reset();
+            this.active = false;
+            swal('Producto agregado', 'Producto agregado con exito', 'success');
+            setTimeout(() => this.active = true, 1000);
+          },
+          error1 => {}
+        );
     } else {
       this._productosService.actualizarProducto(this.forma.value, this.clave)
         .subscribe(res => {

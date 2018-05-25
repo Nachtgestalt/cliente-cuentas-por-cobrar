@@ -31,4 +31,6 @@ export class VentaService {
     const url = `${this.ventasURL}/search/folio=${folio}`;
     return this.http.get(url, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}});
   }
+
+
 }

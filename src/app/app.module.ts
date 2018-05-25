@@ -31,6 +31,7 @@ import {AddZonaDialogComponent} from './dialogs/add-zona/add-zona.dialog.compone
 import {OnlyNumbersDirective} from './directives/onlyNumbers.directive';
 import {AddFolioDialogComponent} from './dialogs/add-folio/add-folio.dialog.component';
 import {DeleteFolioDialogComponent} from './dialogs/delete-folio/delete-folio.dialog..component';
+import {ConfirmInventoryDialogComponent} from './dialogs/confirm-inventory/confirm-inventory.dialog.component';
 
 
 @NgModule({
@@ -46,7 +47,8 @@ import {DeleteFolioDialogComponent} from './dialogs/delete-folio/delete-folio.di
     DeleteFolioDialogComponent,
     AddTemporadaComponent,
     AddZonaDialogComponent,
-    AddFolioDialogComponent
+    AddFolioDialogComponent,
+    ConfirmInventoryDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -67,7 +69,8 @@ import {DeleteFolioDialogComponent} from './dialogs/delete-folio/delete-folio.di
     DeleteFolioDialogComponent,
     AddTemporadaComponent,
     AddZonaDialogComponent,
-    AddFolioDialogComponent
+    AddFolioDialogComponent,
+    ConfirmInventoryDialogComponent
   ],
   providers: [
     {provide: LocationStrategy, useClass: HashLocationStrategy}

@@ -17,6 +17,7 @@ import {FolioService} from './folio/folio.service';
 import {BloqueFoliosService} from './bloque-folios/bloque-folios.service';
 import {VentaService} from './venta/venta.service';
 import {InventarioService} from './inventario/inventario.service';
+import {StockService} from './stock/stock.service';
 
 @NgModule({
   imports: [
@@ -36,7 +37,8 @@ import {InventarioService} from './inventario/inventario.service';
     FolioService,
     BloqueFoliosService,
     VentaService,
-    InventarioService
+    InventarioService,
+    StockService
   ],
   declarations: []
 })

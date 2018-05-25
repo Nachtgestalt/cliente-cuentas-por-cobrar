@@ -11,7 +11,7 @@ import {Vendedor} from '../../interfaces/vendedor.interface';
 @Component({
   selector: 'app-add-zona',
   templateUrl: './add-zona.dialog.component.html',
-  styleUrls: ['./add-zona.dialogcomponent.css']
+  styleUrls: ['./add-zona.dialog.component.css']
 })
 export class AddZonaDialogComponent implements OnInit {
   mensajeDialog: string;

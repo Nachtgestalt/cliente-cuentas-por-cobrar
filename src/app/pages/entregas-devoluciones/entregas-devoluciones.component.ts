@@ -10,6 +10,7 @@ import {DataSource} from '@angular/cdk/collections';
 import {DeleteProductoDialogComponent} from '../../dialogs/delete-producto/delete-producto.dialog.component';
 import {Producto} from '../../interfaces/producto.interface';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {ConfirmInventoryDialogComponent} from '../../dialogs/confirm-inventory/confirm-inventory.dialog.component';
 
 @Component({
   selector: 'app-entregas-devoluciones',
@@ -21,8 +22,10 @@ export class EntregasDevolucionesComponent implements OnInit {
   exampleDatabase: InventarioService | null;
   dataSource: InventarioDataSource | null;
 
+  entrega: boolean;
+
   index: number;
-  id: string;
+  id: number;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -66,23 +69,33 @@ export class EntregasDevolucionesComponent implements OnInit {
       });
   }
 
-  confirm(i: number, clave: string, titulo: string, autor: string) {
+  confirm(i: number, idHistorial: number, folio: string, titulo: string, cantidad: number) {
     this.index = i;
-    this.id = clave;
-    console.log('Esta es la clave: ' + clave);
-    // const dialogRef = this.dialog.open(DeleteInventarioDialogComponent, {
-    //   data: {clave: clave, titulo: titulo, autor: autor}
-    // });
+    this.id = idHistorial;
+    if (cantidad < 0 ) {
+      this.entrega = false;
+    } else {
+      this.entrega = true;
+    }
+    const dialogRef = this.dialog.open(ConfirmInventoryDialogComponent, {
+      data: {
+        idHistorial: idHistorial,
+        folio: folio,
+        titulo: titulo,
+        cantidad: cantidad,
+        entrega: this.entrega
+      }
+    });
 
-    // dialogRef.afterClosed().subscribe(result => {
-    //   if (result === 1) {
-    //     this.openSnackBar('Inventario eliminado', 'Aceptar');
-    //     const foundIndex = this.exampleDatabase.dataChange.value.findIndex(x => x.clave_inventario === this.id);
-    //     // for delete we use splice in order to remove single object from DataService
-    //     this.exampleDatabase.dataChange.value.splice(foundIndex, 1);
-    //     this.refreshTable();
-    //   }
-    // });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === 1) {
+        this.openSnackBar('Inventario eliminado', 'Aceptar');
+        const foundIndex = this.exampleDatabase.dataChange.value.findIndex(x => x.idHistorial === this.id);
+        // for delete we use splice in order to remove single object from DataService
+        this.exampleDatabase.dataChange.value.splice(foundIndex, 1);
+        this.refreshTable();
+      }
+    });
   }
 
   openSnackBar(message: string, action: string) {

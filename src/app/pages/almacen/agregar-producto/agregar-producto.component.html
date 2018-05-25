@@ -35,7 +35,7 @@
       </mat-form-field>
       <mat-form-field class="col-md-5">
         <input type="text" matInput placeholder="Año"
-               formControlName="year" [(ngModel)]="forma.value.year" uppercase>
+               formControlName="year" [(ngModel)]="forma.value.year" numbers>
         <mat-error *ngIf="forma.get('year').hasError('required')"> {{getErrorMessages()}} </mat-error>
       </mat-form-field>
     </div>

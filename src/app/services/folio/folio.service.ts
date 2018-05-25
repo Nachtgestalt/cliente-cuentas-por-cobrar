@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpParams} from '@angular/common/http';
 import {Producto} from '../../interfaces/producto.interface';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {URL_SERVICIOS} from '../../config/config';
