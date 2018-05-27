@@ -27,6 +27,8 @@ import {ZonasComponent} from './recursos-humanos/zonas/zonas.component';
 import {FoliosComponent} from './configuracion/folios/folios.component';
 import {VentasComponent} from './ventas/ventas.component';
 import {EntregasDevolucionesComponent} from './entregas-devoluciones/entregas-devoluciones.component';
+import {NuevaVentaComponent} from './ventas/nueva-venta/nueva-venta.component';
+import {ModificarVentaComponent} from './ventas/modificar-venta/modificar-venta.component';
 
 
 const pagesRoutes: Routes = [
@@ -36,7 +38,15 @@ const pagesRoutes: Routes = [
     canActivate: [LoginGuardGuard],
     children: [
       {path: 'home', component: HomeComponent, data: {titulo: 'Inicio'}},
-      {path: 'ventas', component: VentasComponent, data: {titulo: 'Ventas'}},
+      {
+        path: 'ventas',
+        component: VentasComponent,
+        children: [
+          {path: 'nueva', component: NuevaVentaComponent, data: {titulo: 'Nueva venta'}},
+          {path: 'lista', component: ModificarVentaComponent, data: {titulo: 'Lista de ventas'}},
+          {path: '**', redirectTo: 'ventas/nueva', pathMatch: 'full'}
+        ],
+        data: {titulo: 'Ventas'}},
       {
         path: 'almacen',
         component: AlmacenComponent,

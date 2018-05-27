@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
 import {URL_SERVICIOS} from '../../config/config';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Producto} from '../../interfaces/producto.interface';
@@ -17,24 +17,27 @@ export class InventarioService {
     return this.dataChange.value;
   }
 
-  agregarProducto(producto: Producto) {
-    const url = this.inventarioURL + '/nuevo';
-    const body = JSON.stringify(producto);
+  confirmarPedido(idHistorial, cantidad) {
+    const url = this.inventarioURL + '/confirmar';
+    let headers = new HttpHeaders();
+    headers  = headers.append('authorization', this.token);
+    headers  = headers.append('Content-Type', 'application/json');
 
-    console.log(body);
+    let params = new HttpParams();
+    params = params.append('idHistorial', idHistorial);
+    params = params.append('entregados', cantidad);
 
-    return this.http.post(url, body, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}});
+    return this.http.get(url, {headers, params});
   }
 
   obtenerInventario() {
     return this.http.get<Inventario[]>(this.inventarioURL, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}})
       .map( (res: any) => {
           let inventarios: Inventario[] = [];
-
           for (let pedido of res) {
             let inventario: Inventario = {
               idHistorial: pedido.idHistorial,
-              cantidad: pedido.pedidos,
+              cantidad: pedido.pedidos - pedido.entregados,
               folio: pedido.venta.folio,
               titulo: pedido.libro.titulo
             };

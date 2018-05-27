@@ -24,16 +24,16 @@
 
     <div class="form-group row">
       <mat-form-field color="accent">
-        <input matInput #input class="form-control" placeholder="Cantidad a devolver:"
+        <input matInput #input class="form-control" placeholder="{{cantidadEntregar}}"
                type="number"
                [(ngModel)]="forma.value.cantidad"
-               formControlName="cantidad" [readonly]="!data.entrega" required>
+               formControlName="cantidad" [readonly]="!data.entrega" #input1 required>
         <!--<mat-error *ngIf="forma.get('folio').hasError">{{getErrorMessages()}}</mat-error>-->
       </mat-form-field>
     </div>
 
     <div class="form-group row" mat-dialog-actions>
-      <button mat-button  [mat-dialog-close]="1" (click)="confirmAdd()">Guardar</button>
+      <button mat-button (click)="confirmarPedido()">Guardar</button>
       <button mat-button (click)="onNoClick()" tabindex="-1">Cancelar</button>
     </div>
   </form>

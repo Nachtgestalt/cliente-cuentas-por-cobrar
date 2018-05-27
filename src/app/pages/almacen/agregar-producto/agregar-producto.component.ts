@@ -46,11 +46,24 @@ export class AgregarProductoComponent implements OnInit {
     {value: 'Secundaria', viewValue: 'SECUNDARIA'}
   ];
 
-  grados = [
+  grados = [];
+
+  gradosPrimaria = [
+    {value: '1° - PRIMERO', viewValue: '1° - PRIMERO'},
+    {value: '2° - SEGUNDO', viewValue: '2° - SEGUNDO'},
+    {value: '3° - TERCERO', viewValue: '3° - TERCERO'},
+    {value: '4° - CUARTO', viewValue: '4° - CUARTO'},
+    {value: '5° - QUINTO', viewValue: '5° - QUINTO'},
+    {value: '6° - SEXTO', viewValue: '6° - SEXTO'},
+  ];
+
+  gradosSecunadaria = [
     {value: '1° - PRIMERO', viewValue: '1° - PRIMERO'},
     {value: '2° - SEGUNDO', viewValue: '2° - SEGUNDO'},
     {value: '3° - TERCERO', viewValue: '3° - TERCERO'},
   ];
+
+
 
   constructor(private _productosService: ProductosService,
               private _stockService: StockService,
@@ -66,6 +79,7 @@ export class AgregarProductoComponent implements OnInit {
             .subscribe(producto => {
               console.log(producto);
               this.forma.setValue(producto);
+              console.log(this.forma.value);
             });
         } else {
           this.productoActualizar = true;
@@ -75,6 +89,7 @@ export class AgregarProductoComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.grados = this.gradosSecunadaria;
     // this._agregarService.solicitar().subscribe();
   }
 
@@ -93,11 +108,25 @@ export class AgregarProductoComponent implements OnInit {
       'costo': new FormControl('', Validators.required),
       'cantidad': new FormControl('', Validators.required)
     });
+
+    this.forma.get('nivel').valueChanges
+      .subscribe(
+        res => {
+          console.log(res);
+          if (res === 'Primaria') {
+            this.grados = this.gradosPrimaria;
+          } else {
+            this.grados = this.gradosSecunadaria;
+          }
+        }
+
+      );
   }
 
   // Funcion creada para omitir los validadores asincronos.
   crearFormaActualizar() {
     this.forma = new FormGroup({
+      'claveProducto': new FormControl('', [Validators.required]),
       'clave_producto': new FormControl('', [Validators.required]),
       'isbn': new FormControl(''),
       'autor': new FormControl('', Validators.required),
@@ -108,8 +137,7 @@ export class AgregarProductoComponent implements OnInit {
       'curso': new FormControl(''),
       'descripcion': new FormControl(''),
       'precio': new FormControl('', Validators.required),
-      'costo': new FormControl('', Validators.required),
-      'cantidad': new FormControl('', Validators.required)
+      'costo': new FormControl('', Validators.required)
     });
   }
 

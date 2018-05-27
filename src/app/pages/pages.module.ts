@@ -47,6 +47,8 @@ import {DeleteFolioDialogComponent} from '../dialogs/delete-folio/delete-folio.d
 import { VentasComponent } from './ventas/ventas.component';
 import { EntregasDevolucionesComponent } from './entregas-devoluciones/entregas-devoluciones.component';
 import {ConfirmInventoryDialogComponent} from '../dialogs/confirm-inventory/confirm-inventory.dialog.component';
+import { NuevaVentaComponent } from './ventas/nueva-venta/nueva-venta.component';
+import { ModificarVentaComponent } from './ventas/modificar-venta/modificar-venta.component';
 
 
 
@@ -81,6 +83,8 @@ import {ConfirmInventoryDialogComponent} from '../dialogs/confirm-inventory/conf
     FoliosComponent,
     VentasComponent,
     EntregasDevolucionesComponent,
+    NuevaVentaComponent,
+    ModificarVentaComponent,
     // Dialogs
   ],
   exports: [

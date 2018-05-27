@@ -10,7 +10,7 @@ export class SidebarService {
     },
     {
       titulo: 'Ventas',
-      url: '/ventas'
+      url: '/ventas/nueva'
     },
     {
       titulo: 'Recursos humanos',

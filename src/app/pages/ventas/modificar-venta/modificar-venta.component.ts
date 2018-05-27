@@ -1,26 +1,26 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {ProductosService} from '../../services/producto/productos.service';
-import {Inventario} from '../../interfaces/inventario.interface';
-import {InventarioService} from '../../services/inventario/inventario.service';
-import {ProductoDataSource} from '../almacen/modificar-producto/modificar-producto.component';
 import {MatDialog, MatPaginator, MatSnackBar, MatSort} from '@angular/material';
-import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs/Observable';
+import {Inventario} from '../../../interfaces/inventario.interface';
 import {DataSource} from '@angular/cdk/collections';
-import {DeleteProductoDialogComponent} from '../../dialogs/delete-producto/delete-producto.dialog.component';
-import {Producto} from '../../interfaces/producto.interface';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import {ConfirmInventoryDialogComponent} from '../../dialogs/confirm-inventory/confirm-inventory.dialog.component';
+import {Observable} from 'rxjs/Observable';
+import {InventarioService} from '../../../services/inventario/inventario.service';
+import {ConfirmInventoryDialogComponent} from '../../../dialogs/confirm-inventory/confirm-inventory.dialog.component';
+import {HttpClient} from '@angular/common/http';
+import {Venta} from '../../../interfaces/venta.interface';
+import {VentaService} from '../../../services/venta/venta.service';
 
 @Component({
-  selector: 'app-entregas-devoluciones',
-  templateUrl: './entregas-devoluciones.component.html',
-  styleUrls: ['./entregas-devoluciones.component.css']
+  selector: 'app-modificar-venta',
+  templateUrl: './modificar-venta.component.html',
+  styleUrls: ['./modificar-venta.component.css']
 })
-export class EntregasDevolucionesComponent implements OnInit {
-  displayedColumns = ['folio', 'titulo', 'cantidad', 'edit'];
-  exampleDatabase: InventarioService | null;
-  dataSource: InventarioDataSource | null;
+
+export class ModificarVentaComponent implements OnInit {
+
+  displayedColumns = ['folio', 'fecha', 'escuela', 'profesor', 'edit'];
+  exampleDatabase: VentaService | null;
+  dataSource: VentaDataSource | null;
 
   entrega: boolean;
 
@@ -56,8 +56,8 @@ export class EntregasDevolucionesComponent implements OnInit {
   }
 
   public loadData() {
-    this.exampleDatabase = new InventarioService(this.httpClient);
-    this.dataSource = new InventarioDataSource(this.exampleDatabase, this.paginator, this.sort);
+    this.exampleDatabase = new VentaService(this.httpClient);
+    this.dataSource = new VentaDataSource(this.exampleDatabase, this.paginator, this.sort);
     Observable.fromEvent(this.filter.nativeElement, 'keyup')
       .debounceTime(150)
       .distinctUntilChanged()
@@ -107,7 +107,7 @@ export class EntregasDevolucionesComponent implements OnInit {
   }
 }
 
-export class InventarioDataSource extends DataSource<Inventario> {
+export class VentaDataSource extends DataSource<Venta> {
   _filterChange = new BehaviorSubject('');
 
   get filter(): string {
@@ -118,10 +118,10 @@ export class InventarioDataSource extends DataSource<Inventario> {
     this._filterChange.next(filter);
   }
 
-  filteredData: Inventario[] = [];
-  renderedData: Inventario[] = [];
+  filteredData: Venta[] = [];
+  renderedData: Venta[] = [];
 
-  constructor(public _exampleDatabase: InventarioService,
+  constructor(public _exampleDatabase: VentaService,
               public _paginator: MatPaginator,
               public _sort: MatSort) {
     super();
@@ -130,7 +130,7 @@ export class InventarioDataSource extends DataSource<Inventario> {
   }
 
   /** Connect function called by the table to retrieve one stream containing the data to render. */
-  connect(): Observable<Inventario[]> {
+  connect(): Observable<Venta[]> {
     // Listen for any changes in the base data, sorting, filtering, or pagination
     const displayDataChanges = [
       this._exampleDatabase.dataChange,
@@ -139,12 +139,12 @@ export class InventarioDataSource extends DataSource<Inventario> {
       this._paginator.page
     ];
 
-    this._exampleDatabase.obtenerInventario();
+    this._exampleDatabase.getVentas();
 
     return Observable.merge(...displayDataChanges).map(() => {
       // Filter data
-      this.filteredData = this._exampleDatabase.data.slice().filter((inventario: Inventario) => {
-        const searchStr = (inventario.folio + inventario.titulo).toLowerCase();
+      this.filteredData = this._exampleDatabase.data.slice().filter((venta: Venta) => {
+        const searchStr = (venta.folio + venta.fecha).toLowerCase();
         return searchStr.indexOf(this.filter.toLowerCase()) !== -1;
       });
 
@@ -161,7 +161,7 @@ export class InventarioDataSource extends DataSource<Inventario> {
   }
 
   /** Returns a sorted copy of the database data. */
-  sortData(data: Inventario[]): Inventario[] {
+  sortData(data: Venta[]): Venta[] {
     if (!this._sort.active || this._sort.direction === '') {
       return data;
     }
@@ -172,8 +172,8 @@ export class InventarioDataSource extends DataSource<Inventario> {
 
       switch (this._sort.active) {
         case 'folio': [propertyA, propertyB] = [a.folio, b.folio]; break;
-        case 'titulo': [propertyA, propertyB] = [a.titulo, b.titulo]; break;
-        case 'cantidad': [propertyA, propertyB] = [a.cantidad, b.cantidad]; break;
+        case 'titulo': [propertyA, propertyB] = [a.fecha, b.fecha]; break;
+        // case 'cantidad': [propertyA, propertyB] = [a.pedidos, b.pedidos]; break;
       }
 
       const valueA = isNaN(+propertyA) ? propertyA : +propertyA;
