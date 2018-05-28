@@ -3,7 +3,7 @@
     <h5>Datos de la escuela</h5>
     <div class="row mt-2">
       <mat-form-field class="col-md-4">
-        <mat-select placeholder="Zona:" formControlName="zona">
+        <mat-select placeholder="Zona:" formControlName="zona" required>
           <mat-option *ngFor="let zona of zonaSelect" [value]="zona">
             {{zona.idzona}}
           </mat-option>

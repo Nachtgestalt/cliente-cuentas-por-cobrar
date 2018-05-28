@@ -186,21 +186,14 @@ export class ModificarVentaComponent implements OnInit {
       );
   }
 
-  resurtido(i: number, idHistorial: number, folio: string, titulo: string, cantidad: number) {
-    this.index = i;
-    this.id = idHistorial;
-    if (cantidad < 0) {
-      this.entrega = false;
-    } else {
-      this.entrega = true;
-    }
+  resurtido(i: number, idHistorial: number, folio: string, titulo: string, cantidad: number, resurtido: boolean) {
     const dialogRef = this.dialog.open(VentaResurtidoComponent, {
       data: {
         idHistorial: idHistorial,
         folio: folio,
         titulo: titulo,
         cantidad: cantidad,
-        entrega: this.entrega
+        resurtido: resurtido
       }
     });
 

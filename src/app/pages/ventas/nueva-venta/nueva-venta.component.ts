@@ -35,8 +35,9 @@ import {Maestro} from '../../../interfaces/maestro.interface';
     {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS}
   ],
 })
-export class NuevaVentaComponent implements OnInit, OnDestroy{
+export class NuevaVentaComponent implements OnInit, OnDestroy {
   active = true;
+  isValid = false;
 
   zonas: Zona[] = [];
   forma: FormGroup;
@@ -83,51 +84,55 @@ export class NuevaVentaComponent implements OnInit, OnDestroy{
   filteredOptionsProducto: Observable<Producto[]>[] = [];
   pdfResult;
 
-  constructor( private _vendedorService: VendedorService,
-               private _zonaService: ZonaService,
-               private _escuelaService: EscuelaService,
-               private _folioService: FolioService,
-               private _productoService: ProductosService,
-               private _ventaService: VentaService,
-               private _bloqueFoliosService: BloqueFoliosService,
-               private cdref: ChangeDetectorRef,
-               private formBuilder: FormBuilder,
-               private domSanitizer: DomSanitizer,
-               private renderer: Renderer2) {
+  constructor(private _vendedorService: VendedorService,
+              private _zonaService: ZonaService,
+              private _escuelaService: EscuelaService,
+              private _folioService: FolioService,
+              private _productoService: ProductosService,
+              private _ventaService: VentaService,
+              private _bloqueFoliosService: BloqueFoliosService,
+              private cdref: ChangeDetectorRef,
+              private formBuilder: FormBuilder,
+              private domSanitizer: DomSanitizer,
+              private renderer: Renderer2) {
 
     this.currentSeason = JSON.parse(localStorage.getItem('season'));
 
-    this._zonaService.getZonas()
-      .takeWhile(() => this.isAlive)
-      .subscribe( (res: Zona[]) => {
-        this.zonas = res;
-        console.log(this.zonas);
-      });
+    localStorage.getItem('season') !== null ? this.isValid = true : this.isValid = false;
 
-    this._vendedorService.getVendedores()
-      .takeWhile(() => this.isAlive)
-      .subscribe( (res: Vendedor[]) => {
-        this.vendedores = res;
-      });
+    if (this.isValid) {
+      this._zonaService.getZonas()
+        .takeWhile(() => this.isAlive)
+        .subscribe((res: Zona[]) => {
+          this.zonas = res;
+          console.log(this.zonas);
+        });
 
-    this._productoService.getAll()
-      .takeWhile(() => this.isAlive)
-      .subscribe(
-        (res: Producto[]) => {
-          this.productos = res;
-          console.log(res);
-        }
-      );
+      this._vendedorService.getVendedores()
+        .takeWhile(() => this.isAlive)
+        .subscribe((res: Vendedor[]) => {
+          this.vendedores = res;
+        });
 
-    this._folioService.getFoliosTemporada(this.currentSeason.idtemporada)
-      .takeWhile(() => this.isAlive)
-      .subscribe(
-        res => {
-          console.log(res);
-          this.reciboVenta = res[1];
-          this.venta.idfolios = res[1].idfolios;
-        }
-      );
+      this._productoService.getAll()
+        .takeWhile(() => this.isAlive)
+        .subscribe(
+          (res: Producto[]) => {
+            this.productos = res;
+            console.log(res);
+          }
+        );
+
+      this._folioService.getFoliosTemporada(this.currentSeason.idtemporada)
+        .takeWhile(() => this.isAlive)
+        .subscribe(
+          res => {
+            console.log(res);
+            this.reciboVenta = res[1];
+            this.venta.idfolios = res[1].idfolios;
+          }
+        );
+    }
   }
 
   ngOnInit() {
@@ -138,7 +143,7 @@ export class NuevaVentaComponent implements OnInit, OnDestroy{
   createValueChanges() {
     this.forma.get('zona').valueChanges
       .takeWhile(() => this.isAlive)
-      .subscribe( values => {
+      .subscribe(values => {
         console.log(values);
         this.resetFormAfterChangeZone();
         this.setFormValuesAfterChangeZone(values);
@@ -163,7 +168,7 @@ export class NuevaVentaComponent implements OnInit, OnDestroy{
 
     this.forma.get('escuela').valueChanges
       .takeWhile(() => this.isAlive)
-      .subscribe( values => {
+      .subscribe(values => {
         console.log(values);
         if (values !== null) {
           this.venta.escuela_clave = values.clave;
@@ -174,7 +179,7 @@ export class NuevaVentaComponent implements OnInit, OnDestroy{
 
     this.forma.get('maestro').valueChanges
       .takeWhile(() => this.isAlive)
-      .subscribe( values => {
+      .subscribe(values => {
         console.log(values);
         this.venta.idprofesor = values.idprofesor;
         this.comisionesFlag = true;
@@ -184,7 +189,7 @@ export class NuevaVentaComponent implements OnInit, OnDestroy{
 
     this.forma.get('folio').valueChanges
       .takeWhile(() => this.isAlive)
-      .subscribe( values => {
+      .subscribe(values => {
         console.log(this.forma.get('folio'));
         if (values !== null) {
           this.venta.folio = values;
@@ -194,7 +199,7 @@ export class NuevaVentaComponent implements OnInit, OnDestroy{
   }
 
   ngOnDestroy() {
-    console.log('ESTOY EN EL ONDESTROY!!')
+    console.log('ESTOY EN EL ONDESTROY!!');
   }
 
   resetFormAfterChangeZone() {
@@ -230,29 +235,29 @@ export class NuevaVentaComponent implements OnInit, OnDestroy{
     this.forma.get('pedidos.0').get('title').valueChanges
       .takeWhile(() => this.isAlive)
       .subscribe(
-      res => {
-        console.log(res)
-        this.forma.get('pedidos.0').get('price').setValue(res.precio);
-      }
-    );
+        res => {
+          console.log(res);
+          this.forma.get('pedidos.0').get('price').setValue(res.precio);
+        }
+      );
 
     this.forma.get('pedidos.0').get('amount').valueChanges
       .takeWhile(() => this.isAlive)
       .subscribe(
-      (res: any) => {
-        const precio: any = Number(this.forma.get('pedidos.0').get('price').value);
-        this.forma.get('pedidos.0').get('total').setValue( precio * res );
-      }
-    );
+        (res: any) => {
+          const precio: any = Number(this.forma.get('pedidos.0').get('price').value);
+          this.forma.get('pedidos.0').get('total').setValue(precio * res);
+        }
+      );
 
     this.forma.get('pedidos.0').get('price').valueChanges
       .takeWhile(() => this.isAlive)
       .subscribe(
-      (res: any) => {
-        const precio: any = Number(this.forma.get('pedidos.0').get('amount').value);
-        this.forma.get('pedidos.0').get('total').setValue( precio * res );
-      }
-    );
+        (res: any) => {
+          const precio: any = Number(this.forma.get('pedidos.0').get('amount').value);
+          this.forma.get('pedidos.0').get('total').setValue(precio * res);
+        }
+      );
   }
 
   createItem(): FormGroup {
@@ -289,7 +294,7 @@ export class NuevaVentaComponent implements OnInit, OnDestroy{
     let fecha = fechaForm.format('YYYY[-]MM[-]DD');
     this.venta.pedidos.pop();
     for (let pedido of control) {
-      console.log(pedido)
+      console.log(pedido);
       this.venta.pedidos.push(
         {
           idHistorial: null,
@@ -319,40 +324,40 @@ export class NuevaVentaComponent implements OnInit, OnDestroy{
               this._ventaService.getPFDVenta(this.venta.folio)
                 .takeWhile(() => this.isAlive)
                 .subscribe(
-                (data: any) => {
-                  console.log(data);
-                  // var fileURL = URL.createObjectURL(data);
-                  // window.open(fileURL, 'reporte de venta');
-                  this.pdfResult = this.domSanitizer.bypassSecurityTrustResourceUrl(
-                    URL.createObjectURL(data)
-                  );
-                  window.open(this.pdfResult.changingThisBreaksApplicationSecurity);
-                  console.log(this.pdfResult);
-                  this.active = false;
-                  this.vendedorFlag = false;
-                  this.ventaFlag = false;
-                  this.escuelaFlag = false;
-                  this.comisionesFlag = false;
-                  this.pedidosFlag = false;
-                  this.showPDF = false;
-                  this.cdref.detectChanges();
-                  this.isAlive = false;
-                },
-                error1 => {
-                  swal('Algo ha salido mal', 'Error al generar reporte de venta', 'error');
-                },
-                () => {
-                  console.log('Todo ha salido OK!!');
-                  this.isAlive = false;
-                  // this.forma.reset();
-                  setTimeout(() => {
-                    this.crearForma();
-                    this.createValueChanges();
-                    this.active = true;
-                    this.isAlive = true;
-                  }, 1000);
-                }
-              );
+                  (data: any) => {
+                    console.log(data);
+                    // var fileURL = URL.createObjectURL(data);
+                    // window.open(fileURL, 'reporte de venta');
+                    this.pdfResult = this.domSanitizer.bypassSecurityTrustResourceUrl(
+                      URL.createObjectURL(data)
+                    );
+                    window.open(this.pdfResult.changingThisBreaksApplicationSecurity);
+                    console.log(this.pdfResult);
+                    this.active = false;
+                    this.vendedorFlag = false;
+                    this.ventaFlag = false;
+                    this.escuelaFlag = false;
+                    this.comisionesFlag = false;
+                    this.pedidosFlag = false;
+                    this.showPDF = false;
+                    this.cdref.detectChanges();
+                    this.isAlive = false;
+                  },
+                  error1 => {
+                    swal('Algo ha salido mal', 'Error al generar reporte de venta', 'error');
+                  },
+                  () => {
+                    console.log('Todo ha salido OK!!');
+                    this.isAlive = false;
+                    // this.forma.reset();
+                    setTimeout(() => {
+                      this.crearForma();
+                      this.createValueChanges();
+                      this.active = true;
+                      this.isAlive = true;
+                    }, 1000);
+                  }
+                );
             });
         }
       );
@@ -382,29 +387,29 @@ export class NuevaVentaComponent implements OnInit, OnDestroy{
     this.forma.get(`pedidos.${control.length - 1}`).get('title').valueChanges
       .takeWhile(() => this.isAlive)
       .subscribe(
-      res => {
-        console.log(res)
-        this.forma.get(`pedidos.${control.length - 1}`).get('price').setValue(res.precio);
-      }
-    );
+        res => {
+          console.log(res);
+          this.forma.get(`pedidos.${control.length - 1}`).get('price').setValue(res.precio);
+        }
+      );
 
     this.forma.get(`pedidos.${control.length - 1}`).get('amount').valueChanges
       .takeWhile(() => this.isAlive)
       .subscribe(
-      (res: any) => {
-        let precio: any = Number(this.forma.get(`pedidos.${control.length - 1}`).get('price').value);
-        this.forma.get(`pedidos.${control.length - 1}`).get('total').setValue( precio * res );
-      }
-    );
+        (res: any) => {
+          let precio: any = Number(this.forma.get(`pedidos.${control.length - 1}`).get('price').value);
+          this.forma.get(`pedidos.${control.length - 1}`).get('total').setValue(precio * res);
+        }
+      );
 
     this.forma.get(`pedidos.${control.length - 1}`).get('price').valueChanges
       .takeWhile(() => this.isAlive)
       .subscribe(
-      (res: any) => {
-        let precio: any = Number(this.forma.get(`pedidos.${control.length - 1}`).get('amount').value);
-        this.forma.get(`pedidos.${control.length - 1}`).get('total').setValue( precio * res );
-      }
-    );
+        (res: any) => {
+          let precio: any = Number(this.forma.get(`pedidos.${control.length - 1}`).get('amount').value);
+          this.forma.get(`pedidos.${control.length - 1}`).get('total').setValue(precio * res);
+        }
+      );
 
     this.cdref.detectChanges();
   }
@@ -419,7 +424,7 @@ export class NuevaVentaComponent implements OnInit, OnDestroy{
 
   validarFolio(control: AbstractControl) {
     return this._ventaService.folioAsignadoVenta(control.value)
-      .map( res => {
+      .map(res => {
         console.log('Folio asignado: ', res);
         return res ? {folioexiste: true} : null;
       });
@@ -427,7 +432,7 @@ export class NuevaVentaComponent implements OnInit, OnDestroy{
 
   validarFolioEnRango(control: AbstractControl) {
     return this._bloqueFoliosService.folioInRange(this.venta.vendedor_clave, control.value)
-      .map( res => {
+      .map(res => {
         console.log('Folio en rango: ', res);
         return res ? null : {folioExisteEnRango: true};
       });

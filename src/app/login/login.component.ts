@@ -46,16 +46,16 @@ export class LoginComponent implements OnInit {
           .subscribe(
             (data: any) => {
               this._userService.setInStorage(resp, data);
-              this.router.navigate(['/home']);
-            },
-            error1 => {},
-            () => {
               this._temporadaService.getCurrentSeason().subscribe(
                 res => {
                   console.log(res);
                   this._userService.setSeasonInStorage(res);
                 }
               );
+              this.router.navigate(['/home']);
+            },
+            error1 => {},
+            () => {
             }
           );
       },

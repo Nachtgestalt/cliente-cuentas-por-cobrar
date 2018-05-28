@@ -1,5 +1,5 @@
 import {ChangeDetectorRef, Component, Inject, OnInit} from '@angular/core';
-import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
+import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Producto} from '../../interfaces/producto.interface';
 import {ProductosService} from '../../services/producto/productos.service';
 import {Observable} from 'rxjs/Observable';
@@ -21,6 +21,7 @@ export class VentaResurtidoComponent implements OnInit {
   forma: FormGroup;
 
   isAlive = true;
+  mensajeDialog = '';
 
   productos: Producto[] = [];
   filteredOptionsProducto: Observable<Producto[]>[] = [];
@@ -53,6 +54,9 @@ export class VentaResurtidoComponent implements OnInit {
               public dialogRef: MatDialogRef<AddTemporadaComponent>,
               private _historialVenta: HistorialVentaService,
               @Inject(MAT_DIALOG_DATA) public data: any) {
+    console.log(this.data.resurtido);
+
+    this.data.resurtido ? this.mensajeDialog = 'RESURTIDO' : this.mensajeDialog = 'DEVOLUCION';
 
     this._productoService.getAll()
       .takeWhile(() => this.isAlive)
@@ -127,8 +131,8 @@ export class VentaResurtidoComponent implements OnInit {
 
   createItem(): FormGroup {
     return this.formBuilder.group({
-      title: '',
-      amount: '',
+      title: ['', Validators.required],
+      amount: ['', [Validators.required, Validators.min(1)]],
       price: '',
       total: '',
     });
@@ -197,6 +201,9 @@ export class VentaResurtidoComponent implements OnInit {
     let control = this.forma.controls['pedidos'].value;
     for (let pedido of control) {
       console.log(pedido);
+      if (!this.data.resurtido) {
+        pedido.amount = pedido.amount * -1;
+      }
       this.historialVenta.push(
         {
           idHistorial: null,

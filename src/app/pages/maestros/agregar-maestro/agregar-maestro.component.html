@@ -1,40 +1,56 @@
 <div *ngIf="active" class="main-container mt-2 animated fadeIn fast">
   <h5>Datos del maestro</h5>
-  <form [formGroup] = "forma" (ngSubmit)="agregar()" novalidate="novalidate">
+  <form [formGroup]="forma" (ngSubmit)="agregar()" novalidate="novalidate">
     <div class="row mt-2" *ngFor="let escuela of forma.controls['escuelas'].controls; let i = index">
-      <mat-form-field class="col-md-5" formArrayName="escuelas">
-        <input type="text" placeholder="Escuela:" aria-label="Escuela:" matInput
-               [formControlName]="i" [(ngModel)]="forma.value.escuelas[i]" [matAutocomplete]="auto"  required>
-        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-          <mat-option *ngFor="let option of filteredOptions[i] | async" [value]="option">
-            {{option.clave + ' - ' + option.nombre}}
-          </mat-option>
-        </mat-autocomplete>
-      </mat-form-field>
-      <button type="button" mat-icon-button color="primary" (click)="agregarOtraEscuela(i+1)">
-        <mat-icon aria-label="Example icon-button with a heart icon">add</mat-icon>
-      </button>
+      <div class="col-md-5">
+        <mat-form-field class="col-md-12 p-0" formArrayName="escuelas">
+          <input type="text" placeholder="Escuela:" aria-label="Escuela:" matInput
+                 [formControlName]="i" [(ngModel)]="forma.value.escuelas[i]" [matAutocomplete]="auto" required>
+          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+            <mat-option *ngFor="let option of filteredOptions[i] | async" [value]="option">
+              {{option.clave + ' - ' + option.nombre}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+      <div class="col-md-1">
+        <button class="col-md-6" type="button" mat-icon-button color="primary" (click)="deleteSchool(i)">
+          <mat-icon aria-label="+">remove</mat-icon>
+        </button>
+      </div>
+
+      <!--<button type="button" mat-icon-button color="primary" (click)="agregarOtraEscuela(i+1)">-->
+        <!--<mat-icon aria-label="Example icon-button with a heart icon">add</mat-icon>-->
+      <!--</button>-->
+    </div>
+    <div class="row">
+      <div class="col-md-5">
+        <button class="float-right" type="button" mat-raised-button (click)="agregarOtraEscuela()">
+          <mat-icon aria-label="+">add</mat-icon>
+          Agregar otro libro
+        </button>
+      </div>
     </div>
 
     <div class="row mt-2">
       <mat-form-field class="col-md-5">
         <input type="text" matInput placeholder="Nombre"
                formControlName="nombre" [(ngModel)]="forma.value.nombre" uppercase required>
-        <mat-error *ngIf="forma.get('nombre').hasError('required')"> {{getErrorMessages()}} </mat-error>
+        <mat-error *ngIf="forma.get('nombre').hasError('required')"> {{getErrorMessages()}}</mat-error>
       </mat-form-field>
     </div>
     <div class="row mt-2">
       <mat-form-field class="col-md-5">
         <input type="text" matInput placeholder="Apellidos"
                formControlName="apellidos" [(ngModel)]="forma.value.apellidos" uppercase required>
-        <mat-error *ngIf="forma.get('apellidos').hasError('required')"> {{getErrorMessages()}} </mat-error>
+        <mat-error *ngIf="forma.get('apellidos').hasError('required')"> {{getErrorMessages()}}</mat-error>
       </mat-form-field>
     </div>
     <div class="row mt-2">
       <mat-form-field class="col-md-5">
         <input type="text" matInput placeholder="Teléfono:"
                formControlName="telefono" [(ngModel)]="forma.value.telefono" uppercase required>
-        <mat-error *ngIf="forma.get('telefono').hasError('required')"> {{getErrorMessages()}} </mat-error>
+        <mat-error *ngIf="forma.get('telefono').hasError('required')"> {{getErrorMessages()}}</mat-error>
       </mat-form-field>
     </div>
 

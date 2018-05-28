@@ -42,13 +42,13 @@
           <mat-icon>delete_forever</mat-icon>
           {{row.index}}
         </button>
-        <button (click)="resurtido(i, row.idHistorial, row.folio, row.titulo, row.cantidad)" mat-mini-fab color="primary"
+        <button (click)="resurtido(i, row.idHistorial, row.folio, row.titulo, row.cantidad, true)" mat-mini-fab color="primary"
                 matTooltip="Resurtido"
                 aria-label="Button that displays a tooltip when focused or hovered over">
           <mat-icon>add</mat-icon>
           {{row.index}}
         </button>
-        <button (click)="confirm(i, row.idHistorial, row.folio, row.titulo, row.cantidad)" mat-mini-fab color="primary"
+        <button (click)="resurtido(i, row.idHistorial, row.folio, row.titulo, row.cantidad, false)" mat-mini-fab color="primary"
                 matTooltip="Devolución"
                 aria-label="Button that displays a tooltip when focused or hovered over">
           <mat-icon>remove</mat-icon>

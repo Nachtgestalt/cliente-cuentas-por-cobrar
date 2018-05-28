@@ -28,7 +28,12 @@
     <!--Escuela Colum-->
     <ng-container matColumnDef="escuela">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Escuela </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{ row.escuelas[0].nombre}} </mat-cell>
+      <mat-cell *matCellDef="let row">
+        <ul *ngFor="let escuela of row.escuelas" style="padding-left: 15px;">
+          <li>{{escuela.nombre}}</li>
+        </ul>
+        <!--{{ row.escuelas[0].nombre}} -->
+      </mat-cell>
     </ng-container>
 
     <!--Escuela Colum-->

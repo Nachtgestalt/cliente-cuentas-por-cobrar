@@ -58,7 +58,7 @@ export class AgregarMaestroComponent implements OnInit, OnDestroy {
           this.idProfesor = parseInt(this.clave);
           this._maestroService.obtenerMaestro(this.clave)
             .subscribe((maestro: Maestro) => {
-              this.crearFilteredOptions(maestro.escuelas.length);
+              // this.crearFilteredOptions(maestro.escuelas.length);
               this.forma.setValue(maestro);
             });
         } else {
@@ -92,8 +92,6 @@ export class AgregarMaestroComponent implements OnInit, OnDestroy {
         map(value => typeof value === 'string' ? value : value.nombre),
         map(nombre => nombre ? this.filter(nombre) : this.escuelas.slice())
       );
-
-    console.log(this.filteredOptions);
   }
 
   crearFormaActualizar() {
@@ -147,25 +145,29 @@ export class AgregarMaestroComponent implements OnInit, OnDestroy {
     }
   }
 
-  crearFilteredOptions(lengthEscuelas){
-    for (let i = 0; i < lengthEscuelas; i++) {
-      this.agregarOtraEscuela(i);
-    }
-  }
-
-  agregarOtraEscuela(i) {
-    (<FormArray>this.forma.controls['escuelas']).push(
-      new FormControl('')
-    );
+  agregarOtraEscuela() {
+    const control = <FormArray>this.forma.controls['escuelas'];
+    control.push(new FormControl(''));
+    // (<FormArray>this.forma.controls['escuelas']).push(
+    //   new FormControl('')
+    // );
 
     this.cdref.detectChanges();
 
-    this.filteredOptions[i] = this.forma.get(`escuelas.${i}`).valueChanges
+    this.filteredOptions[control.length - 1] = this.forma.get(`escuelas.${control.length - 1}`).valueChanges
       .pipe(
         startWith<string | Escuela>(''),
         map(value => typeof value === 'string' ? value : value.nombre),
         map(nombre => nombre ? this.filter(nombre) : this.escuelas.slice())
       );
+  }
+
+  deleteSchool(index) {
+    // control refers to your formarray
+    const control = <FormArray>this.forma.controls['escuelas'];
+    // remove the chosen row
+    control.removeAt(index);
+    // console.log(control);
   }
 
   ngOnDestroy() {

@@ -1,4 +1,4 @@
-<div class="main-container mt-2 animated fadeIn fast">
+<div class="main-container mt-2 animated fadeIn fast" *ngIf="isValid; else other_content">
   <form [formGroup]="forma" *ngIf="active">
     <div class="row">
       <div class="col-md-2">
@@ -149,9 +149,6 @@
             </mat-form-field>
           </div>
           <div class="col-md-1">
-            <!--<button class="col-md-6" type="button" mat-icon-button color="primary" (click)="addAnotherBook(i+1)">-->
-            <!--<mat-icon aria-label="+">add</mat-icon>-->
-            <!--</button>-->
             <button class="col-md-6" type="button" mat-icon-button color="primary" (click)="deleteBook(i)">
               <mat-icon aria-label="+">remove</mat-icon>
             </button>
@@ -174,5 +171,8 @@
 
   </form>
 </div>
-
-<iframe *ngIf="showPDF" [src]="pdfResult" width="100%"></iframe>
+<ng-template #other_content>
+  <mat-card class="mt-5">
+    <h2 class="text-center"><mat-icon>warning</mat-icon> No hay una temporada activa </h2>
+  </mat-card>
+</ng-template>

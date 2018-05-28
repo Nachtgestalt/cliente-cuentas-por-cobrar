@@ -189,7 +189,7 @@ export class AgregarEscuelaComponent implements OnInit {
           swal('Escuela actualizada', 'Escuela actualizada con exito', 'success');
           setTimeout(() => {
             this.active = true;
-            this.router.navigate(['/clientes/escuelas']);
+            this.router.navigate(['/clientes/escuelas/lista']);
           }, 1000);
         });
     }

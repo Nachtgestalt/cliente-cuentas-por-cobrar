@@ -1,5 +1,5 @@
 <div class="container fadeIn fast">
-  <h3 mat-dialog-title>RESURTIDO</h3>
+  <h3 mat-dialog-title>{{mensajeDialog}}</h3>
   <div mat-dialog-content>
     <form [formGroup]="forma">
       <div formArrayName="pedidos" class="col-md-12">
@@ -21,7 +21,7 @@
               <input type="number" matInput placeholder="Cantidad"
                      formControlName="amount"
                      required>
-              <!--<mat-error *ngIf="forma.get('isbn').hasError('required')"> {{getErrorMessages()}} </mat-error>-->
+              <mat-error *ngIf="pedido.controls.amount.hasError('min')"> Debe ser mayor a 0 </mat-error>
             </mat-form-field>
           </div>
           <div class="col-md-2">
