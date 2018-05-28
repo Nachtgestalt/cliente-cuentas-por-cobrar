@@ -20,7 +20,9 @@ import {
   MatSortModule,
   MatAutocompleteModule,
   MatSnackBarModule,
-  MatDatepickerModule, MatNativeDateModule
+  MatDatepickerModule,
+  MatNativeDateModule,
+  MatTooltipModule
 } from '@angular/material';
 
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
@@ -54,7 +56,8 @@ import {MatMomentDateModule} from '@angular/material-moment-adapter';
     BrowserAnimationsModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatMomentDateModule
+    MatMomentDateModule,
+    MatTooltipModule
   ],
 
   exports: [
@@ -80,7 +83,8 @@ import {MatMomentDateModule} from '@angular/material-moment-adapter';
     BrowserAnimationsModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatMomentDateModule
+    MatMomentDateModule,
+    MatTooltipModule
   ],
 })
 export class MaterialModule { }

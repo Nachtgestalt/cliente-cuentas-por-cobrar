@@ -12,7 +12,8 @@ import {EscuelaService} from "../../services/escuela/escuela.service";
 export class DeleteEscuelaDialogComponent {
 
   constructor(public dialogRef: MatDialogRef<DeleteProductoDialogComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: any, public _escuelaService: EscuelaService) { }
+              @Inject(MAT_DIALOG_DATA) public data: any,
+              public _escuelaService: EscuelaService) { }
 
   onNoClick(): void {
     this.dialogRef.close();

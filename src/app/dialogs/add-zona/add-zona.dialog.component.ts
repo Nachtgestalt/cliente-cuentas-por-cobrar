@@ -29,10 +29,10 @@ export class AddZonaDialogComponent implements OnInit {
       this.mensajeDialog = 'Editar zona'
       this.forma = new FormGroup({
         'idzona': new FormControl(this.data.id, Validators.required),
-        'vendedor': new FormControl('', Validators.required),
-        // 'vendedor': new FormGroup({
-        //   'clave': new FormControl('', Validators.required)}
-        // )
+        // 'vendedor': new FormControl('', Validators.required),
+        'vendedor': new FormGroup({
+          'clave': new FormControl('', Validators.required)}
+        )
       });
     } else {
       this.mensajeDialog = 'Agregar zona'

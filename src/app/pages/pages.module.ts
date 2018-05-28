@@ -49,6 +49,10 @@ import { EntregasDevolucionesComponent } from './entregas-devoluciones/entregas-
 import {ConfirmInventoryDialogComponent} from '../dialogs/confirm-inventory/confirm-inventory.dialog.component';
 import { NuevaVentaComponent } from './ventas/nueva-venta/nueva-venta.component';
 import { ModificarVentaComponent } from './ventas/modificar-venta/modificar-venta.component';
+import {EditPedidoDialogComponent} from '../dialogs/edit-pedido/edit-pedido.dialog.component';
+import {VentaResurtidoComponent} from '../dialogs/venta-resurtido/venta-resurtido.component';
+import {VentaDevolucionComponent} from '../dialogs/venta-devolucion/venta-devolucion.component';
+import {DeleteVentaComponent} from '../dialogs/delete-venta/delete-venta.component';
 
 
 
@@ -126,6 +130,10 @@ import { ModificarVentaComponent } from './ventas/modificar-venta/modificar-vent
     AddTemporadaComponent,
     AddZonaDialogComponent,
     AddFolioDialogComponent,
-    ConfirmInventoryDialogComponent
+    ConfirmInventoryDialogComponent,
+    EditPedidoDialogComponent,
+    VentaResurtidoComponent,
+    VentaDevolucionComponent,
+    DeleteVentaComponent
     ]
 }) export class PagesModule {}

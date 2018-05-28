@@ -86,12 +86,13 @@ export class ZonasComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result === 1) {
-        // When using an edit things are little different, firstly we find record inside DataService by id
-        const foundIndex = this.exampleDatabase.dataChange.value.findIndex(x => x.idzona === this.id);
-        // Then you update that record using data from dialogData (values you enetered)
-        this.exampleDatabase.dataChange.value[foundIndex] = this._zonaService.getDialogData();
-        // And lastly refresh table
-        this.refreshTable();
+        this.loadData();
+        // // When using an edit things are little different, firstly we find record inside DataService by id
+        // const foundIndex = this.exampleDatabase.dataChange.value.findIndex(x => x.idzona === this.id);
+        // // Then you update that record using data from dialogData (values you enetered)
+        // this.exampleDatabase.dataChange.value[foundIndex] = this._zonaService.getDialogData();
+        // // And lastly refresh table
+        // this.refreshTable();
       }
     });
   }
@@ -125,10 +126,11 @@ export class ZonasComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result === 1) {
+        this.loadData();
         // After dialog is closed we're doing frontend updates
         // For add we're just pushing a new row inside DataService
         // this.exampleDatabase.dataChange.value.push(this._zonaService.getDialogData());
-        this.refreshTable();
+        // this.refreshTable();
       }
     });
   }

@@ -32,6 +32,10 @@ import {OnlyNumbersDirective} from './directives/onlyNumbers.directive';
 import {AddFolioDialogComponent} from './dialogs/add-folio/add-folio.dialog.component';
 import {DeleteFolioDialogComponent} from './dialogs/delete-folio/delete-folio.dialog..component';
 import {ConfirmInventoryDialogComponent} from './dialogs/confirm-inventory/confirm-inventory.dialog.component';
+import {EditPedidoDialogComponent} from './dialogs/edit-pedido/edit-pedido.dialog.component';
+import {VentaResurtidoComponent} from './dialogs/venta-resurtido/venta-resurtido.component';
+import {VentaDevolucionComponent} from './dialogs/venta-devolucion/venta-devolucion.component';
+import {DeleteVentaComponent} from './dialogs/delete-venta/delete-venta.component';
 
 
 @NgModule({
@@ -48,7 +52,11 @@ import {ConfirmInventoryDialogComponent} from './dialogs/confirm-inventory/confi
     AddTemporadaComponent,
     AddZonaDialogComponent,
     AddFolioDialogComponent,
-    ConfirmInventoryDialogComponent
+    ConfirmInventoryDialogComponent,
+    EditPedidoDialogComponent,
+    VentaResurtidoComponent,
+    VentaDevolucionComponent,
+    DeleteVentaComponent
   ],
   imports: [
     BrowserModule,
@@ -70,7 +78,11 @@ import {ConfirmInventoryDialogComponent} from './dialogs/confirm-inventory/confi
     AddTemporadaComponent,
     AddZonaDialogComponent,
     AddFolioDialogComponent,
-    ConfirmInventoryDialogComponent
+    ConfirmInventoryDialogComponent,
+    EditPedidoDialogComponent,
+    VentaResurtidoComponent,
+    VentaDevolucionComponent,
+    DeleteVentaComponent
   ],
   providers: [
     {provide: LocationStrategy, useClass: HashLocationStrategy}

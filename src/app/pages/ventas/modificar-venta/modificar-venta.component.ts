@@ -9,6 +9,10 @@ import {ConfirmInventoryDialogComponent} from '../../../dialogs/confirm-inventor
 import {HttpClient} from '@angular/common/http';
 import {Venta} from '../../../interfaces/venta.interface';
 import {VentaService} from '../../../services/venta/venta.service';
+import {EditPedidoDialogComponent} from '../../../dialogs/edit-pedido/edit-pedido.dialog.component';
+import {VentaResurtidoComponent} from '../../../dialogs/venta-resurtido/venta-resurtido.component';
+import {DeleteVentaComponent} from '../../../dialogs/delete-venta/delete-venta.component';
+import {DomSanitizer} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-modificar-venta',
@@ -17,6 +21,8 @@ import {VentaService} from '../../../services/venta/venta.service';
 })
 
 export class ModificarVentaComponent implements OnInit {
+
+  isAlive = true;
 
   displayedColumns = ['folio', 'fecha', 'escuela', 'profesor', 'edit'];
   exampleDatabase: VentaService | null;
@@ -33,7 +39,9 @@ export class ModificarVentaComponent implements OnInit {
 
   constructor(private httpClient: HttpClient,
               public dialog: MatDialog,
-              public snackBar: MatSnackBar) { }
+              public snackBar: MatSnackBar,
+              public _ventaService: VentaService,
+              private domSanitizer: DomSanitizer) { }
 
   ngOnInit() {
     this.loadData();
@@ -67,6 +75,60 @@ export class ModificarVentaComponent implements OnInit {
         }
         this.dataSource.filter = this.filter.nativeElement.value;
       });
+  }
+
+  deleteItem(i: number, folio: string, fecha: string, escuela: string) {
+    this.index = i;
+    const dialogRef = this.dialog.open(DeleteVentaComponent, {
+      data: {
+        folio: folio,
+        fecha: fecha,
+        escuela: escuela,
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+      if (result) {
+        this.openSnackBar('Venta actualizada', 'Aceptar');
+        this.loadData();
+        // const foundIndex = this.exampleDatabase.dataChange.value.findIndex(x => x.idHistorial === this.id);
+        // // for delete we use splice in order to remove single object from DataService
+        // this.exampleDatabase.dataChange.value.splice(foundIndex, 1);
+        // this.refreshTable();
+      }
+    });
+  }
+
+  edit(i: number, idHistorial: number, folio: string, titulo: string, cantidad: number) {
+    this.index = i;
+    this.id = idHistorial;
+    if (cantidad < 0) {
+      this.entrega = false;
+    } else {
+      this.entrega = true;
+    }
+    const dialogRef = this.dialog.open(EditPedidoDialogComponent, {
+      data: {
+        idHistorial: idHistorial,
+        folio: folio,
+        titulo: titulo,
+        cantidad: cantidad,
+        entrega: this.entrega
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+      if (result) {
+        this.openSnackBar('Venta actualizada', 'Aceptar');
+        this.loadData();
+        // const foundIndex = this.exampleDatabase.dataChange.value.findIndex(x => x.idHistorial === this.id);
+        // // for delete we use splice in order to remove single object from DataService
+        // this.exampleDatabase.dataChange.value.splice(foundIndex, 1);
+        // this.refreshTable();
+      }
+    });
   }
 
   confirm(i: number, idHistorial: number, folio: string, titulo: string, cantidad: number) {
@@ -103,6 +165,55 @@ export class ModificarVentaComponent implements OnInit {
   openSnackBar(message: string, action: string) {
     this.snackBar.open(message, action, {
       duration: 2000,
+    });
+  }
+
+  print(folio) {
+    let pdfResult;
+    this._ventaService.getPFDVenta(folio)
+      .takeWhile(() => this.isAlive)
+      .subscribe(
+        (data: any) => {
+          console.log(data);
+          // var fileURL = URL.createObjectURL(data);
+          // window.open(fileURL, 'reporte de venta');
+          pdfResult = this.domSanitizer.bypassSecurityTrustResourceUrl(
+            URL.createObjectURL(data)
+          );
+          window.open(pdfResult.changingThisBreaksApplicationSecurity);
+          console.log(pdfResult);
+        }
+      );
+  }
+
+  resurtido(i: number, idHistorial: number, folio: string, titulo: string, cantidad: number) {
+    this.index = i;
+    this.id = idHistorial;
+    if (cantidad < 0) {
+      this.entrega = false;
+    } else {
+      this.entrega = true;
+    }
+    const dialogRef = this.dialog.open(VentaResurtidoComponent, {
+      data: {
+        idHistorial: idHistorial,
+        folio: folio,
+        titulo: titulo,
+        cantidad: cantidad,
+        entrega: this.entrega
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+      if (result) {
+        this.openSnackBar('Venta actualizada', 'Aceptar');
+        this.loadData();
+        // const foundIndex = this.exampleDatabase.dataChange.value.findIndex(x => x.idHistorial === this.id);
+        // // for delete we use splice in order to remove single object from DataService
+        // this.exampleDatabase.dataChange.value.splice(foundIndex, 1);
+        // this.refreshTable();
+      }
     });
   }
 }
@@ -144,7 +255,7 @@ export class VentaDataSource extends DataSource<Venta> {
     return Observable.merge(...displayDataChanges).map(() => {
       // Filter data
       this.filteredData = this._exampleDatabase.data.slice().filter((venta: Venta) => {
-        const searchStr = (venta.folio + venta.fecha).toLowerCase();
+        const searchStr = (venta.folio + venta.fecha + venta.escuela.nombre + venta.profesor.nombre).toLowerCase();
         return searchStr.indexOf(this.filter.toLowerCase()) !== -1;
       });
 
@@ -173,7 +284,7 @@ export class VentaDataSource extends DataSource<Venta> {
       switch (this._sort.active) {
         case 'folio': [propertyA, propertyB] = [a.folio, b.folio]; break;
         case 'titulo': [propertyA, propertyB] = [a.fecha, b.fecha]; break;
-        // case 'cantidad': [propertyA, propertyB] = [a.pedidos, b.pedidos]; break;
+        case 'escuela': [propertyA, propertyB] = [a.escuela.nombre, b.escuela.nombre]; break;
       }
 
       const valueA = isNaN(+propertyA) ? propertyA : +propertyA;

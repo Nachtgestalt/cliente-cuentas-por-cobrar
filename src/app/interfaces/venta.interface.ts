@@ -1,4 +1,6 @@
 export interface Venta {
+  profesor: any;
+  escuela: any;
   folio: string;
   fecha: string;
   comision_vendedor: number;

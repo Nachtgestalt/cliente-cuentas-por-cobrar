@@ -16,28 +16,54 @@
     <!-- Fecha Column -->
     <ng-container matColumnDef="fecha">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Fecha </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.titulo}} </mat-cell>
+      <mat-cell *matCellDef="let row"> {{row.fecha}} </mat-cell>
     </ng-container>
 
     <!-- Escuela Column -->
     <ng-container matColumnDef="escuela">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Escuela </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.cantidad}} </mat-cell>
+      <mat-cell *matCellDef="let row"> {{row.escuela.nombre}} </mat-cell>
     </ng-container>
 
     <!-- Profesor Column -->
     <ng-container matColumnDef="profesor">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Profesor </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.cantidad}} </mat-cell>
+      <mat-cell *matCellDef="let row"> {{row.profesor.nombre + ' ' + row.profesor.apellidos}} </mat-cell>
     </ng-container>
 
     <!-- Opciones Column -->
     <ng-container matColumnDef="edit">
       <mat-header-cell *matHeaderCellDef> Acción </mat-header-cell>
       <mat-cell *matCellDef="let row; let i=index;">
-        <button (click)="confirm(i, row.idHistorial, row.folio, row.titulo, row.cantidad)" mat-raised-button color="primary">
-          <mat-icon>done</mat-icon>
-          Confirmar
+        <button (click)="deleteItem(i, row.folio, row.fecha, row.escuela.nombre)"
+                mat-mini-fab color="warn"
+                matTooltip="Borrar venta"
+                aria-label="Button that displays a tooltip when focused or hovered over">
+          <mat-icon>delete_forever</mat-icon>
+          {{row.index}}
+        </button>
+        <button (click)="resurtido(i, row.idHistorial, row.folio, row.titulo, row.cantidad)" mat-mini-fab color="primary"
+                matTooltip="Resurtido"
+                aria-label="Button that displays a tooltip when focused or hovered over">
+          <mat-icon>add</mat-icon>
+          {{row.index}}
+        </button>
+        <button (click)="confirm(i, row.idHistorial, row.folio, row.titulo, row.cantidad)" mat-mini-fab color="primary"
+                matTooltip="Devolución"
+                aria-label="Button that displays a tooltip when focused or hovered over">
+          <mat-icon>remove</mat-icon>
+          {{row.index}}
+        </button>
+        <button (click)="edit(i, row.idHistorial, row.folio, row.titulo, row.cantidad)" mat-mini-fab [color]="'success'"
+                matTooltip="Modificar venta"
+                aria-label="Button that displays a tooltip when focused or hovered over">
+          <mat-icon>edit</mat-icon>
+          {{row.index}}
+        </button>
+        <button (click)="print(row.folio)" mat-mini-fab color="accent"
+                matTooltip="Imprimir folio"
+                aria-label="Button that displays a tooltip when focused or hovered over">
+          <mat-icon>print</mat-icon>
           {{row.index}}
         </button>
       </mat-cell>

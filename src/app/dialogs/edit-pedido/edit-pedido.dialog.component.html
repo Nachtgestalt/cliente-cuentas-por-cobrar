@@ -1,5 +1,6 @@
-<div class="main-container mt-2 animated fadeIn fast">
-  <form [formGroup]="forma" *ngIf="active">
+<div class="container fadeIn fast">
+  <h3 mat-dialog-title>MODIFICAR VENTA</h3>
+  <form [formGroup]="forma">
     <div class="row">
       <div class="col-md-2">
         <div class="row">
@@ -7,24 +8,26 @@
         </div>
         <div class="row">
           <mat-form-field class="col-md-12" floatLabel="never">
-            <mat-select placeholder="Selecciona una zona" formControlName="zona">
-              <mat-option *ngFor="let zona of zonas" [value]="zona">
-                {{ zona.idzona }}
-              </mat-option>
-            </mat-select>
+            <input type="text" matInput placeholder="Clave"
+                   formControlName="zona" [(ngModel)]="forma.value.zona " [readonly]="true" uppercase>
+            <!--<mat-select placeholder="Selecciona una zona" formControlName="zona" [(ngModel)]="forma.value.zona ">-->
+              <!--<mat-option *ngFor="let zona of zonas" [value]="zona">-->
+                <!--{{ zona.idzona }}-->
+              <!--</mat-option>-->
+            <!--</mat-select>-->
             <!--<mat-error *ngIf="forma.get('idtemporada').hasError">{{getErrorMessages()}}</mat-error>-->
           </mat-form-field>
         </div>
       </div>
 
-      <div class="col-md-6" *ngIf="vendedorFlag">
+      <div class="col-md-4">
         <div class="row">
           <label class="col-md-12 pb-0">Datos del vendedor</label>
         </div>
         <div class="form-group row">
           <mat-form-field class="col-md-4">
             <input type="text" matInput placeholder="Clave"
-                   formControlName="clave" [(ngModel)]="forma.value.clave " [readonly]="true" uppercase>
+                   formControlName="vendedor_clave" [(ngModel)]="forma.value.vendedor_clave " [readonly]="true" uppercase>
             <!--<mat-error *ngIf="forma.get('isbn').hasError('required')"> {{getErrorMessages()}} </mat-error>-->
           </mat-form-field>
           <mat-form-field class="col-md-8">
@@ -35,18 +38,19 @@
         </div>
       </div>
 
-      <div class="col-md-4" *ngIf="ventaFlag">
+      <div class="col-md-6">
         <div class="row">
           <label class="col-md-12 pb-0">Datos de la venta</label>
         </div>
         <div class="form-group row">
-          <mat-form-field class="col-md-6">
+          <mat-form-field class="col-md-4">
             <input type="text" matInput placeholder="Folio"
-                   formControlName="folio" [(ngModel)]="forma.value.folio " required>
-            <mat-error *ngIf="forma.get('folio').hasError('folioexiste')"> Folio asignado a una venta </mat-error>
-            <mat-error *ngIf="forma.get('folio').hasError('folioExisteEnRango')"> Folio no le pertenece al vendedor </mat-error>
+                   formControlName="folio" [(ngModel)]="forma.value.folio " [readonly]="true" required>
+            <mat-error *ngIf="forma.get('folio').hasError('folioexiste')"> Folio asignado a una venta</mat-error>
+            <mat-error *ngIf="forma.get('folio').hasError('folioExisteEnRango')"> Folio no le pertenece al vendedor
+            </mat-error>
           </mat-form-field>
-          <mat-form-field class="col-md-6">
+          <mat-form-field class="col-md-8">
             <input matInput [matDatepicker]="picker1" placeholder="Elige la fecha"
                    [(ngModel)]="forma.value.fecha"
                    formControlName="fecha" disabled required>
@@ -59,7 +63,7 @@
 
     </div>
 
-    <div class="row" *ngIf="escuelaFlag">
+    <div class="row">
       <div class="col-md-6">
         <div class="row">
           <label class="col-md-12 pb-0">Datos de la escuela</label>
@@ -86,7 +90,7 @@
         </div>
       </div>
 
-      <div class="col-md-6" *ngIf="comisionesFlag">
+      <div class="col-md-6">
         <div class="row">
           <label class="col-md-12 pb-0">Comisiones</label>
         </div>
@@ -109,70 +113,11 @@
         </div>
       </div>
     </div>
-    <hr>
-    <div class="row" *ngIf="pedidosFlag">
-      <label>Contenido de la venta</label>
-      <div formArrayName="pedidos" class="col-md-12">
-        <div *ngFor="let pedido of forma.controls['pedidos'].controls; let i = index"
-             [formGroupName]="i" class="row">
-          <div class="col-md-4">
-            <mat-form-field class="col-md-12 p-0">
-              <input type="text" placeholder="Titulo:" matInput
-                     formControlName="title" [matAutocomplete]="auto" required>
-              <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayBookFn">
-                <mat-option *ngFor="let book of filteredOptionsProducto[i] | async" [value]="book">
-                  {{book.clave_producto + ' - ' + book.titulo}}
-                </mat-option>
-              </mat-autocomplete>
-            </mat-form-field>
-          </div>
-          <div class="col-md-2">
-            <mat-form-field class="col-md-12 p-0">
-              <input type="number" matInput placeholder="Cantidad"
-                     formControlName="amount"
-                     required>
-              <!--<mat-error *ngIf="forma.get('isbn').hasError('required')"> {{getErrorMessages()}} </mat-error>-->
-            </mat-form-field>
-          </div>
-          <div class="col-md-2">
-            <mat-form-field class="col-md-12 p-0">
-              <input type="number" matInput placeholder="Precio"
-                     formControlName="price">
-              <!--<mat-error *ngIf="forma.get('isbn').hasError('required')"> {{getErrorMessages()}} </mat-error>-->
-            </mat-form-field>
-          </div>
-          <div class="col-md-3">
-            <mat-form-field class="col-md-12 p-0">
-              <input type="number" matInput placeholder="Total"
-                     formControlName="total">
-              <!--<mat-error *ngIf="forma.get('isbn').hasError('required')"> {{getErrorMessages()}} </mat-error>-->
-            </mat-form-field>
-          </div>
-          <div class="col-md-1">
-            <!--<button class="col-md-6" type="button" mat-icon-button color="primary" (click)="addAnotherBook(i+1)">-->
-            <!--<mat-icon aria-label="+">add</mat-icon>-->
-            <!--</button>-->
-            <button class="col-md-6" type="button" mat-icon-button color="primary" (click)="deleteBook(i)">
-              <mat-icon aria-label="+">remove</mat-icon>
-            </button>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12">
-            <button class="float-right" type="button" mat-raised-button (click)="addNewBook()">
-              <mat-icon aria-label="+">add</mat-icon>
-              Agregar otro libro
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
 
-    <div class="row mt-3" mat-dialog-actions>
-      <button mat-raised-button color="primary" [disabled]="!forma.valid" (click)="confirmSell()">Guardar</button>
+    <div class="form-group row" mat-dialog-actions>
+      <button mat-button [disabled]="!forma.valid" [mat-dialog-close]="1" (click)="confirmAdd()">Guardar</button>
+      <button mat-button (click)="onNoClick()" tabindex="-1">Cancelar</button>
     </div>
 
   </form>
 </div>
-
-<iframe *ngIf="showPDF" [src]="pdfResult" width="100%"></iframe>

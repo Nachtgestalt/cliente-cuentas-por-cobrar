@@ -33,8 +33,8 @@
         </mat-form-field>
       </div>
       <div>
-        <button mat-button matStepperPrevious type="button">Back</button>
-        <button mat-button matStepperNext type="button">Next</button>
+        <button mat-button matStepperPrevious type="button">Atras</button>
+        <button mat-button matStepperNext type="button">Siguiente</button>
       </div>
     </mat-step>
     <mat-step formGroupName="2" [stepControl]="formArray.get([2])">
@@ -50,16 +50,15 @@
         <!--<mat-error *ngIf="forma.get('inicio').hasError">{{getErrorMessages()}}</mat-error>-->
       </mat-form-field>
       <div>
-        <button mat-button matStepperPrevious type="button">Back</button>
-        <button mat-button matStepperNext type="button" [disabled]="!formGroup.valid" (click)="asignarFolios()">Next</button>
+        <button mat-button matStepperPrevious type="button">Atras</button>
+        <button mat-button matStepperNext type="button" [disabled]="!formGroup.valid" (click)="asignarFolios()">Siguiente</button>
       </div>
     </mat-step>
     <mat-step>
       <ng-template matStepLabel>Hecho</ng-template>
       Folios asignados con exito
       <div>
-        <button mat-button matStepperPrevious type="button">Back</button>
-        <button mat-button type=button (click)="stepper.reset()">Reset</button>
+        <button mat-button type=button (click)="stepper.reset()">Ok</button>
       </div>
     </mat-step>
   </mat-horizontal-stepper>

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
 import {URL_SERVICIOS} from '../../config/config';
 import {ResponseContentType} from '@angular/http';
 import {Venta} from '../../interfaces/venta.interface';
@@ -9,9 +9,9 @@ import {Vendedor} from '../../interfaces/vendedor.interface';
 
 @Injectable()
 export class VentaService {
-  ventasURL = URL_SERVICIOS + '/venta'
+  ventasURL = URL_SERVICIOS + '/venta';
   token = localStorage.getItem('token');
-  pdfURL = URL_SERVICIOS + '/venta/pdf?folio=';
+  pdfURL = URL_SERVICIOS + '/inventario/pdf?folio=';
 
   dataChange: BehaviorSubject<Venta[]> = new BehaviorSubject<Venta[]>([]);
 
@@ -23,20 +23,6 @@ export class VentaService {
 
   getVentas() {
     return this.http.get<Venta[]>(this.ventasURL, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}})
-      // .map( (res: any) => {
-          // let ventas: Venta[] = [];
-          // for (let venta of res) {
-          //   let venta: Venta = {
-          //     idHistorial: venta.folio,
-          //     // cantidad: venta.ventas - venta.entregados,
-          //     // folio: venta.venta.folio,
-          //     // titulo: venta.libro.titulo
-          //   };
-          //   ventas.push(venta);
-          // }
-          // return ventas;
-        // }
-      // )
       .subscribe(data => {
           console.log(data);
           this.dataChange.next(data);
@@ -46,10 +32,53 @@ export class VentaService {
         });
   }
 
+  getVenta(id) {
+    const url = `${this.ventasURL}/${id}`;
+    return this.http.get(url, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}})
+      .map(
+        (res: any) => {
+          const venta = {
+            zona: res.escuela.zona.idzona,
+            vendedor_clave: res.escuela.zona.vendedor.clave,
+            vendedor: `${res.escuela.zona.vendedor.nombre} ${res.escuela.zona.vendedor.apellidos}`,
+            folio: res.folio,
+            fecha: res.fecha,
+            escuela: res.escuela,
+            maestro: res.profesor,
+            comision_director: res.comisionDirector,
+            comision_profesor: res.comisionProfesor,
+            comision_vendedor: res.comisionVendedor,
+            idfolios: res.bloqueFolio.folio.idfolios
+          };
+          console.log(venta);
+          console.log(res);
+          return venta;
+        }
+      );
+  }
+
   postVenta(venta) {
     const url = `${this.ventasURL}/nuevo`
     const body = JSON.stringify(venta);
     return this.http.post(url, body, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}})
+  }
+
+  postResurtido(historial, folio) {
+    const url = `${this.ventasURL}/resurtido`;
+    const body = JSON.stringify(historial);
+    let headers = new HttpHeaders();
+    headers  = headers.append('authorization', this.token);
+    headers  = headers.append('Content-Type', 'application/json');
+
+    let params = new HttpParams();
+    params = params.append('folio', folio);
+    return this.http.post(url, body, {headers, params});
+  }
+
+
+  putVenta(venta) {
+    const body = JSON.stringify(venta);
+    return this.http.put(this.ventasURL, body, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}})
   }
 
   getPFDVenta(folio) {
@@ -57,6 +86,7 @@ export class VentaService {
     return this.http
       .get(`${this.pdfURL}${folio}`,{headers: {'authorization': this.token}, responseType: 'blob'})
       .map( res => {
+        console.log(`${this.pdfURL}${folio}`);
           return new Blob([res], { type: 'application/pdf' });
         });
   }
@@ -66,5 +96,8 @@ export class VentaService {
     return this.http.get(url, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}});
   }
 
-
+  deleteVenta(folio) {
+    const url = `${this.ventasURL}/${folio}`;
+    return this.http.delete(url, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}})
+  }
 }
