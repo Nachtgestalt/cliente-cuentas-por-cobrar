@@ -376,6 +376,7 @@ export class NuevaVentaComponent implements OnInit, OnDestroy {
     const control = <FormArray>this.forma.controls['pedidos'];
     control.push(this.createItem());
     console.log(control.length);
+    let index = control.length - 1;
 
     this.filteredOptionsProducto[control.length - 1] = this.forma.get(`pedidos.${control.length - 1}`).get('title').valueChanges
       .pipe(
@@ -397,8 +398,8 @@ export class NuevaVentaComponent implements OnInit, OnDestroy {
       .takeWhile(() => this.isAlive)
       .subscribe(
         (res: any) => {
-          let precio: any = Number(this.forma.get(`pedidos.${control.length - 1}`).get('price').value);
-          this.forma.get(`pedidos.${control.length - 1}`).get('total').setValue(precio * res);
+          let precio: any = Number(this.forma.get(`pedidos.${index}`).get('price').value);
+          this.forma.get(`pedidos.${index}`).get('total').setValue(precio * res);
         }
       );
 
@@ -406,8 +407,8 @@ export class NuevaVentaComponent implements OnInit, OnDestroy {
       .takeWhile(() => this.isAlive)
       .subscribe(
         (res: any) => {
-          let precio: any = Number(this.forma.get(`pedidos.${control.length - 1}`).get('amount').value);
-          this.forma.get(`pedidos.${control.length - 1}`).get('total').setValue(precio * res);
+          let precio: any = Number(this.forma.get(`pedidos.${index}`).get('amount').value);
+          this.forma.get(`pedidos.${index}`).get('total').setValue(precio * res);
         }
       );
 

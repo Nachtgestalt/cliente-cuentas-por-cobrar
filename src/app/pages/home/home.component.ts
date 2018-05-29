@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
+import {DashboardService} from '../../services/dashboard/dashboard.service';
 
 @Component({
   selector: 'app-home',
@@ -12,7 +13,7 @@ export class HomeComponent implements OnInit {
   userName = '';
 
 
-  constructor() {
+  constructor(public _dashboardService: DashboardService) {
     this.user = JSON.parse(localStorage.getItem('user'));
     this.userName = this.user.username.toUpperCase();
   }

@@ -53,6 +53,7 @@ import {EditPedidoDialogComponent} from '../dialogs/edit-pedido/edit-pedido.dial
 import {VentaResurtidoComponent} from '../dialogs/venta-resurtido/venta-resurtido.component';
 import {VentaDevolucionComponent} from '../dialogs/venta-devolucion/venta-devolucion.component';
 import {DeleteVentaComponent} from '../dialogs/delete-venta/delete-venta.component';
+import { InventarioComponent } from './inventario/inventario.component';
 
 
 
@@ -89,6 +90,7 @@ import {DeleteVentaComponent} from '../dialogs/delete-venta/delete-venta.compone
     EntregasDevolucionesComponent,
     NuevaVentaComponent,
     ModificarVentaComponent,
+    InventarioComponent,
     // Dialogs
   ],
   exports: [

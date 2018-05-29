@@ -1,0 +1,54 @@
+<div class="example-header fadeIn fast">
+  <mat-form-field>
+    <input matInput #filter placeholder="¿Que estas buscando?">
+  </mat-form-field>
+</div>
+
+<div class="example-container mat-elevation-z8">
+  <mat-table #table [dataSource]="dataSource" matSort>
+
+    <!-- Folio Column -->
+    <ng-container matColumnDef="folio">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Clave producto </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.folio}} </mat-cell>
+    </ng-container>
+
+    <!-- Titulo Column -->
+    <ng-container matColumnDef="titulo">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.titulo}} </mat-cell>
+    </ng-container>
+
+    <!-- Cantidad Column -->
+    <ng-container matColumnDef="cantidad">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Cantidad </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.cantidad}} </mat-cell>
+    </ng-container>
+
+    <!-- Opciones Column -->
+    <ng-container matColumnDef="edit">
+      <mat-header-cell *matHeaderCellDef> Acción </mat-header-cell>
+      <mat-cell *matCellDef="let row; let i=index;">
+        <button (click)="confirm(i, row.idHistorial, row.folio, row.titulo, row.cantidad)" mat-raised-button color="primary">
+          <mat-icon>done</mat-icon>
+          Confirmar
+          {{row.index}}
+        </button>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;">
+    </mat-row>
+  </mat-table>
+
+  <div class="no-results" [style.display]="dataSource.renderedData.length == 0 ? '' : 'none'">
+    Sin resultados
+  </div>
+
+  <mat-paginator #paginator
+                 [length]="dataSource.filteredData.length"
+                 [pageIndex]="0"
+                 [pageSize]="10"
+                 [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+</div>

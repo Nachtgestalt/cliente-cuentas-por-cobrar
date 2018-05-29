@@ -61,6 +61,14 @@ export class AddFolioDialogComponent implements OnInit {
         'fin': new FormControl('', Validators.required),
         'idtemporada': new FormControl('', Validators.required)
       });
+
+      this.forma.get('idtemporada').valueChanges
+        .subscribe(
+          res => {
+            console.log(res);
+          }
+
+        );
     }
   }
 

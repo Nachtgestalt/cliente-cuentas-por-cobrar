@@ -47,40 +47,11 @@ export class InventarioService {
         }
       )
       .subscribe(data => {
-        console.log(data);
           this.dataChange.next(data);
         },
         (error: HttpErrorResponse) => {
           console.log (error.name + ' ' + error.message);
         });
   }
-
-  obtenerProducto(clave: string) {
-    const url = `${this.inventarioURL}/${clave}`;
-    return this.http.get(url, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}});
-  }
-
-  actualizarProducto(producto: Producto, clave: string) {
-    const body = JSON.stringify(producto);
-    return this.http.put(this.inventarioURL, body, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}});
-  }
-
-  borrarProducto(clave: string) {
-    const url = `${this.inventarioURL}/${clave}`;
-    console.log('URL de borrado: ' + url);
-    return this.http.delete(url, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}});
-  }
-
-  getAll() {
-    return this.http.get(this.inventarioURL, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}});
-  }
 }
-
-// solicitar(){
-//   return this.http.get( this.url )
-//             .map( res => {
-//               console.log(res.json());
-//             })
-
-// }
 

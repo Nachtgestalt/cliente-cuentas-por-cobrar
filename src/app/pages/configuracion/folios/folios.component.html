@@ -38,10 +38,10 @@
       </button>
       </mat-header-cell>
       <mat-cell *matCellDef="let row; let i=index;">
-        <button (click)="deleteItem(i, row.clave_producto, row.titulo, row.autor)" mat-icon-button>
-          <mat-icon>delete_forever</mat-icon>
-          {{row.index}}
-        </button>
+        <!--<button (click)="deleteItem(i, row.clave_producto, row.titulo, row.autor)" mat-icon-button>-->
+          <!--<mat-icon>delete_forever</mat-icon>-->
+          <!--{{row.index}}-->
+        <!--</button>-->
         <button (click)="startEdit(i, row.idfolios, row.tipo, row.idtemporada.nombre, row.inicio, row.fin)"
                 mat-icon-button class="ml-4">
           <mat-icon>mode_edit</mat-icon>

@@ -19,6 +19,7 @@ import {VentaService} from './venta/venta.service';
 import {InventarioService} from './inventario/inventario.service';
 import {StockService} from './stock/stock.service';
 import {HistorialVentaService} from './historial-venta/historial-venta.service';
+import {DashboardService} from './dashboard/dashboard.service';
 
 @NgModule({
   imports: [
@@ -40,7 +41,8 @@ import {HistorialVentaService} from './historial-venta/historial-venta.service';
     VentaService,
     InventarioService,
     StockService,
-    HistorialVentaService
+    HistorialVentaService,
+    DashboardService
   ],
   declarations: []
 })

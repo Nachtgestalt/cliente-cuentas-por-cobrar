@@ -105,7 +105,7 @@ export class VentaResurtidoComponent implements OnInit {
       .takeWhile(() => this.isAlive)
       .subscribe(
         res => {
-          console.log(res)
+          console.log(res);
           this.forma.get('pedidos.0').get('price').setValue(res.precio);
         }
       );
@@ -115,7 +115,7 @@ export class VentaResurtidoComponent implements OnInit {
       .subscribe(
         (res: any) => {
           const precio: any = Number(this.forma.get('pedidos.0').get('price').value);
-          this.forma.get('pedidos.0').get('total').setValue( precio * res );
+          this.forma.get('pedidos.0').get('total').setValue(precio * res);
         }
       );
 
@@ -124,7 +124,7 @@ export class VentaResurtidoComponent implements OnInit {
       .subscribe(
         (res: any) => {
           const precio: any = Number(this.forma.get('pedidos.0').get('amount').value);
-          this.forma.get('pedidos.0').get('total').setValue( precio * res );
+          this.forma.get('pedidos.0').get('total').setValue(precio * res);
         }
       );
   }
@@ -173,7 +173,7 @@ export class VentaResurtidoComponent implements OnInit {
       .subscribe(
         (res: any) => {
           const precio: any = Number(this.forma.get(`pedidos.${control.length - 1}`).get('price').value);
-          this.forma.get(`pedidos.${control.length - 1}`).get('total').setValue( precio * res );
+          this.forma.get(`pedidos.${control.length - 1}`).get('total').setValue(precio * res);
         }
       );
 
@@ -182,7 +182,7 @@ export class VentaResurtidoComponent implements OnInit {
       .subscribe(
         (res: any) => {
           const precio: any = Number(this.forma.get(`pedidos.${control.length - 1}`).get('amount').value);
-          this.forma.get(`pedidos.${control.length - 1}`).get('total').setValue( precio * res );
+          this.forma.get(`pedidos.${control.length - 1}`).get('total').setValue(precio * res);
         }
       );
     this.cdref.detectChanges();
@@ -204,19 +204,35 @@ export class VentaResurtidoComponent implements OnInit {
       if (!this.data.resurtido) {
         pedido.amount = pedido.amount * -1;
       }
-      this.historialVenta.push(
-        {
-          idHistorial: null,
-          entregados: 0,
-          fecha_confirmacion: null,
-          fecha_solicitud: null,
-          libro_clave: pedido.title.clave_producto,
-          motivo: 'RESURTIDO',
-          tipo_movimiento: 'SALIDA',
-          pedidos: pedido.amount,
-          venta_folio: this.data.folio
-        }
-      );
+      if (this.data.resurtido) {
+        this.historialVenta.push(
+          {
+            idHistorial: null,
+            entregados: 0,
+            fecha_confirmacion: null,
+            fecha_solicitud: null,
+            libro_clave: pedido.title.clave_producto,
+            motivo: 'RESURTIDO',
+            tipo_movimiento: 'SALIDA',
+            pedidos: pedido.amount,
+            venta_folio: this.data.folio
+          }
+        );
+      } else {
+        this.historialVenta.push(
+          {
+            idHistorial: null,
+            entregados: 0,
+            fecha_confirmacion: null,
+            fecha_solicitud: null,
+            libro_clave: pedido.title.clave_producto,
+            motivo: 'DEVOLUCION',
+            tipo_movimiento: 'ENTRADA',
+            pedidos: pedido.amount,
+            venta_folio: this.data.folio
+          }
+        );
+      }
     }
     console.log(this.historialVenta);
     this._ventaService.postResurtido(this.historialVenta, this.data.folio)
@@ -224,25 +240,7 @@ export class VentaResurtidoComponent implements OnInit {
         res => {
           console.log(res);
         }
-      )
-    // this.isAlive = false;
-    // let maestro = this.forma.get('maestro').value;
-    // let escuela = this.forma.get('escuela').value;
-    // let venta: any = this.forma.value;
-    // delete venta.maestro;
-    // delete venta.escuela;
-    // venta.idprofesor = maestro.idprofesor;
-    // venta.escuela_clave = escuela.clave;
-    // console.log(venta);
-    // this._ventaService.putVenta(venta)
-    //   .subscribe(res => {
-    //       console.log(res);
-    //       this.dialogRef.close(true);
-    //     },
-    //     error1 => {
-    //       swal('Algo malo ha ocurrido', 'Error con el servidor', 'error');
-    //     }
-    //   );
+      );
   }
 
   onNoClick(): void {

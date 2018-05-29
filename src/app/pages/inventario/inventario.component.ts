@@ -1,24 +1,25 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {MatDialog, MatPaginator, MatSnackBar, MatSort} from '@angular/material';
-import {Observable} from 'rxjs/Observable';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import {HttpClient} from '@angular/common/http';
 import {DataSource} from '@angular/cdk/collections';
-import {Folio} from '../../../interfaces/folio.interface';
-import {FolioService} from '../../../services/folio/folio.service';
-import {DeleteFolioDialogComponent} from '../../../dialogs/delete-folio/delete-folio.dialog..component';
-import {AddTemporadaComponent} from '../../../dialogs/add-temporada/add-temporada.dialog.component';
-import {AddFolioDialogComponent} from '../../../dialogs/add-folio/add-folio.dialog.component';
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {Observable} from 'rxjs/Observable';
+import {Inventario} from '../../interfaces/inventario.interface';
+import {InventarioService} from '../../services/inventario/inventario.service';
+import {HttpClient} from '@angular/common/http';
+import {ConfirmInventoryDialogComponent} from '../../dialogs/confirm-inventory/confirm-inventory.dialog.component';
 
 @Component({
-  selector: 'app-folios',
-  templateUrl: './folios.component.html',
-  styleUrls: ['./folios.component.css']
+  selector: 'app-inventario',
+  templateUrl: './inventario.component.html',
+  styleUrls: ['./inventario.component.css']
 })
-export class FoliosComponent implements OnInit {
-  displayedColumns = ['temporada', 'tipo', 'inicio', 'fin', 'edit'];
-  exampleDatabase: FolioService | null;
-  dataSource: FolioDataSource | null;
+export class InventarioComponent implements OnInit {
+
+  displayedColumns = ['folio', 'titulo', 'cantidad', 'edit'];
+  exampleDatabase: InventarioService | null;
+  dataSource: InventarioDataSource | null;
+
+  entrega: boolean;
 
   index: number;
   id: number;
@@ -29,7 +30,7 @@ export class FoliosComponent implements OnInit {
 
   constructor(private httpClient: HttpClient,
               public dialog: MatDialog,
-              public snackBar: MatSnackBar) {}
+              public snackBar: MatSnackBar) { }
 
   ngOnInit() {
     this.loadData();
@@ -52,8 +53,8 @@ export class FoliosComponent implements OnInit {
   }
 
   public loadData() {
-    this.exampleDatabase = new FolioService(this.httpClient);
-    this.dataSource = new FolioDataSource(this.exampleDatabase, this.paginator, this.sort);
+    this.exampleDatabase = new InventarioService(this.httpClient);
+    this.dataSource = new InventarioDataSource(this.exampleDatabase, this.paginator, this.sort);
     Observable.fromEvent(this.filter.nativeElement, 'keyup')
       .debounceTime(150)
       .distinctUntilChanged()
@@ -65,42 +66,33 @@ export class FoliosComponent implements OnInit {
       });
   }
 
-  startEdit(i: number, idfolios: number, tipo: string, nombreTemporada: string, inicio: number, fin: number) {
-    this.id = idfolios;
-    // index row is used just for debugging proposes and can be removed
+  confirm(i: number, idHistorial: number, folio: string, titulo: string, cantidad: number) {
     this.index = i;
-    const dialogRef = this.dialog.open(AddFolioDialogComponent, {
+    this.id = idHistorial;
+    if (cantidad < 0 ) {
+      this.entrega = false;
+    } else {
+      this.entrega = true;
+    }
+    const dialogRef = this.dialog.open(ConfirmInventoryDialogComponent, {
       data: {
-        idfolios: idfolios,
-        tipo: tipo,
-        nombreTemporada: nombreTemporada,
-        inicio: inicio,
-        fin: fin,
-        edit: true
+        idHistorial: idHistorial,
+        folio: folio,
+        titulo: titulo,
+        cantidad: cantidad,
+        entrega: this.entrega
       }
     });
+
     dialogRef.afterClosed().subscribe(result => {
-      if (result === 1) {
+      console.log(result);
+      if (result) {
+        this.openSnackBar('Pedido confirmado', 'Aceptar');
         this.loadData();
-      }
-    });
-  }
-
-  deleteItem(i: number, clave: number, titulo: string, autor: string) {
-    this.index = i;
-    this.id = clave;
-    console.log('Esta es la clave: ' + clave);
-    const dialogRef = this.dialog.open(DeleteFolioDialogComponent, {
-      data: {clave: clave, titulo: titulo, autor: autor}
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result === 1) {
-        this.openSnackBar('Folio eliminado', 'Aceptar');
-        const foundIndex = this.exampleDatabase.dataChange.value.findIndex(x => x.idfolios === this.id);
-        // for delete we use splice in order to remove single object from DataService
-        this.exampleDatabase.dataChange.value.splice(foundIndex, 1);
-        this.refreshTable();
+        // const foundIndex = this.exampleDatabase.dataChange.value.findIndex(x => x.idHistorial === this.id);
+        // // for delete we use splice in order to remove single object from DataService
+        // this.exampleDatabase.dataChange.value.splice(foundIndex, 1);
+        // this.refreshTable();
       }
     });
   }
@@ -110,25 +102,9 @@ export class FoliosComponent implements OnInit {
       duration: 2000,
     });
   }
-
-  agregarFolio(folio: Folio) {
-    const dialogRef = this.dialog.open(AddFolioDialogComponent, {
-      data: {folio: folio}
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result === 1) {
-        this.loadData();
-        // After dialog is closed we're doing frontend updates
-        // For add we're just pushing a new row inside DataService
-        // this.exampleDatabase.dataChange.value.push(this._temporadaService.getDialogData());
-        // this.refreshTable();
-      }
-    });
-  }
 }
 
-export class FolioDataSource extends DataSource<Folio> {
+export class InventarioDataSource extends DataSource<Inventario> {
   _filterChange = new BehaviorSubject('');
 
   get filter(): string {
@@ -139,10 +115,10 @@ export class FolioDataSource extends DataSource<Folio> {
     this._filterChange.next(filter);
   }
 
-  filteredData: Folio[] = [];
-  renderedData: Folio[] = [];
+  filteredData: Inventario[] = [];
+  renderedData: Inventario[] = [];
 
-  constructor(public _exampleDatabase: FolioService,
+  constructor(public _exampleDatabase: InventarioService,
               public _paginator: MatPaginator,
               public _sort: MatSort) {
     super();
@@ -151,7 +127,7 @@ export class FolioDataSource extends DataSource<Folio> {
   }
 
   /** Connect function called by the table to retrieve one stream containing the data to render. */
-  connect(): Observable<Folio[]> {
+  connect(): Observable<Inventario[]> {
     // Listen for any changes in the base data, sorting, filtering, or pagination
     const displayDataChanges = [
       this._exampleDatabase.dataChange,
@@ -160,12 +136,12 @@ export class FolioDataSource extends DataSource<Folio> {
       this._paginator.page
     ];
 
-    this._exampleDatabase.obtenerFolios();
+    this._exampleDatabase.obtenerInventario();
 
     return Observable.merge(...displayDataChanges).map(() => {
       // Filter data
-      this.filteredData = this._exampleDatabase.data.slice().filter((folio: Folio) => {
-        const searchStr = (folio.idtemporada.nombre + folio.tipo + folio.inicio + folio.fin).toLowerCase();
+      this.filteredData = this._exampleDatabase.data.slice().filter((inventario: Inventario) => {
+        const searchStr = (inventario.folio + inventario.titulo).toLowerCase();
         return searchStr.indexOf(this.filter.toLowerCase()) !== -1;
       });
 
@@ -182,7 +158,7 @@ export class FolioDataSource extends DataSource<Folio> {
   }
 
   /** Returns a sorted copy of the database data. */
-  sortData(data: Folio[]): Folio[] {
+  sortData(data: Inventario[]): Inventario[] {
     if (!this._sort.active || this._sort.direction === '') {
       return data;
     }
@@ -192,10 +168,9 @@ export class FolioDataSource extends DataSource<Folio> {
       let propertyB: number | string = '';
 
       switch (this._sort.active) {
-        case 'temporada': [propertyA, propertyB] = [a.idtemporada.nombre, b.idtemporada.nombre]; break;
-        case 'tipo': [propertyA, propertyB] = [a.tipo, b.tipo]; break;
-        case 'inicio': [propertyA, propertyB] = [a.inicio, b.inicio]; break;
-        case 'fin': [propertyA, propertyB] = [a.fin, b.fin]; break;
+        case 'folio': [propertyA, propertyB] = [a.folio, b.folio]; break;
+        case 'titulo': [propertyA, propertyB] = [a.titulo, b.titulo]; break;
+        case 'cantidad': [propertyA, propertyB] = [a.cantidad, b.cantidad]; break;
       }
 
       const valueA = isNaN(+propertyA) ? propertyA : +propertyA;

@@ -15,7 +15,6 @@ import {PagesModule} from './pages/pages.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { ProgressComponent } from './pages/progress/progress.component';
-import { Graficas1Component } from './pages/graficas1/graficas1.component';
 
 
 // Servicios
@@ -43,7 +42,6 @@ import {DeleteVentaComponent} from './dialogs/delete-venta/delete-venta.componen
     AppComponent,
     LoginComponent,
     ProgressComponent,
-    Graficas1Component,
     DeleteVendedorDialogComponent,
     DeleteProductoDialogComponent,
     DeleteEscuelaDialogComponent,

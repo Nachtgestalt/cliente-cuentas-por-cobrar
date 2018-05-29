@@ -29,6 +29,7 @@ import {VentasComponent} from './ventas/ventas.component';
 import {EntregasDevolucionesComponent} from './entregas-devoluciones/entregas-devoluciones.component';
 import {NuevaVentaComponent} from './ventas/nueva-venta/nueva-venta.component';
 import {ModificarVentaComponent} from './ventas/modificar-venta/modificar-venta.component';
+import {InventarioComponent} from './inventario/inventario.component';
 
 
 const pagesRoutes: Routes = [
@@ -44,7 +45,7 @@ const pagesRoutes: Routes = [
         children: [
           {path: 'nueva', component: NuevaVentaComponent, data: {titulo: 'Nueva venta'}},
           {path: 'lista', component: ModificarVentaComponent, data: {titulo: 'Lista de ventas'}},
-          {path: '**', redirectTo: 'ventas/nueva', pathMatch: 'full'}
+          {path: '**', redirectTo: 'nueva', pathMatch: 'full'}
         ],
         data: {titulo: 'Ventas'}},
       {
@@ -100,6 +101,11 @@ const pagesRoutes: Routes = [
         path: 'entregas',
         component: EntregasDevolucionesComponent,
         data: {titulo: 'Entregas y devoluciones'}
+      },
+      {
+        path: 'inventario',
+        component: InventarioComponent,
+        data: {titulo: 'Inventario'}
       },
       {
         path: 'nomina',
