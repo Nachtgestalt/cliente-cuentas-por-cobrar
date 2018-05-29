@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormGroup, FormControl, Validators, NgForm} from '@angular/forms';
+import {FormGroup, FormControl, Validators, NgForm, AbstractControl} from '@angular/forms';
 import {ProductosService} from '../../../services/producto/productos.service';
 import {Http, Headers} from '@angular/http';
 import {Producto} from '../../../interfaces/producto.interface';
@@ -95,7 +95,7 @@ export class AgregarProductoComponent implements OnInit {
 
   crearForma() {
     this.forma = new FormGroup({
-      'clave_producto': new FormControl('', [Validators.required]),
+      'clave_producto': new FormControl('', [Validators.required], this.validarClave.bind(this)),
       'isbn': new FormControl(''),
       'autor': new FormControl('', Validators.required),
       'titulo': new FormControl('', Validators.required),
@@ -180,13 +180,17 @@ export class AgregarProductoComponent implements OnInit {
     }
   }
 
-  nivelChanged() {
-    const nivelType = this.forma.get('nivel').value;
-    this.productsAfterChangeEvent = this.grados.filter(p => p.value === nivelType);
-  }
-
   getErrorMessages() {
     return ' Campo requerido ';
+  }
+
+  validarClave(control: AbstractControl) {
+    return this._productosService.existeClave(control.value)
+      .map(
+        res => {
+          return res ? {existeClave: true} : null;
+        });
+
   }
 
 }

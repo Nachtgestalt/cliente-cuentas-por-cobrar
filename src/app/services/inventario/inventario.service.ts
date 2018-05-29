@@ -53,5 +53,19 @@ export class InventarioService {
           console.log (error.name + ' ' + error.message);
         });
   }
+
+  obtenerStocks() {
+    return this.http.get<any[]>(`${this.inventarioURL}/stocks`, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}})
+      .subscribe(data => {
+        console.log(data);
+          this.dataChange.next(data);
+        },
+        (error: HttpErrorResponse) => {
+          console.log (error.name + ' ' + error.message);
+        });
+    // return this.http.get(this.inventarioURL, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}})
+  }
+
+
 }
 

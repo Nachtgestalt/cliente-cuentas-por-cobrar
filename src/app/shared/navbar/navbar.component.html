@@ -15,10 +15,11 @@
     <mat-icon>more_vert</mat-icon>
   </button>
 
-  <mat-menu #menu="matMenu" >
-    <button mat-menu-item>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item (click)="goToConfiguration()">
       <mat-icon>settings</mat-icon>
-      <span> <a [routerLink]="['/configuracion']"> Configuración </a></span>
+      <span>Configuración</span>
+      <!--<span> <a [routerLink]="['/configuracion']"> Configuración </a></span>-->
     </button>
     <!--<button mat-menu-item>-->
       <!--<mat-icon>notifications_off</mat-icon>-->

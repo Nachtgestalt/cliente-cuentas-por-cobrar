@@ -10,7 +10,7 @@
     <!-- Folio Column -->
     <ng-container matColumnDef="folio">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Clave producto </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.folio}} </mat-cell>
+      <mat-cell *matCellDef="let row"> {{row.claveProducto}} </mat-cell>
     </ng-container>
 
     <!-- Titulo Column -->
@@ -29,9 +29,16 @@
     <ng-container matColumnDef="edit">
       <mat-header-cell *matHeaderCellDef> Acción </mat-header-cell>
       <mat-cell *matCellDef="let row; let i=index;">
-        <button (click)="confirm(i, row.idHistorial, row.folio, row.titulo, row.cantidad)" mat-raised-button color="primary">
-          <mat-icon>done</mat-icon>
-          Confirmar
+        <button (click)="resurtido(i, row.idHistorial, row.folio, row.titulo, row.cantidad, true)" mat-mini-fab color="primary"
+                matTooltip="Entrada"
+                aria-label="Button that displays a tooltip when focused or hovered over">
+          <mat-icon>add</mat-icon>
+          {{row.index}}
+        </button>
+        <button (click)="resurtido(i, row.idHistorial, row.folio, row.titulo, row.cantidad, false)" mat-mini-fab color="primary"
+                matTooltip="Salida"
+                aria-label="Button that displays a tooltip when focused or hovered over">
+          <mat-icon>remove</mat-icon>
           {{row.index}}
         </button>
       </mat-cell>

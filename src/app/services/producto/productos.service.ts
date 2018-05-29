@@ -56,6 +56,11 @@ export class ProductosService {
   getAll() {
     return this.http.get(this.productoURL, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}});
   }
+
+  existeClave(clave) {
+    const url = `${this.productoURL}/search/clave=${clave}`
+    return this.http.get(url, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}});
+  }
 }
 
 // solicitar(){

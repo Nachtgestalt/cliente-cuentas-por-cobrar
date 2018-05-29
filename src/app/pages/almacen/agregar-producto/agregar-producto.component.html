@@ -6,6 +6,7 @@
         <input type="text" matInput placeholder="Clave de producto"
                formControlName="clave_producto" [(ngModel)]="forma.value.clave_producto " uppercase required>
         <mat-error *ngIf="forma.get('clave_producto').hasError('required')"> {{getErrorMessages()}} </mat-error>
+        <mat-error *ngIf="forma.get('clave_producto').hasError('existeClave')"> Esa clave ya existe </mat-error>
       </mat-form-field>
     </div>
     <div class="row mt-2">

@@ -28,7 +28,7 @@ export class NavbarComponent implements OnInit {
   }
 
   goToConfiguration() {
-    this.router.navigate(['/configuracion']);
+    this.router.navigate(['/', 'configuracion']);
   }
 
 

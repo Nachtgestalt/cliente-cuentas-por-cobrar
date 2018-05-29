@@ -136,7 +136,7 @@ export class InventarioDataSource extends DataSource<Inventario> {
       this._paginator.page
     ];
 
-    this._exampleDatabase.obtenerInventario();
+    this._exampleDatabase.obtenerStocks();
 
     return Observable.merge(...displayDataChanges).map(() => {
       // Filter data
