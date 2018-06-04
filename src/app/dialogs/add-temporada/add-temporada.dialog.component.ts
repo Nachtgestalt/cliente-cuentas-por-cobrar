@@ -51,7 +51,7 @@ export class AddTemporadaComponent implements OnInit {
   ngOnInit() {
     console.log(this.data);
     if ( this.data.edit ) {
-      this.mensajeDialog = 'Editar zona';
+      this.mensajeDialog = 'Editar temporada';
       this.forma = new FormGroup({
         'idtemporada': new FormControl(this.data.id, Validators.required),
         'nombre': new FormControl(this.data.nombre, Validators.required),
@@ -59,7 +59,7 @@ export class AddTemporadaComponent implements OnInit {
         'fecha_termino': new FormControl(this.data.fecha_termino, Validators.required),
       });
     } else {
-      this.mensajeDialog = 'Agregar zona';
+      this.mensajeDialog = 'Agregar temporada';
       this.forma = new FormGroup({
         'nombre': new FormControl('', Validators.required),
         'fecha_inicio': new FormControl('', Validators.required),

@@ -62,7 +62,8 @@ export class NuevaVentaComponent implements OnInit, OnDestroy {
       {
         libro_clave: null,
         idHistorial: null,
-        pedidos: null
+        pedidos: null,
+        precioventa: null
       }
     ]
   };
@@ -263,7 +264,7 @@ export class NuevaVentaComponent implements OnInit, OnDestroy {
   createItem(): FormGroup {
     return this.formBuilder.group({
       title: '',
-      amount: '',
+      amount: ['', [Validators.required, Validators.min(1)]],
       price: '',
       total: '',
     });
@@ -299,7 +300,8 @@ export class NuevaVentaComponent implements OnInit, OnDestroy {
         {
           idHistorial: null,
           libro_clave: pedido.title.claveProducto,
-          pedidos: pedido.amount
+          pedidos: pedido.amount,
+          precioventa: pedido.price
         }
       );
     }

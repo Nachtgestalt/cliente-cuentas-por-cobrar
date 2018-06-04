@@ -22,7 +22,7 @@ import {DomSanitizer} from '@angular/platform-browser';
 
 export class ModificarVentaComponent implements OnInit {
 
-  isAlive = true;
+  private isAlive = true;
 
   displayedColumns = ['folio', 'fecha', 'escuela', 'profesor', 'edit'];
   exampleDatabase: VentaService | null;

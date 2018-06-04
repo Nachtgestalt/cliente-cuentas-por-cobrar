@@ -16,7 +16,7 @@
     <!-- Vendedor Column -->
     <ng-container matColumnDef="vendedor">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Vendedor encargado </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.vendedor.nombre + ' ' + row.vendedor.apellidos}} </mat-cell>
+      <mat-cell *matCellDef="let row"> {{row.vendedor === null ?  'Zona sin empleado asignado' : row.vendedor.nombre + ' ' + row.vendedor.apellidos}} </mat-cell>
     </ng-container>
 
     <!-- Opciones Column -->
@@ -31,7 +31,7 @@
           <!--<mat-icon>delete_forever</mat-icon>-->
           <!--{{row.index}}-->
         <!--</button>-->
-        <button (click)="startEdit(i, row.idzona, row.vendedor.clave, row.vendedor.nombre, row.vendedor.apellidos)"
+        <button (click)="startEdit(i, row.idzona, row.vendedor)"
                 mat-icon-button class="ml-4">
           <mat-icon>mode_edit</mat-icon>
         </button>

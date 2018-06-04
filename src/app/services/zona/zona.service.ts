@@ -26,6 +26,7 @@ export class ZonaService {
   obtenerZonas() {
     return this.http.get<Zona[]>(this.zonaURL, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}})
       .subscribe(data => {
+        console.log(data);
           this.dataChange.next(data);
         },
         (error: HttpErrorResponse) => {

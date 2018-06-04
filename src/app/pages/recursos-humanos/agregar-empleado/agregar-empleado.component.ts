@@ -98,10 +98,10 @@ export class AgregarEmpleadoComponent implements OnInit {
 
   crearForma() {
     this.forma = new FormGroup({
-      'clave': new FormControl('', Validators.required, this.validarClave.bind(this)),
+      'clave': new FormControl('', [Validators.required, Validators.nullValidator], this.validarClave.bind(this)),
       'nombre': new FormControl('', Validators.required),
       'apellidos': new FormControl('', Validators.required),
-      'rfc': new FormControl('', null, this.validarRfc.bind(this)),
+      'rfc': new FormControl('', [Validators.required, Validators.nullValidator], this.validarRfc.bind(this)),
       'telefono': new FormControl(''),
       'email': new FormControl('', null, this.validarEmail.bind(this)),
       'direccion': new FormControl('', Validators.required),

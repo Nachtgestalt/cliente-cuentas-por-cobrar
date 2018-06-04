@@ -1,19 +1,16 @@
-import {AfterViewInit, Component, Inject, OnInit} from '@angular/core';
+import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {VentaService} from '../../services/venta/venta.service';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {AddTemporadaComponent, MY_FORMATS} from '../add-temporada/add-temporada.dialog.component';
-import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
 import {MomentDateAdapter} from '@angular/material-moment-adapter';
 import {Escuela} from '../../interfaces/escuela.interface';
 import {startWith} from 'rxjs/operators/startWith';
-import {Producto} from '../../interfaces/producto.interface';
-import {map} from 'rxjs/operators/map';
-import {takeWhile} from 'rxjs/operators/takeWhile';
+import {map, takeWhile, takeUntil} from 'rxjs/operators';
 import {Observable} from 'rxjs/Observable';
 import {EscuelaService} from '../../services/escuela/escuela.service';
 import {Maestro} from '../../interfaces/maestro.interface';
-import {Venta} from '../../interfaces/venta.interface';
 
 @Component({
   selector: 'app-edit-pedido',
@@ -28,7 +25,7 @@ import {Venta} from '../../interfaces/venta.interface';
     {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS}
   ],
 })
-export class EditPedidoDialogComponent implements OnInit {
+export class EditPedidoDialogComponent implements OnInit, OnDestroy{
   forma: FormGroup;
   filteredOptions: Observable<Escuela[]>;
   escuelas: Escuela[];
@@ -43,7 +40,6 @@ export class EditPedidoDialogComponent implements OnInit {
 
     this.createForm();
     this.forma.get('escuela').valueChanges
-      .takeWhile(() => this.isAlive)
       .subscribe(values => {
         console.log(values);
         if (values !== null) {
@@ -57,6 +53,7 @@ export class EditPedidoDialogComponent implements OnInit {
         res => {
           this.venta = res;
           this._escuelaService.getEscuelasZona(res.zona)
+            .takeWhile(() => this.isAlive)
             .subscribe(
               (respuesta: Escuela[]) => {
                 this.escuelas = respuesta;
@@ -77,6 +74,11 @@ export class EditPedidoDialogComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  ngOnDestroy() {
+    console.log('Estoy en el OnDestroy!')
+    this.isAlive = false;
   }
 
   createForm() {
@@ -105,7 +107,6 @@ export class EditPedidoDialogComponent implements OnInit {
   }
 
   confirmAdd() {
-    this.isAlive = false;
     let maestro = this.forma.get('maestro').value;
     let escuela = this.forma.get('escuela').value;
     let venta: any = this.forma.value;
@@ -121,6 +122,7 @@ export class EditPedidoDialogComponent implements OnInit {
         },
         error1 => {
           swal('Algo malo ha ocurrido', 'Error con el servidor', 'error');
+          this.dialogRef.close(false);
         }
       );
   }

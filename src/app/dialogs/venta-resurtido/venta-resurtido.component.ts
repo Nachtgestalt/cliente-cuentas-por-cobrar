@@ -238,7 +238,11 @@ export class VentaResurtidoComponent implements OnInit {
     this._ventaService.postResurtido(this.historialVenta, this.data.folio)
       .subscribe(
         res => {
+          this.dialogRef.close(true);
           console.log(res);
+        },
+        error => {
+          this.dialogRef.close(false);
         }
       );
   }

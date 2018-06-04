@@ -27,7 +27,13 @@ export class DeleteVentaComponent implements OnInit {
       .subscribe(res => {
         console.log(res);
         console.log('esta madre se borro!');
-      });
+        this.dialogRef.close(true);
+      },
+        error => {
+          swal('Algo ha salido mal', 'La venta que intentas borrar tiene al menos un pedido confirmado.', 'error');
+          this.dialogRef.close(false);
+        }
+      );
   }
 
 }

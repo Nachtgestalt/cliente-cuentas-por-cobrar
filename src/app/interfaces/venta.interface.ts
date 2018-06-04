@@ -15,6 +15,7 @@ export interface Venta {
       idHistorial: string;
       pedidos: number;
       libro_clave: string;
+      precioventa: number;
     }
   ];
 }

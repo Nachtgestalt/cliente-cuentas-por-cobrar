@@ -133,9 +133,9 @@ export class AgregarEscuelaComponent implements OnInit {
       'email': new FormControl(''),
       'director': new FormGroup({
         'iddirector': new FormControl(''),
-        'nombre': new FormControl('', Validators.required),
-        'apellidos': new FormControl('', Validators.required),
-        'telefono': new FormControl('', Validators.required),
+        'nombre': new FormControl(''),
+        'apellidos': new FormControl(''),
+        'telefono': new FormControl(''),
         'email': new FormControl('')
       }),
       'profesores': new FormControl(null)
@@ -158,9 +158,9 @@ export class AgregarEscuelaComponent implements OnInit {
       'email': new FormControl(''),
       'director': new FormGroup({
         'iddirector': new FormControl(''),
-        'nombre': new FormControl('', Validators.required),
-        'apellidos': new FormControl('', Validators.required),
-        'telefono': new FormControl('', Validators.required),
+        'nombre': new FormControl(''),
+        'apellidos': new FormControl(''),
+        'telefono': new FormControl(''),
         'email': new FormControl('')
       }),
       'profesores': new FormControl(null)

@@ -85,19 +85,19 @@
         <mat-form-field class="col-md-6">
           <input type="text" matInput placeholder="Nombre:"
                  formControlName="nombre"
-                 [(ngModel)]="forma.get('director.nombre').value" uppercase required>
+                 [(ngModel)]="forma.get('director.nombre').value" uppercase>
         </mat-form-field>
         <mat-form-field class="col-md-6">
           <input type="text" matInput placeholder="Apellidos:"
                  formControlName="apellidos"
-                 [(ngModel)]="forma.get('director.apellidos').value" uppercase required>
+                 [(ngModel)]="forma.get('director.apellidos').value" uppercase>
         </mat-form-field>
       </div>
       <div class="row mt-2">
         <mat-form-field class="col-md-6">
           <input type="text" matInput placeholder="Telefono:"
                  formControlName="telefono"
-                 [(ngModel)]="forma.get('director.telefono').value" numbers required>
+                 [(ngModel)]="forma.get('director.telefono').value" numbers>
         </mat-form-field>
         <mat-form-field class="col-md-6">
           <input type="email" matInput placeholder="Correo electronico:"

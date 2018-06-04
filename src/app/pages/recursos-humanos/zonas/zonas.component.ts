@@ -8,6 +8,7 @@ import {Zona} from '../../../interfaces/zona.interface';
 import {DeleteProductoDialogComponent} from '../../../dialogs/delete-producto/delete-producto.dialog.component';
 import {DataSource} from '@angular/cdk/collections';
 import {AddZonaDialogComponent} from '../../../dialogs/add-zona/add-zona.dialog.component';
+import {Vendedor} from '../../../interfaces/vendedor.interface';
 
 @Component({
   selector: 'app-zonas',
@@ -69,7 +70,7 @@ export class ZonasComponent implements OnInit {
     });
   }
 
-  startEdit(i: number, idzona: string, clave_vendedor: string, nombre: string, apellidos: string) {
+  startEdit(i: number, idzona: string, vendedor: Vendedor) {
     this.id = idzona;
     // index row is used just for debugging proposes and can be removed
     this.index = i;
@@ -77,9 +78,7 @@ export class ZonasComponent implements OnInit {
     const dialogRef = this.dialog.open(AddZonaDialogComponent, {
       data: {
         id: idzona,
-        clave_vendedor: clave_vendedor,
-        nombre: nombre,
-        apellidos: apellidos,
+        clave_vendedor: vendedor,
         edit: true,
       }
     });

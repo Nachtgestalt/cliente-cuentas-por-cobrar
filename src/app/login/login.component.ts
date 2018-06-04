@@ -5,6 +5,7 @@ import {User} from '../interfaces/user.interfaces';
 import {UserService} from '../services/service.index';
 import {Title} from '@angular/platform-browser';
 import {TemporadaService} from '../services/temporada/temporada.service';
+import {HttpResponse} from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
@@ -54,7 +55,9 @@ export class LoginComponent implements OnInit {
               );
               this.router.navigate(['/home']);
             },
-            error1 => {},
+            (error: HttpResponse<any>) => {
+              console.log(error.type);
+            },
             () => {
             }
           );
