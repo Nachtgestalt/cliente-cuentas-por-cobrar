@@ -8,4 +8,5 @@ export interface HistorialVenta {
   fecha_confirmacion: null;
   tipo_movimiento: string;
   motivo: string;
+  precioventa: number;
 }

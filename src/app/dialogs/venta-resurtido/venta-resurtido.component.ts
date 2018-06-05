@@ -215,7 +215,8 @@ export class VentaResurtidoComponent implements OnInit {
             motivo: 'RESURTIDO',
             tipo_movimiento: 'SALIDA',
             pedidos: pedido.amount,
-            venta_folio: this.data.folio
+            venta_folio: this.data.folio,
+            precioventa: pedido.price
           }
         );
       } else {
@@ -229,7 +230,8 @@ export class VentaResurtidoComponent implements OnInit {
             motivo: 'DEVOLUCION',
             tipo_movimiento: 'ENTRADA',
             pedidos: pedido.amount,
-            venta_folio: this.data.folio
+            venta_folio: this.data.folio,
+            precioventa: pedido.price
           }
         );
       }
