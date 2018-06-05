@@ -33,6 +33,7 @@ export class InventarioService {
   obtenerInventario() {
     return this.http.get<Inventario[]>(this.inventarioURL, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}})
       .map( (res: any) => {
+        console.log(res);
           let inventarios: Inventario[] = [];
           for (let pedido of res) {
             let inventario: Inventario = {

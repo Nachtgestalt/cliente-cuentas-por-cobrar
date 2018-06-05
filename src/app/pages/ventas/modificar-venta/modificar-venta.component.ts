@@ -90,7 +90,7 @@ export class ModificarVentaComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log(result);
       if (result) {
-        this.openSnackBar('Venta actualizada', 'Aceptar');
+        this.openSnackBar('Venta borrada', 'Aceptar');
         this.loadData();
         // const foundIndex = this.exampleDatabase.dataChange.value.findIndex(x => x.idHistorial === this.id);
         // // for delete we use splice in order to remove single object from DataService

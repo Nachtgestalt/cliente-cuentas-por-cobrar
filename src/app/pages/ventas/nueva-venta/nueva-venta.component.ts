@@ -63,7 +63,9 @@ export class NuevaVentaComponent implements OnInit, OnDestroy {
         libro_clave: null,
         idHistorial: null,
         pedidos: null,
-        precioventa: null
+        precioventa: null,
+        tipo_movimiento: '',
+        motivo: ''
       }
     ]
   };
@@ -301,7 +303,9 @@ export class NuevaVentaComponent implements OnInit, OnDestroy {
           idHistorial: null,
           libro_clave: pedido.title.claveProducto,
           pedidos: pedido.amount,
-          precioventa: pedido.price
+          precioventa: pedido.price,
+          motivo: 'SALIDA POR VENTA',
+          tipo_movimiento: 'SALIDA'
         }
       );
     }
@@ -409,8 +413,8 @@ export class NuevaVentaComponent implements OnInit, OnDestroy {
       .takeWhile(() => this.isAlive)
       .subscribe(
         (res: any) => {
-          let precio: any = Number(this.forma.get(`pedidos.${index}`).get('amount').value);
-          this.forma.get(`pedidos.${index}`).get('total').setValue(precio * res);
+          let cantidad: any = Number(this.forma.get(`pedidos.${index}`).get('amount').value);
+          this.forma.get(`pedidos.${index}`).get('total').setValue(cantidad * res);
         }
       );
 

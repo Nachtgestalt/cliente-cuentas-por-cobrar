@@ -16,6 +16,8 @@ export interface Venta {
       pedidos: number;
       libro_clave: string;
       precioventa: number;
+      tipo_movimiento: string;
+      motivo: string;
     }
   ];
 }
