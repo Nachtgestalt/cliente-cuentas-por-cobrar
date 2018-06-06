@@ -66,6 +66,12 @@
           <mat-icon>print</mat-icon>
           {{row.index}}
         </button>
+        <button (click)="history(row.folio)" mat-mini-fab color="accent"
+                matTooltip="Historial de resurtidos"
+                aria-label="Button that displays a tooltip when focused or hovered over">
+          <mat-icon>history</mat-icon>
+          {{row.index}}
+        </button>
       </mat-cell>
     </ng-container>
 

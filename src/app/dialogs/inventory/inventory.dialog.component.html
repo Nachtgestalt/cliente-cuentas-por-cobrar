@@ -1,0 +1,29 @@
+<div class="container">
+  <h3 mat-dialog-title>{{mensajeDialog}}</h3>
+
+  <form [formGroup] = "forma">
+
+    <div class="form-group row">
+      <mat-form-field color="accent">
+        <input matInput #input class="form-control" placeholder="Motivo" [(ngModel)]="forma.value.motivo"
+               formControlName="motivo" required uppercase>
+        <mat-error *ngIf="forma.get('motivo').invalid">Campo necesario</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="form-group row">
+      <mat-form-field color="accent">
+        <input matInput #input
+               type="number"
+               class="form-control" placeholder="Cantidad" [(ngModel)]="forma.value.cantidad"
+               formControlName="cantidad" required uppercase>
+        <mat-error *ngIf="forma.get('cantidad').invalid">Campo necesario</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="form-group row" mat-dialog-actions>
+      <button mat-button [disabled]="!forma.valid" [mat-dialog-close]="1" (click)="confirmMovement()">Guardar</button>
+      <button mat-button (click)="onNoClick()" tabindex="-1">Cancelar</button>
+    </div>
+  </form>
+</div>

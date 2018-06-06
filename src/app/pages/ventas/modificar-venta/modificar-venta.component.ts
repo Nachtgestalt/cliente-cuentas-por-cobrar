@@ -13,6 +13,7 @@ import {EditPedidoDialogComponent} from '../../../dialogs/edit-pedido/edit-pedid
 import {VentaResurtidoComponent} from '../../../dialogs/venta-resurtido/venta-resurtido.component';
 import {DeleteVentaComponent} from '../../../dialogs/delete-venta/delete-venta.component';
 import {DomSanitizer} from '@angular/platform-browser';
+import {ShowResurtidosDialogComponent} from '../../../dialogs/show-resurtidos/show-resurtidos.dialog.component';
 
 @Component({
   selector: 'app-modificar-venta',
@@ -129,6 +130,24 @@ export class ModificarVentaComponent implements OnInit {
         // this.refreshTable();
       }
     });
+  }
+
+  history(folio: string) {
+    const dialogRef = this.dialog.open(ShowResurtidosDialogComponent, {
+      data: {
+        folio: folio,
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+      if (result) {
+        this.openSnackBar('Pedido confirmado', 'Aceptar');
+      }
+    });
+
+
+
   }
 
   confirm(i: number, idHistorial: number, folio: string, titulo: string, cantidad: number) {

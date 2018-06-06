@@ -3,4 +3,5 @@ export interface Inventario {
   'folio': string;
   'cantidad': number;
   'titulo': string;
+  'fechaSolicitud': string;
 }

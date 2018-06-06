@@ -54,6 +54,8 @@ import {VentaResurtidoComponent} from '../dialogs/venta-resurtido/venta-resurtid
 import {VentaDevolucionComponent} from '../dialogs/venta-devolucion/venta-devolucion.component';
 import {DeleteVentaComponent} from '../dialogs/delete-venta/delete-venta.component';
 import { InventarioComponent } from './inventario/inventario.component';
+import {ShowResurtidosDialogComponent} from '../dialogs/show-resurtidos/show-resurtidos.dialog.component';
+import {InventoryDialogComponent} from '../dialogs/inventory/inventory.dialog.component';
 
 
 
@@ -136,6 +138,8 @@ import { InventarioComponent } from './inventario/inventario.component';
     EditPedidoDialogComponent,
     VentaResurtidoComponent,
     VentaDevolucionComponent,
-    DeleteVentaComponent
+    DeleteVentaComponent,
+    ShowResurtidosDialogComponent,
+    InventoryDialogComponent
     ]
 }) export class PagesModule {}

@@ -27,6 +27,7 @@ export class ConfirmInventoryDialogComponent implements OnInit {
     if (this.data.entrega) {
       this.mensajeDialog = 'Confirmar entrega';
       this.cantidadEntregar = 'Cantidad a entregar';
+      this.forma.get('cantidad').setValidators(Validators.compose([Validators.min(1), Validators.max(this.data.cantidad)]));
     } else {
       this.mensajeDialog = 'Confirmar devolución';
       this.cantidadEntregar = 'Cantidad a devolver';
@@ -34,15 +35,13 @@ export class ConfirmInventoryDialogComponent implements OnInit {
     }
 
     console.log(this.data);
-    console.log(this.forma.value);
-
   }
 
   crearForma(data) {
     this.forma = new FormGroup({
       'folio': new FormControl(data.folio, Validators.required),
       'titulo': new FormControl(data.titulo, Validators.required),
-      'cantidad': new FormControl('', Validators.required),
+      'cantidad': new FormControl('', [Validators.required]),
     });
   }
 

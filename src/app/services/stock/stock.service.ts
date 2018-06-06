@@ -16,7 +16,6 @@ export class StockService {
     console.log(body);
 
     return this.http.post(url, body, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}});
-
   }
 
 }

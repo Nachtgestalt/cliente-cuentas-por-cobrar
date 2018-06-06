@@ -1,4 +1,12 @@
-<div class="example-header fadeIn fast">
+<p *ngIf="noData">
+  No hay resurtidos en esta venta
+</p>
+
+<div class="example-header top-20">
+  <p>
+    FOLIO: {{data.folio}}
+  </p>
+
   <mat-form-field>
     <input matInput #filter placeholder="¿Que estas buscando?">
   </mat-form-field>
@@ -7,37 +15,24 @@
 <div class="example-container mat-elevation-z8">
   <mat-table #table [dataSource]="dataSource" matSort>
 
-    <!-- Folio Column -->
-    <ng-container matColumnDef="folio">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Folio </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.folio}} </mat-cell>
-    </ng-container>
-
-    <!-- Titulo Column -->
-    <ng-container matColumnDef="titulo">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Titulo </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.titulo}} </mat-cell>
-    </ng-container>
-
-    <!-- Cantidad Column -->
-    <ng-container matColumnDef="cantidad">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Cantidad </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.cantidad}} </mat-cell>
+    <!-- Numero resurtido Column -->
+    <ng-container matColumnDef="numresurtido">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Numero de resurtido </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.numresurtido}} </mat-cell>
     </ng-container>
 
     <!-- Fecha Column -->
     <ng-container matColumnDef="fecha">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Fecha </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.fechaSolicitud}} </mat-cell>
+      <mat-cell *matCellDef="let row"> {{row.fecha}} </mat-cell>
     </ng-container>
 
     <!-- Opciones Column -->
     <ng-container matColumnDef="edit">
-      <mat-header-cell *matHeaderCellDef> Acción </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef> Opciones </mat-header-cell>
       <mat-cell *matCellDef="let row; let i=index;">
-        <button (click)="confirm(i, row.idHistorial, row.folio, row.titulo, row.cantidad)" mat-raised-button color="primary">
-          <mat-icon>done</mat-icon>
-          Confirmar
+        <button (click)="printPDF(row.numresurtido)" mat-icon-button>
+          <mat-icon>print</mat-icon>
           {{row.index}}
         </button>
       </mat-cell>
@@ -58,3 +53,4 @@
                  [pageSize]="10"
                  [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
 </div>
+

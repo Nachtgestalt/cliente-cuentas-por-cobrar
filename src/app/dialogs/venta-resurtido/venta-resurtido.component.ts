@@ -49,10 +49,10 @@ export class VentaResurtidoComponent implements OnInit {
   // };
   constructor(private _productoService: ProductosService,
               private _ventaService: VentaService,
+              private _historialVenta: HistorialVentaService,
               private formBuilder: FormBuilder,
               private cdref: ChangeDetectorRef,
               public dialogRef: MatDialogRef<AddTemporadaComponent>,
-              private _historialVenta: HistorialVentaService,
               @Inject(MAT_DIALOG_DATA) public data: any) {
     console.log(this.data.resurtido);
 

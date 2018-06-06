@@ -7,6 +7,7 @@ import {Inventario} from '../../interfaces/inventario.interface';
 import {InventarioService} from '../../services/inventario/inventario.service';
 import {HttpClient} from '@angular/common/http';
 import {ConfirmInventoryDialogComponent} from '../../dialogs/confirm-inventory/confirm-inventory.dialog.component';
+import {InventoryDialogComponent} from '../../dialogs/inventory/inventory.dialog.component';
 
 @Component({
   selector: 'app-inventario',
@@ -36,22 +37,6 @@ export class InventarioComponent implements OnInit {
     this.loadData();
   }
 
-  private refreshTable() {
-    // if there's a paginator active we're using it for refresh
-    if (this.dataSource._paginator.hasNextPage()) {
-      this.dataSource._paginator.nextPage();
-      this.dataSource._paginator.previousPage();
-      // in case we're on last page this if will tick
-    } else if (this.dataSource._paginator.hasPreviousPage()) {
-      this.dataSource._paginator.previousPage();
-      this.dataSource._paginator.nextPage();
-      // in all other cases including active filter we do it like this
-    } else {
-      this.dataSource.filter = '';
-      this.dataSource.filter = this.filter.nativeElement.value;
-    }
-  }
-
   public loadData() {
     this.exampleDatabase = new InventarioService(this.httpClient);
     this.dataSource = new InventarioDataSource(this.exampleDatabase, this.paginator, this.sort);
@@ -66,28 +51,17 @@ export class InventarioComponent implements OnInit {
       });
   }
 
-  confirm(i: number, idHistorial: number, folio: string, titulo: string, cantidad: number) {
-    this.index = i;
-    this.id = idHistorial;
-    if (cantidad < 0 ) {
-      this.entrega = false;
-    } else {
-      this.entrega = true;
-    }
-    const dialogRef = this.dialog.open(ConfirmInventoryDialogComponent, {
+  inventario(i: number, claveProducto: number, tipoEntrada: boolean) {
+    const dialogRef = this.dialog.open(InventoryDialogComponent, {
       data: {
-        idHistorial: idHistorial,
-        folio: folio,
-        titulo: titulo,
-        cantidad: cantidad,
-        entrega: this.entrega
+        claveProducto: claveProducto,
+        tipoEntrada: tipoEntrada
       }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       console.log(result);
       if (result) {
-        this.openSnackBar('Pedido confirmado', 'Aceptar');
         this.loadData();
         // const foundIndex = this.exampleDatabase.dataChange.value.findIndex(x => x.idHistorial === this.id);
         // // for delete we use splice in order to remove single object from DataService

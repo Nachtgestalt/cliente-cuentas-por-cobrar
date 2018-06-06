@@ -1,14 +1,10 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {ProductosService} from '../../services/producto/productos.service';
 import {Inventario} from '../../interfaces/inventario.interface';
 import {InventarioService} from '../../services/inventario/inventario.service';
-import {ProductoDataSource} from '../almacen/modificar-producto/modificar-producto.component';
 import {MatDialog, MatPaginator, MatSnackBar, MatSort} from '@angular/material';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs/Observable';
 import {DataSource} from '@angular/cdk/collections';
-import {DeleteProductoDialogComponent} from '../../dialogs/delete-producto/delete-producto.dialog.component';
-import {Producto} from '../../interfaces/producto.interface';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {ConfirmInventoryDialogComponent} from '../../dialogs/confirm-inventory/confirm-inventory.dialog.component';
 
@@ -18,7 +14,7 @@ import {ConfirmInventoryDialogComponent} from '../../dialogs/confirm-inventory/c
   styleUrls: ['./entregas-devoluciones.component.css']
 })
 export class EntregasDevolucionesComponent implements OnInit {
-  displayedColumns = ['folio', 'titulo', 'cantidad', 'edit'];
+  displayedColumns = ['folio', 'titulo', 'cantidad', 'fecha', 'edit'];
   exampleDatabase: InventarioService | null;
   dataSource: InventarioDataSource | null;
 
@@ -37,22 +33,6 @@ export class EntregasDevolucionesComponent implements OnInit {
 
   ngOnInit() {
     this.loadData();
-  }
-
-  private refreshTable() {
-    // if there's a paginator active we're using it for refresh
-    if (this.dataSource._paginator.hasNextPage()) {
-      this.dataSource._paginator.nextPage();
-      this.dataSource._paginator.previousPage();
-      // in case we're on last page this if will tick
-    } else if (this.dataSource._paginator.hasPreviousPage()) {
-      this.dataSource._paginator.previousPage();
-      this.dataSource._paginator.nextPage();
-      // in all other cases including active filter we do it like this
-    } else {
-      this.dataSource.filter = '';
-      this.dataSource.filter = this.filter.nativeElement.value;
-    }
   }
 
   public loadData() {
@@ -174,6 +154,7 @@ export class InventarioDataSource extends DataSource<Inventario> {
         case 'folio': [propertyA, propertyB] = [a.folio, b.folio]; break;
         case 'titulo': [propertyA, propertyB] = [a.titulo, b.titulo]; break;
         case 'cantidad': [propertyA, propertyB] = [a.cantidad, b.cantidad]; break;
+        case 'fecha': [propertyA, propertyB] = [a.fechaSolicitud, b.fechaSolicitud]; break;
       }
 
       const valueA = isNaN(+propertyA) ? propertyA : +propertyA;
