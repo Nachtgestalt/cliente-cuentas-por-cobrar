@@ -152,7 +152,9 @@ export class AgregarProductoComponent implements OnInit {
               cantidad: this.forma.get('cantidad').value,
               libro: res.clave_producto,
               fecha_entrada: '',
-              stock_actual: null
+              stock_actual: null,
+              motivo: 'PRODUCTO NUEVO',
+              tipomovimiento: 'ENTRADA'
             };
             this._stockService.postStock(stock).subscribe(
               data => {
