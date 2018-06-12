@@ -22,6 +22,8 @@ export class AddFolioDialogComponent implements OnInit {
     {value: 'COBRANZA', viewValue: 'COBRANZA'},
     {value: 'VENTA', viewValue: 'VENTA'},
     {value: 'RECIBOS DE DINERO', viewValue: 'RECIBOS DE DINERO'},
+    {value: 'DEVOLUCION', viewValue: 'DEVOLUCION'},
+    {value: 'REMISION', viewValue: 'REMISION'},
   ];
 
   folio: Folio = {

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Escuela} from '../../../interfaces/escuela.interface';
 import {Director} from '../../../interfaces/director.interface';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -121,7 +121,7 @@ export class AgregarEscuelaComponent implements OnInit {
   crearForma() {
     this.forma = new FormGroup({
       'zona': new FormControl('', [Validators.required]),
-      'clave': new FormControl('', [Validators.required]),
+      'clave': new FormControl('', [Validators.required], this.validarClave.bind(this)),
       'nombre': new FormControl('', [Validators.required]),
       'turno': new FormControl(''),
       'direccion': new FormControl(''),
@@ -197,5 +197,15 @@ export class AgregarEscuelaComponent implements OnInit {
 
   getErrorMessages() {
     return ' Campo requerido ';
+  }
+
+
+  validarClave(control: AbstractControl) {
+    return this._escuelaService.existeClave(control.value)
+      .map(
+        res => {
+          return res ? {existeClave: true} : null;
+        });
+
   }
 }

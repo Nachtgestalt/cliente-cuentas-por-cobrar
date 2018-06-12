@@ -16,11 +16,14 @@
         <input type="text" matInput placeholder="Clave:"
                formControlName="clave"
                [(ngModel)]="forma.value.clave" uppercase required>
+        <mat-error *ngIf="forma.get('clave').hasError('required')"> {{getErrorMessages()}} </mat-error>
+        <mat-error *ngIf="forma.get('clave').hasError('existeClave')"> Esa clave ya existe </mat-error>
       </mat-form-field>
       <mat-form-field class="col-md-4">
         <input type="text" matInput placeholder="Nombre:"
                formControlName="nombre"
                [(ngModel)]="forma.value.nombre" uppercase required>
+        <mat-error *ngIf="forma.get('nombre').hasError('required')"> {{getErrorMessages()}} </mat-error>
       </mat-form-field>
       <mat-form-field class="col-md-4">
         <mat-select placeholder="Turno:" formControlName="turno">

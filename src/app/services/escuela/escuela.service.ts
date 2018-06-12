@@ -6,6 +6,7 @@ import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {Vendedor} from "../../interfaces/vendedor.interface";
 import {Producto} from "../../interfaces/producto.interface";
 import {Director} from '../../interfaces/director.interface';
+import {Zona} from '../../interfaces/zona.interface';
 
 @Injectable()
 export class EscuelaService {
@@ -46,6 +47,11 @@ export class EscuelaService {
       apellidos: '',
       email: '',
       telefono: ''
+    };
+
+    let zona: Zona = {
+      idzona: '',
+      vendedor: null
     }
 
     return this.http.get<Escuela[]>(this.escuelaURL, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}})
@@ -55,6 +61,10 @@ export class EscuelaService {
             escuela.director = director;
             escuela.director.nombre = '';
             escuela.director.apellidos = '';
+          }
+          if(escuela.zona === null) {
+            escuela.zona = zona;
+            escuela.zona.idzona = 'Sin asignar'
           }
         }
           console.log(data);
@@ -76,6 +86,11 @@ export class EscuelaService {
 
   getEscuelasZona(zona) {
     const url = `${this.escuelaURL}/zona=${zona}`;
+    return this.http.get(url, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}});
+  }
+
+  existeClave(clave) {
+    const url = `${this.escuelaURL}/search/clave=${clave}`
     return this.http.get(url, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}});
   }
 }

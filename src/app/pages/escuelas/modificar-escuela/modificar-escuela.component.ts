@@ -14,7 +14,7 @@ import {DeleteEscuelaDialogComponent} from '../../../dialogs/delete-escuela/dele
   styleUrls: ['./modificar-escuela.component.css']
 })
 export class ModificarEscuelaComponent implements OnInit {
-  displayedColumns = ['clave', 'nombre', 'direccion', 'colonia', 'telefono', 'director', 'edit'];
+  displayedColumns = ['clave', 'nombre', 'zona', 'direccion', 'colonia', 'telefono', 'director', 'edit'];
   exampleDatabase: EscuelaService | null;
   dataSource: EscuelaDataSource | null;
 
@@ -126,7 +126,7 @@ export class EscuelaDataSource extends DataSource<Escuela> {
     return Observable.merge(...displayDataChanges).map(() => {
       // Filter data
       this.filteredData = this._exampleDatabase.data.slice().filter((escuela: Escuela) => {
-        const searchStr = (escuela.clave + escuela.nombre + escuela.director.nombre).toLowerCase();
+        const searchStr = (escuela.clave + escuela.nombre + escuela.director.nombre + escuela.zona.idzona).toLowerCase();
         return searchStr.indexOf(this.filter.toLowerCase()) !== -1;
       });
 
@@ -156,6 +156,7 @@ export class EscuelaDataSource extends DataSource<Escuela> {
         case 'clave': [propertyA, propertyB] = [a.clave, b.clave]; break;
         case 'nombre': [propertyA, propertyB] = [a.nombre, b.nombre]; break;
         case 'director': [propertyA, propertyB] = [a.director.nombre, b.director.nombre]; break;
+        case 'zona': [propertyA, propertyB] = [a.zona.idzona, b.zona.idzona]; break;
       }
 
       const valueA = isNaN(+propertyA) ? propertyA : +propertyA;
