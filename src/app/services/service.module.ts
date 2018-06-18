@@ -7,7 +7,7 @@ import {
   LoginGuardGuard,
   UserService
 } from './service.index';
-import {HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {VendedorService} from './vendedor/vendedor.service';
 import {EscuelaService} from './escuela/escuela.service';
 import {MaestroService} from './maestro/maestro.service';
@@ -20,7 +20,8 @@ import {InventarioService} from './inventario/inventario.service';
 import {StockService} from './stock/stock.service';
 import {HistorialVentaService} from './historial-venta/historial-venta.service';
 import {DashboardService} from './dashboard/dashboard.service';
-
+import {CatchInterceptorService} from './interceptors/catch-interceptor.service';
+import {TokenInterceptorService} from './interceptors/token-interceptor.service';
 @NgModule({
   imports: [
     CommonModule,
@@ -42,7 +43,18 @@ import {DashboardService} from './dashboard/dashboard.service';
     InventarioService,
     StockService,
     HistorialVentaService,
-    DashboardService
+    DashboardService,
+    TokenInterceptorService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptorService,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: CatchInterceptorService,
+      multi: true
+    },
   ],
   declarations: []
 })

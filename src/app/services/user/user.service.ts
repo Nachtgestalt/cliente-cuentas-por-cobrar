@@ -23,8 +23,11 @@ export class UserService {
     return (this.token.length > 5) ? true : false;
   }
 
-  setInStorage(token: string, user: any) {
+  setTokenInStorage(token: string) {
     localStorage.setItem('token', token);
+  }
+
+  setInStorage(user: any) {
     localStorage.setItem('user', JSON.stringify(user));
   }
 
@@ -64,7 +67,7 @@ export class UserService {
   obtenerUsuario(user: User) {
     const url = URL_SERVICIOS + '/users/logincheck';
     const body = JSON.stringify(user);
-    return this.http.post(url, body, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}});
+    return this.http.post(url, body, {headers: {'Content-Type': 'application/json'}});
   }
 
   agregarUsuario(user: User) {

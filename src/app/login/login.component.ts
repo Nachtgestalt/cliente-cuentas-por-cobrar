@@ -14,6 +14,8 @@ import {HttpResponse} from '@angular/common/http';
 })
 export class LoginComponent implements OnInit {
 
+  public errorMessage = '';
+
   formulario: FormGroup;
 
   user: User = {
@@ -43,10 +45,12 @@ export class LoginComponent implements OnInit {
   login() {
     this._userService.autenticar(this.formulario.value)
       .subscribe((resp: any) => {
+        this._userService.setTokenInStorage(resp);
+        console.log(resp);
         this._userService.obtenerUsuario(this.formulario.value)
           .subscribe(
             (data: any) => {
-              this._userService.setInStorage(resp, data);
+              this._userService.setInStorage(data);
               this._temporadaService.getCurrentSeason().subscribe(
                 res => {
                   console.log(res);
@@ -55,8 +59,8 @@ export class LoginComponent implements OnInit {
               );
               this.router.navigate(['/home']);
             },
-            (error: HttpResponse<any>) => {
-              console.log(error.type);
+            (error) => {
+              console.log(error);
             },
             () => {
             }
