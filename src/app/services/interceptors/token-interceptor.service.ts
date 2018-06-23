@@ -20,7 +20,6 @@ export class TokenInterceptorService {
 
   private setAuthHeader(req: HttpRequest<any>): HttpRequest<any> {
     const authorization = `${this.token}`;
-    console.log(authorization);
     const headers = req.headers.set('Authorization', authorization);
     const authorizationReq = req.clone({ headers });
     return authorizationReq;

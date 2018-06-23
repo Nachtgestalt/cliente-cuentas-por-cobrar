@@ -43,6 +43,7 @@ import {TokenInterceptorService} from './interceptors/token-interceptor.service'
     InventarioService,
     StockService,
     HistorialVentaService,
+    BloqueFoliosService,
     DashboardService,
     TokenInterceptorService,
     {

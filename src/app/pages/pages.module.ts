@@ -56,6 +56,7 @@ import {DeleteVentaComponent} from '../dialogs/delete-venta/delete-venta.compone
 import { InventarioComponent } from './inventario/inventario.component';
 import {ShowResurtidosDialogComponent} from '../dialogs/show-resurtidos/show-resurtidos.dialog.component';
 import {InventoryDialogComponent} from '../dialogs/inventory/inventory.dialog.component';
+import { BloqueFoliosComponent } from './recursos-humanos/bloque-folios/bloque-folios.component';
 
 
 
@@ -93,6 +94,7 @@ import {InventoryDialogComponent} from '../dialogs/inventory/inventory.dialog.co
     NuevaVentaComponent,
     ModificarVentaComponent,
     InventarioComponent,
+    BloqueFoliosComponent,
     // Dialogs
   ],
   exports: [

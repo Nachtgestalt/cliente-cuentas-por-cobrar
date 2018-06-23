@@ -16,8 +16,7 @@ export class PagesComponent implements OnInit {
   private _mobileQueryListener: () => void;
 
   constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher,
-              public _userService: UserService,
-              public _temporadaService: TemporadaService) {
+              public _userService: UserService) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
@@ -25,10 +24,4 @@ export class PagesComponent implements OnInit {
 
   ngOnInit() {
   }
-
-  abrir( event: boolean) {
-    this.isOpen = event;
-    console.log('Evento: ', event);
-  }
-
 }

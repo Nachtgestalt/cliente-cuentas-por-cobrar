@@ -134,4 +134,10 @@ export class AsignarFoliosEmpleadoComponent implements OnInit {
 
     // this.bloqueFolios.id.folioIdfolios = this.formGroup.get('formArray').get('0').value;
   }
+
+  validarFolioXVendedorTemporada(control: AbstractControl) {
+
+
+
+  }
 }

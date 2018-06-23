@@ -32,6 +32,11 @@ export class RecursosHumanosComponent implements OnInit {
         link: './folios',
         index: 3
       },
+      {
+        label: 'Bloque de folios',
+        link: './listar-folios',
+        index: 4
+      },
     ];
   }
 

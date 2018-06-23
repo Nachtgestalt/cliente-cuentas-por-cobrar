@@ -30,6 +30,7 @@ import {EntregasDevolucionesComponent} from './entregas-devoluciones/entregas-de
 import {NuevaVentaComponent} from './ventas/nueva-venta/nueva-venta.component';
 import {ModificarVentaComponent} from './ventas/modificar-venta/modificar-venta.component';
 import {InventarioComponent} from './inventario/inventario.component';
+import {BloqueFoliosComponent} from './recursos-humanos/bloque-folios/bloque-folios.component';
 
 
 const pagesRoutes: Routes = [
@@ -116,6 +117,7 @@ const pagesRoutes: Routes = [
           {path: 'empleados', component: ModificarEmpleadoComponent, data: {titulo: 'Recursos humanos', subtitle: 'Modificar empleado'}},
           {path: 'folios', component: AsignarFoliosEmpleadoComponent, data: {titulo: 'Recursos humanos', subtitle: 'Asignar folios'}},
           {path: 'zonas', component: ZonasComponent, data: {titulo: 'Recursos humanos', subtitle: 'Zonas'}},
+          {path: 'listar-folios', component: BloqueFoliosComponent, data: {titulo: 'Recursos humanos', subtitle: 'Bloque de folios'}},
           {path: '**', redirectTo: 'empleado/nuevo', pathMatch: 'full'}
         ],
         data: {titulo: 'Recursos humanos'}

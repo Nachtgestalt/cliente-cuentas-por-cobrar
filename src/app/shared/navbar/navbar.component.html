@@ -1,5 +1,5 @@
 <mat-toolbar color="primary" class="example-toolbar">
-  <button mat-icon-button (click)="openSide($event)"><mat-icon>menu</mat-icon></button>
+  <button mat-icon-button (click)="openSide(isOpen)"><mat-icon>menu</mat-icon></button>
   <a [routerLink]="['/home']" class="title">
     <h1 class="example-app-name">Leirem</h1>
   </a>
@@ -19,7 +19,6 @@
     <button mat-menu-item (click)="goToConfiguration()">
       <mat-icon>settings</mat-icon>
       <span>Configuración</span>
-      <!--<span> <a [routerLink]="['/configuracion']"> Configuración </a></span>-->
     </button>
     <!--<button mat-menu-item>-->
       <!--<mat-icon>notifications_off</mat-icon>-->

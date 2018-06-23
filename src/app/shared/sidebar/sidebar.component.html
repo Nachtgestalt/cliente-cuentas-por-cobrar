@@ -2,6 +2,7 @@
   <mat-sidenav-container class="sidenav-container"
                          [style.marginTop.px]="mobileQuery.matches ? 0 : 0">
     <mat-sidenav #snav
+                 disableClose
                  [opened]="opened"
                  [mode]="mobileQuery.matches ? 'over' : 'push'"
                  [fixedInViewport]="mobileQuery.matches" fixedTopGap="56" class="side-nav">

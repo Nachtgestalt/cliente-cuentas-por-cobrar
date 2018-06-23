@@ -4,6 +4,7 @@ import {Producto} from '../../interfaces/producto.interface';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Temporada} from '../../interfaces/temporada.interface';
 import {URL_SERVICIOS} from '../../config/config';
+import * as moment from 'moment';
 
 @Injectable()
 export class TemporadaService {
@@ -33,10 +34,10 @@ export class TemporadaService {
   obtenerTemporadas() {
     return this.http.get<Temporada[]>(this.temporadaURL, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}})
       .subscribe(data => {
-          // for (const temporada of data) {
-          //   temporada.fecha_inicio = moment(temporada.fecha_inicio).locale('es').format('DD-MM-YYYY');
-          //   temporada.fecha_termino = moment(temporada.fecha_termino).locale('es').format('DD-MM-YYYY');
-          // }
+          for (const temporada of data) {
+            temporada.fecha_inicio = moment(temporada.fecha_inicio).locale('es').format('DD MMM YYYY');
+            temporada.fecha_termino = moment(temporada.fecha_termino).locale('es').format('DD MMM YYYY');
+          }
           console.log(data);
           this.dataChange.next(data);
         },
@@ -50,7 +51,7 @@ export class TemporadaService {
   }
 
   getCurrentSeason() {
-    return this.http.get(`${this.temporadaURL}/actual`, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}});
+    return this.http.get(`${this.temporadaURL}/actual`, {headers: {'Content-Type': 'application/json'}});
   }
 
   actualizarTemporada(temporada) {

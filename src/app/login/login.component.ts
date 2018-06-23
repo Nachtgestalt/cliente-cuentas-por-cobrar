@@ -6,6 +6,8 @@ import {UserService} from '../services/service.index';
 import {Title} from '@angular/platform-browser';
 import {TemporadaService} from '../services/temporada/temporada.service';
 import {HttpResponse} from '@angular/common/http';
+import {Observable} from 'rxjs/Observable';
+import 'rxjs/add/observable/forkJoin';
 
 @Component({
   selector: 'app-login',
@@ -46,25 +48,42 @@ export class LoginComponent implements OnInit {
     this._userService.autenticar(this.formulario.value)
       .subscribe((resp: any) => {
         this._userService.setTokenInStorage(resp);
-        console.log(resp);
-        this._userService.obtenerUsuario(this.formulario.value)
-          .subscribe(
-            (data: any) => {
-              this._userService.setInStorage(data);
-              this._temporadaService.getCurrentSeason().subscribe(
-                res => {
-                  console.log(res);
-                  this._userService.setSeasonInStorage(res);
-                }
-              );
+          Observable.forkJoin(
+            this._userService.obtenerUsuario(this.formulario.value)
+              .map( (res: any) => {
+                return res;
+              }),
+            this._temporadaService.getCurrentSeason()
+              .map( (res: any) => {
+                return res;
+              })
+          ).subscribe(
+            res => {
+              console.log(res);
+              this._userService.setInStorage(res[0]);
+              this._userService.setSeasonInStorage(res[1]);
               this.router.navigate(['/home']);
-            },
-            (error) => {
-              console.log(error);
-            },
-            () => {
             }
           );
+        //
+        // this._userService.obtenerUsuario(this.formulario.value)
+        //   .subscribe(
+        //     (data: any) => {
+        //       this._userService.setInStorage(data);
+        //       this._temporadaService.getCurrentSeason().subscribe(
+        //         res => {
+        //           console.log(res);
+        //           this._userService.setSeasonInStorage(res);
+        //           this.router.navigate(['/home']);
+        //         }
+        //       );
+        //     },
+        //     (error) => {
+        //       console.log(error);
+        //     },
+        //     () => {
+        //     }
+        //   );
       },
       error => {
         swal('Error al iniciar sesión', 'Usuario y/o contraseña invalidos', 'error');

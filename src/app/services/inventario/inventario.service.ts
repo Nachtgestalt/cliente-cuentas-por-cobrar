@@ -5,6 +5,7 @@ import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Producto} from '../../interfaces/producto.interface';
 import {Inventario} from '../../interfaces/inventario.interface';
 import {ShowResurtidoInterface} from '../../interfaces/showResurtido.interface';
+import * as moment from 'moment';
 
 @Injectable()
 export class InventarioService {
@@ -58,14 +59,14 @@ export class InventarioService {
     return this.http.get<Inventario[]>(this.inventarioURL, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}})
       .map( (res: any) => {
         console.log(res);
-          let inventarios: Inventario[] = [];
-          for (let pedido of res) {
-            let inventario: Inventario = {
+          const inventarios: Inventario[] = [];
+          for (const pedido of res) {
+            const inventario: Inventario = {
               idHistorial: pedido.idHistorial,
               cantidad: pedido.pedidos - pedido.entregados,
               folio: pedido.venta.folio,
               titulo: pedido.libro.titulo,
-              fechaSolicitud: pedido.fechaSolicitud
+              fechaSolicitud: moment(pedido.fechaSolicitud).format('DD MMM YYYY') //parse integer
             };
             inventarios.push(inventario);
           }
@@ -95,6 +96,14 @@ export class InventarioService {
   obtenerResurtidos(folio) {
     const url = `${this.inventarioURL}/resurtidos=${folio}`;
     return this.http.get<any[]>(url, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}})
+      .map(
+        res => {
+          for (const resurtido of res) {
+            resurtido.fecha = moment(resurtido.fecha).format('DD MMM YYYY'); //parse integer
+          }
+          return res;
+        }
+      )
       .subscribe(data => {
           console.log(data);
           this.dataChangeResurtido.next(data);

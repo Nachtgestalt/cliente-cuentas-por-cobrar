@@ -12,6 +12,7 @@ import {VendedorDataSource} from '../../pages/recursos-humanos/modificar-emplead
 import {VendedorService} from '../../services/vendedor/vendedor.service';
 import {HttpClient} from '@angular/common/http';
 import {DomSanitizer} from '@angular/platform-browser';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-show-resurtidos',
@@ -113,7 +114,7 @@ export class ShowResurtidoInterfaceDataSource extends DataSource<ShowResurtidoIn
     return Observable.merge(...displayDataChanges).map(() => {
       // Filter data
       this.filteredData = this._exampleDatabase.dataResurtido.slice().filter((resurtido: ShowResurtidoInterface) => {
-        const searchStr = (resurtido.numresurtido + resurtido.fecha).toLowerCase();
+        const searchStr = (resurtido.numresurtido + moment(resurtido.fecha).format('DD MMM YYYY')).toLowerCase();
         return searchStr.indexOf(this.filter.toLowerCase()) !== -1;
       });
 

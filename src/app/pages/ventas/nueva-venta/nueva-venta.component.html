@@ -49,9 +49,10 @@
           <mat-form-field class="col-md-6">
             <input matInput [matDatepicker]="picker1" placeholder="Elige la fecha"
                    [(ngModel)]="forma.value.fecha"
-                   formControlName="fecha" disabled required>
+                   formControlName="fecha" readonly required>
             <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
             <mat-datepicker #picker1 disabled="false"></mat-datepicker>
+            <mat-error *ngIf="forma.get('fecha').hasError('fechaInvalida')"> No es una fecha valida </mat-error>
             <!--<mat-error *ngIf="forma.get('fecha_inicio').invalid">{{getErrorMessages()}}</mat-error>-->
           </mat-form-field>
         </div>

@@ -6,6 +6,7 @@ import {Venta} from '../../interfaces/venta.interface';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Inventario} from '../../interfaces/inventario.interface';
 import {Vendedor} from '../../interfaces/vendedor.interface';
+import * as moment from 'moment';
 
 @Injectable()
 export class VentaService {
@@ -22,7 +23,15 @@ export class VentaService {
   }
 
   getVentas() {
-    return this.http.get<Venta[]>(this.ventasURL, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}})
+    return this.http.get<Venta[]>(this.ventasURL, {headers: {'Content-Type': 'application/json'}})
+      .map(
+        res => {
+          for ( let venta of res) {
+            venta.fecha = moment(venta.fecha).format("DD MMM YYYY") //parse integer
+          }
+          return res;
+        }
+      )
       .subscribe(data => {
           console.log(data);
           this.dataChange.next(data);

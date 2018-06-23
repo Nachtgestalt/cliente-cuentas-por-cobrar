@@ -57,17 +57,6 @@ export class MaestroService {
     return this.http.get<Maestro[]>(this.profesoresURL, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}})
       .subscribe((data: Maestro[]) => {
         console.log(data);
-        // for (const maestro of data) {
-        //   escuelasNombres = '';
-        //   if (maestro.escuelas.length === 0) {
-        //     maestro.escuelas.push(this.escuelaVacia);
-        //   } else if (maestro.escuelas.length > 1) {
-        //     for (const escuela of maestro.escuelas) {
-        //       escuelasNombres += '*' + escuela.clave + ' - ' + escuela.nombre + '  ';
-        //     }
-        //     maestro.escuelas[0].nombre = escuelasNombres;
-        //   }
-        // }
         this.dataChange.next(data);
         },
         (error: HttpErrorResponse) => {

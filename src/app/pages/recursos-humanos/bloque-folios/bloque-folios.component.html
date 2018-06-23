@@ -1,0 +1,79 @@
+<div class="example-header fadeIn fast">
+  <mat-form-field>
+    <input matInput #filter placeholder="¿Que estas buscando?">
+  </mat-form-field>
+</div>
+
+<div class="example-container mat-elevation-z8">
+  <mat-table #table [dataSource]="dataSource" matSort>
+
+    <!-- Clave vendedor Column -->
+    <ng-container matColumnDef="clave">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Clave vendedor </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.vendedor.clave}} </mat-cell>
+    </ng-container>
+
+    <!-- Vendedor Column -->
+    <ng-container matColumnDef="vendedor">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.vendedor.nombre + ' ' + row.vendedor.apellidos}} </mat-cell>
+    </ng-container>
+
+    <!-- Temporada Column -->
+    <ng-container matColumnDef="temporada">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Temporada </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.folio.idtemporada.nombre}} </mat-cell>
+    </ng-container>
+
+    <!-- Tipo de folio Column -->
+    <ng-container matColumnDef="tipo">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Tipo de folio</mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.folio.tipo}} </mat-cell>
+    </ng-container>
+
+    <!-- Inicio de folio Column -->
+    <ng-container matColumnDef="inicio">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Inicio </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.folio.inicio}} </mat-cell>
+    </ng-container>
+
+    <!-- Fin de folio Column -->
+    <ng-container matColumnDef="fin">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Fin </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.folio.fin}} </mat-cell>
+    </ng-container>
+
+    <!--&lt;!&ndash; Opciones Column &ndash;&gt;-->
+    <!--<ng-container matColumnDef="edit">-->
+      <!--<mat-header-cell *matHeaderCellDef> Acción </mat-header-cell>-->
+      <!--<mat-cell *matCellDef="let row; let i=index;">-->
+        <!--<button (click)="inventario(i, row.claveProducto, true)" mat-mini-fab color="primary"-->
+                <!--matTooltip="Entrada"-->
+                <!--aria-label="Button that displays a tooltip when focused or hovered over">-->
+          <!--<mat-icon>add</mat-icon>-->
+          <!--{{row.index}}-->
+        <!--</button>-->
+        <!--<button (click)="inventario(i, row.claveProducto, false)" mat-mini-fab color="primary"-->
+                <!--matTooltip="Salida"-->
+                <!--aria-label="Button that displays a tooltip when focused or hovered over">-->
+          <!--<mat-icon>remove</mat-icon>-->
+          <!--{{row.index}}-->
+        <!--</button>-->
+      <!--</mat-cell>-->
+    <!--</ng-container>-->
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;">
+    </mat-row>
+  </mat-table>
+
+  <div class="no-results" [style.display]="dataSource.renderedData.length == 0 ? '' : 'none'">
+    Sin resultados
+  </div>
+
+  <mat-paginator #paginator
+                 [length]="dataSource.filteredData.length"
+                 [pageIndex]="0"
+                 [pageSize]="25"
+                 [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+</div>

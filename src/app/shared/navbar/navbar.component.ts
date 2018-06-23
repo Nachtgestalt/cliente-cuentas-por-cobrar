@@ -20,7 +20,7 @@ export class NavbarComponent implements OnInit {
               public _userService: UserService) {}
 
   openSide(event: boolean) {
-    this.isOpen = !this.isOpen;
+    this.isOpen = !event;
     this.openSideBar.emit( this.isOpen );
   }
 

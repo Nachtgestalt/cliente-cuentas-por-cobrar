@@ -152,7 +152,8 @@ export class NuevaVentaComponent implements OnInit, OnDestroy {
         this.setFormValuesAfterChangeZone(values);
         this.forma.get('folio')
           .setAsyncValidators(Validators.composeAsync([this.validarFolio.bind(this), this.validarFolioEnRango.bind(this)]));
-
+        // this.forma.get('fecha')
+        //   .setValidators(this.validarFechaValida);
         // Al tener elegida la zona cargamos la lista de escuelas que pertenecen
         this._escuelaService.getEscuelasZona(values.idzona)
           .takeWhile(() => this.isAlive)
@@ -292,11 +293,11 @@ export class NuevaVentaComponent implements OnInit, OnDestroy {
 
   confirmSell() {
     // let tab = window.open();
-    let control = this.forma.controls['pedidos'].value;
+    const control = this.forma.controls['pedidos'].value;
     const fechaForm: Moment = this.forma.get('fecha').value;
-    let fecha = fechaForm.format('YYYY[-]MM[-]DD');
+    const fecha = fechaForm.format('YYYY[-]MM[-]DD');
     this.venta.pedidos.pop();
-    for (let pedido of control) {
+    for (const pedido of control) {
       console.log(pedido);
       this.venta.pedidos.push(
         {
@@ -382,7 +383,7 @@ export class NuevaVentaComponent implements OnInit, OnDestroy {
     const control = <FormArray>this.forma.controls['pedidos'];
     control.push(this.createItem());
     console.log(control.length);
-    let index = control.length - 1;
+    const index = control.length - 1;
 
     this.filteredOptionsProducto[control.length - 1] = this.forma.get(`pedidos.${control.length - 1}`).get('title').valueChanges
       .pipe(
@@ -404,7 +405,7 @@ export class NuevaVentaComponent implements OnInit, OnDestroy {
       .takeWhile(() => this.isAlive)
       .subscribe(
         (res: any) => {
-          let precio: any = Number(this.forma.get(`pedidos.${index}`).get('price').value);
+          const precio: any = Number(this.forma.get(`pedidos.${index}`).get('price').value);
           this.forma.get(`pedidos.${index}`).get('total').setValue(precio * res);
         }
       );
@@ -413,7 +414,7 @@ export class NuevaVentaComponent implements OnInit, OnDestroy {
       .takeWhile(() => this.isAlive)
       .subscribe(
         (res: any) => {
-          let cantidad: any = Number(this.forma.get(`pedidos.${index}`).get('amount').value);
+          const cantidad: any = Number(this.forma.get(`pedidos.${index}`).get('amount').value);
           this.forma.get(`pedidos.${index}`).get('total').setValue(cantidad * res);
         }
       );
@@ -445,4 +446,11 @@ export class NuevaVentaComponent implements OnInit, OnDestroy {
       });
   }
 
+  // validarFechaValida(control: AbstractControl) {
+  //   // const fechaForm: Moment = control.value;
+  //   // const fecha = fechaForm.format('YYYY[-]MM[-]DD');
+  //   const date: Moment = moment(control.value);
+  //   console.log(date.isValid());
+  //   return date.isValid() ? null : {fechaInvalida: true};
+  // }
 }
