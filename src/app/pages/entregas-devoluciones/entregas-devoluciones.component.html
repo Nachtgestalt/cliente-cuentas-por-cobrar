@@ -19,6 +19,12 @@
       <mat-cell *matCellDef="let row"> {{row.titulo}} </mat-cell>
     </ng-container>
 
+    <!-- Titulo Column -->
+    <ng-container matColumnDef="escuela">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Titulo </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.escuela}} </mat-cell>
+    </ng-container>
+
     <!-- Cantidad Column -->
     <ng-container matColumnDef="cantidad">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Cantidad </mat-header-cell>

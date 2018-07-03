@@ -135,9 +135,12 @@ export class AsignarFoliosEmpleadoComponent implements OnInit {
     // this.bloqueFolios.id.folioIdfolios = this.formGroup.get('formArray').get('0').value;
   }
 
-  validarFolioXVendedorTemporada(control: AbstractControl) {
-
-
+  validarClave(control: AbstractControl) {
+    return this._bloqueFolioService.existeFolioXVendedorTemporada(this.bloqueFolios.id.vendedorClave, 'b', 'v')
+      .map(
+        res => {
+          return res ? {existeClave: true} : null;
+        });
 
   }
 }

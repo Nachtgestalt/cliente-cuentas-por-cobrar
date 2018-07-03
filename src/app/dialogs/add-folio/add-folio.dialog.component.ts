@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {AddTemporadaComponent} from '../add-temporada/add-temporada.dialog.component';
 import {TemporadaService} from '../../services/temporada/temporada.service';
@@ -59,8 +59,8 @@ export class AddFolioDialogComponent implements OnInit {
       this.mensajeDialog = 'Agregar Folio';
       this.forma = new FormGroup({
         'tipo': new FormControl('', Validators.required),
-        'inicio': new FormControl('', Validators.required),
-        'fin': new FormControl('', Validators.required),
+        'inicio': new FormControl('', Validators.required, this.ValidarRango.bind(this)),
+        'fin': new FormControl('', Validators.required, this.ValidarRango.bind(this)),
         'idtemporada': new FormControl('', Validators.required)
       });
 
@@ -102,5 +102,15 @@ export class AddFolioDialogComponent implements OnInit {
 
   onNoClick(): void {
     this.dialogRef.close();
+  }
+
+  ValidarRango(control: AbstractControl) {
+    return this._folioService.verificarRangoFolio(control.value, this.forma.get('tipo').value)
+      .map(
+        res => {
+          console.log(res);
+          return res ? {fueraRango: true} : null;
+        });
+
   }
 }

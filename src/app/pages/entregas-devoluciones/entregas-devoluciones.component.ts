@@ -14,7 +14,7 @@ import {ConfirmInventoryDialogComponent} from '../../dialogs/confirm-inventory/c
   styleUrls: ['./entregas-devoluciones.component.css']
 })
 export class EntregasDevolucionesComponent implements OnInit {
-  displayedColumns = ['folio', 'titulo', 'cantidad', 'fecha', 'edit'];
+  displayedColumns = ['folio', 'titulo', 'escuela', 'cantidad', 'fecha', 'edit'];
   exampleDatabase: InventarioService | null;
   dataSource: InventarioDataSource | null;
 
@@ -152,6 +152,7 @@ export class InventarioDataSource extends DataSource<Inventario> {
 
       switch (this._sort.active) {
         case 'folio': [propertyA, propertyB] = [a.folio, b.folio]; break;
+        // case 'escuela': [propertyA, propertyB] = [`${a.escuela.clave}`, b.folio]; break;
         case 'titulo': [propertyA, propertyB] = [a.titulo, b.titulo]; break;
         case 'cantidad': [propertyA, propertyB] = [a.cantidad, b.cantidad]; break;
         case 'fecha': [propertyA, propertyB] = [a.fechaSolicitud, b.fechaSolicitud]; break;

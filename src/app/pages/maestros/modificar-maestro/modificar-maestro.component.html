@@ -30,7 +30,7 @@
       <mat-header-cell *matHeaderCellDef mat-sort-header> Escuela </mat-header-cell>
       <mat-cell *matCellDef="let row">
         <ul *ngFor="let escuela of row.escuelas" style="padding-left: 15px;">
-          <li>{{escuela.nombre}}</li>
+          <li>{{escuela?.nombre}}</li>
         </ul>
         <!--{{ row.escuelas[0].nombre}} -->
       </mat-cell>
@@ -39,7 +39,7 @@
     <!--Escuela Colum-->
     <ng-container matColumnDef="municipio">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Municipio </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.escuelas[0].municipio}} </mat-cell>
+      <mat-cell *matCellDef="let row"> {{row.escuelas[0]?.municipio}} </mat-cell>
     </ng-container>
 
     <!-- Opciones Column -->

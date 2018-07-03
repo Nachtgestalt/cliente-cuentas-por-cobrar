@@ -79,7 +79,7 @@ export class AgregarMaestroComponent implements OnInit, OnDestroy {
 
   crearForma() {
     this.forma = this._fb.group({
-      idprofesor: ['', [Validators.required]],
+      idprofesor: ['', []],
       nombre: ['', [Validators.required]],
       apellidos: ['', [Validators.required]],
       telefono: ['', [Validators.required]],
@@ -96,7 +96,7 @@ export class AgregarMaestroComponent implements OnInit, OnDestroy {
 
   crearFormaActualizar() {
     this.forma = this._fb.group({
-      idprofesor: ['', [Validators.required]],
+      idprofesor: ['', []],
       nombre: ['', [Validators.required]],
       apellidos: ['', [Validators.required]],
       telefono: ['', [Validators.required]],

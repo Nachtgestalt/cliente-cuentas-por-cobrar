@@ -36,7 +36,7 @@ export class BloqueFoliosService {
   }
 
   obtenerBloqueFolios() {
-    return this.http.get<Maestro[]>(this.urlBloqueFolios)
+    return this.http.get<any[]>(this.urlBloqueFolios)
       .subscribe((data: any[]) => {
           console.log(data);
           this.dataChange.next(data);
@@ -46,9 +46,14 @@ export class BloqueFoliosService {
         });
   }
 
-  existeFolioXVendedorTemporada(vendedor, temporada) {
-    const url = '';
-    return this.http.get(url, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}});
+  existeFolioXVendedorTemporada(claveVendedor, tipoFolio, folio) {
+    const url = `${this.urlBloqueFolios}/isValidFolioType`;
+    let params = new HttpParams();
+    params = params.append('clave', claveVendedor);
+    params = params.append('valor', folio);
+    params = params.append('type', tipoFolio);
+
+    return this.http.get(url, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}, params});
   }
 
 }

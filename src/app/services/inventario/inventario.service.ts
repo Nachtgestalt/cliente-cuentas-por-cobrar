@@ -61,7 +61,8 @@ export class InventarioService {
         console.log(res);
           const inventarios: Inventario[] = [];
           for (const pedido of res) {
-            const inventario: Inventario = {
+            const inventario: any = {
+              escuela: `${pedido.venta.escuela.clave} - ${pedido.venta.escuela.nombre}`,
               idHistorial: pedido.idHistorial,
               cantidad: pedido.pedidos - pedido.entregados,
               folio: pedido.venta.folio,

@@ -115,6 +115,8 @@ export class BloqueFolioDataSource extends DataSource<any> {
       switch (this._sort.active) {
         case 'clave': [propertyA, propertyB] = [a.vendedor.clave, b.vendedor.clave]; break;
         case 'tipo': [propertyA, propertyB] = [a.folio, b.folio]; break;
+        case 'inicio': [propertyA, propertyB] = [a.inicio, b.inicio]; break;
+        case 'fin': [propertyA, propertyB] = [a.fin, b.fin]; break;
         case 'vendedor': [propertyA, propertyB] = [(a.vendedor.nombre + a.vendedor.apellidos), (b.vendedor.nombre + b.vendedor.apellidos)]; break;
         case 'temporada': [propertyA, propertyB] = [a.folio.idtemporada.nombre, a.folio.idtemporada.nombre]; break;
       }

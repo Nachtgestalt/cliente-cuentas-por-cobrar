@@ -4,4 +4,5 @@ export interface Inventario {
   'cantidad': number;
   'titulo': string;
   'fechaSolicitud': string;
+
 }

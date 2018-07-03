@@ -45,4 +45,13 @@ export class FolioService {
     const url = `${this.foliosURL}/Temporada/${id}`;
     return this.http.get(url, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}});
   }
+
+  verificarRangoFolio(valor, tipo) {
+    console.log('Este es el tipo', tipo);
+    const url = `${this.foliosURL}/range`;
+    let params = new HttpParams();
+    params = params.append('tipo', tipo);
+    params = params.append('valor', valor);
+    return this.http.get(url, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}, params});
+  }
 }
