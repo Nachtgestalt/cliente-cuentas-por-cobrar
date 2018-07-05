@@ -17,6 +17,7 @@ export class BreadcrumbsComponent implements OnInit {
   constructor( private router: Router, public _title: Title) {
     this.getDataRoute()
       .subscribe( data => {
+        console.log('Breadcrumbs data: ', data);
         this.breadcrumbs = data;
         this.lbltitle = data.titulo;
         this.lblSubtitle = data.subtitle

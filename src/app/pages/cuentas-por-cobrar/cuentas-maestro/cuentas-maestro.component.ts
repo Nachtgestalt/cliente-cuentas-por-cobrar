@@ -1,28 +1,43 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {MatDialog, MatPaginator, MatSnackBar, MatSort} from '@angular/material';
 import {CuentasXcobrarService} from '../../../services/cuentas-xcobrar/cuentas-xcobrar.service';
 import {HttpClient} from '@angular/common/http';
-import {MatPaginator, MatSort} from '@angular/material';
 import {Observable} from 'rxjs/Observable';
+import {ActivatedRoute, Router} from '@angular/router';
 import {DataSource} from '@angular/cdk/collections';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {ConfirmInventoryDialogComponent} from '../../../dialogs/confirm-inventory/confirm-inventory.dialog.component';
+import {ConfirmPaymentComponent} from '../../../dialogs/confirm-payment/confirm-payment.component';
 
 @Component({
-  selector: 'app-cuentas-vendedor',
-  templateUrl: './cuentas-vendedor.component.html',
-  styleUrls: ['./cuentas-vendedor.component.css']
+  selector: 'app-cuentas-maestro',
+  templateUrl: './cuentas-maestro.component.html',
+  styleUrls: ['./cuentas-maestro.component.css']
 })
-export class CuentasVendedorComponent implements OnInit {
+export class CuentasMaestroComponent implements OnInit {
+  parametros: any;
   season = JSON.parse(localStorage.getItem('season'));
 
-  displayedColumns = ['clave', 'nombre', 'deuda', 'pagado', 'restante'];
+  displayedColumns = ['clave', 'nombre', 'deuda', 'pagado', 'restante', 'options'];
   exampleDatabase: CuentasXcobrarService | null;
-  dataSource: CuentasVendedorDataSource | null;
+  dataSource: CuentasMaestroDataSource | null;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('filter') filter: ElementRef;
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private router: Router,
+              private route: ActivatedRoute,
+              private httpClient: HttpClient,
+              public dialog: MatDialog,
+              public snackBar: MatSnackBar) {
+    this.route.params
+      .subscribe(parametros => {
+        console.log(parametros);
+        this.parametros = parametros
+        console.log(parametros);
+      });
+  }
 
   ngOnInit() {
     this.loadData();
@@ -30,7 +45,7 @@ export class CuentasVendedorComponent implements OnInit {
 
   public loadData() {
     this.exampleDatabase = new CuentasXcobrarService(this.httpClient);
-    this.dataSource = new CuentasVendedorDataSource(this.exampleDatabase, this.paginator, this.sort);
+    this.dataSource = new CuentasMaestroDataSource(this.exampleDatabase, this.paginator, this.sort, this.parametros);
     Observable.fromEvent(this.filter.nativeElement, 'keyup')
       .debounceTime(150)
       .distinctUntilChanged()
@@ -41,9 +56,35 @@ export class CuentasVendedorComponent implements OnInit {
         this.dataSource.filter = this.filter.nativeElement.value;
       });
   }
+
+  confirm(i: number, idProfesor: number, nombre: string, restante: number) {
+
+    const dialogRef = this.dialog.open(ConfirmPaymentComponent, {
+      data: {
+        parametros: this.parametros,
+        idProfesor: idProfesor,
+        nombre: nombre,
+        restante: restante
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+      if (result) {
+        this.openSnackBar('Abono realizado con exito', 'Aceptar');
+        this.loadData();
+      }
+    });
+  }
+
+  openSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 2000,
+    });
+  }
 }
 
-export class CuentasVendedorDataSource extends DataSource<any> {
+export class CuentasMaestroDataSource extends DataSource<any> {
   season = JSON.parse(localStorage.getItem('season'));
   _filterChange = new BehaviorSubject('');
 
@@ -60,7 +101,8 @@ export class CuentasVendedorDataSource extends DataSource<any> {
 
   constructor(public _exampleDatabase: CuentasXcobrarService,
               public _paginator: MatPaginator,
-              public _sort: MatSort) {
+              public _sort: MatSort,
+              public parametros) {
     super();
     // Reset to the first page when the user changes the filter.
     this._filterChange.subscribe(() => this._paginator.pageIndex = 0);
@@ -70,18 +112,18 @@ export class CuentasVendedorDataSource extends DataSource<any> {
   connect(): Observable<any[]> {
     // Listen for any changes in the base data, sorting, filtering, or pagination
     const displayDataChanges = [
-      this._exampleDatabase.dataChange,
+      this._exampleDatabase.dataChangeMaestro,
       this._sort.sortChange,
       this._filterChange,
       this._paginator.page
     ];
 
-    this._exampleDatabase.getCuentasXVendedor(this.season.idtemporada);
+    this._exampleDatabase.getCuentasXVendedorEscuelaMaestro(this.season.idtemporada, this.parametros.claveVendedor, this.parametros.claveEscuela);
 
     return Observable.merge(...displayDataChanges).map(() => {
       // Filter data
-      this.filteredData = this._exampleDatabase.data.slice().filter((cuentaVendedor: any) => {
-        const searchStr = (cuentaVendedor.clave + cuentaVendedor.nombre).toLowerCase();
+      this.filteredData = this._exampleDatabase.dataMaestro.slice().filter((cuentaMaestro: any) => {
+        const searchStr = (cuentaMaestro.idprofesor + cuentaMaestro.nombre).toLowerCase();
         return searchStr.indexOf(this.filter.toLowerCase()) !== -1;
       });
 
@@ -108,7 +150,7 @@ export class CuentasVendedorDataSource extends DataSource<any> {
       let propertyB: number | string = '';
 
       switch (this._sort.active) {
-        case 'clave': [propertyA, propertyB] = [a.clave, b.clave]; break;
+        case 'clave': [propertyA, propertyB] = [a.idprofesor, b.idprofesor]; break;
         case 'nombre': [propertyA, propertyB] = [a.nombre, b.nombre]; break;
         case 'deuda': [propertyA, propertyB] = [a.deuda, b.deuda]; break;
         case 'pagado': [propertyA, propertyB] = [a.pagado, b.pagado]; break;
@@ -123,3 +165,4 @@ export class CuentasVendedorDataSource extends DataSource<any> {
   }
 
 }
+

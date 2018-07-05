@@ -38,15 +38,16 @@ export class SidebarService {
       icono: 'fas fa-graduation-cap mr-3',
       url: '/clientes'
     },
-    // {
-    //   titulo: 'Cuentas por cobrar',
-    //   url: '/cuentas'
-    // },
+    {
+      titulo: 'Cuentas por cobrar',
+      icono: 'fas fa-dollar-sign mr-3',
+      url: '/cuentas'
+    },
     {
       titulo: 'Configuración',
       icono: 'fa fa-cog mr-3',
       url: '/configuracion'
-    }
+    },
   ];
 
   constructor() { }

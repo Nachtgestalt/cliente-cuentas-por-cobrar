@@ -34,10 +34,11 @@ export class DashboardService {
       icono: 'fas fa-graduation-cap fa-4x',
       url: '/clientes'
     },
-    // {
-    //   titulo: 'Cuentas por cobrar',
-    //   url: '/cuentas'
-    // },
+    {
+      titulo: 'Cuentas por cobrar',
+      icono: 'fas fa-dollar-sign fa-4x',
+      url: '/cuentas'
+    },
     {
       titulo: 'Configuración',
       icono: 'fa fa-cog fa-4x',

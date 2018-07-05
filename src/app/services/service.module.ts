@@ -22,6 +22,7 @@ import {HistorialVentaService} from './historial-venta/historial-venta.service';
 import {DashboardService} from './dashboard/dashboard.service';
 import {CatchInterceptorService} from './interceptors/catch-interceptor.service';
 import {TokenInterceptorService} from './interceptors/token-interceptor.service';
+import {CuentasXcobrarService} from './cuentas-xcobrar/cuentas-xcobrar.service';
 @NgModule({
   imports: [
     CommonModule,
@@ -45,6 +46,7 @@ import {TokenInterceptorService} from './interceptors/token-interceptor.service'
     HistorialVentaService,
     BloqueFoliosService,
     DashboardService,
+    CuentasXcobrarService,
     TokenInterceptorService,
     {
       provide: HTTP_INTERCEPTORS,

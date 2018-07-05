@@ -12,7 +12,6 @@ import {AgregarEmpleadoComponent} from './recursos-humanos/agregar-empleado/agre
 import {ModificarEmpleadoComponent} from './recursos-humanos/modificar-empleado/modificar-empleado.component';
 import {CuentasPorCobrarComponent} from './cuentas-por-cobrar/cuentas-por-cobrar.component';
 import {CuentasVendedorComponent} from './cuentas-por-cobrar/cuentas-vendedor/cuentas-vendedor.component';
-import {CuentasGeneralComponent} from './cuentas-por-cobrar/cuentas-general/cuentas-general.component';
 import {AsignarFoliosEmpleadoComponent} from './recursos-humanos/asignar-folios-empleado/asignar-folios-empleado.component';
 import {UsuariosComponent} from './configuracion/usuarios/usuarios.component';
 import {AgregarEscuelaComponent} from './escuelas/agregar-escuela/agregar-escuela.component';
@@ -31,6 +30,8 @@ import {NuevaVentaComponent} from './ventas/nueva-venta/nueva-venta.component';
 import {ModificarVentaComponent} from './ventas/modificar-venta/modificar-venta.component';
 import {InventarioComponent} from './inventario/inventario.component';
 import {BloqueFoliosComponent} from './recursos-humanos/bloque-folios/bloque-folios.component';
+import {CuentasEscuelaComponent} from './cuentas-por-cobrar/cuentas-escuela/cuentas-escuela.component';
+import {CuentasMaestroComponent} from './cuentas-por-cobrar/cuentas-maestro/cuentas-maestro.component';
 
 
 const pagesRoutes: Routes = [
@@ -92,9 +93,10 @@ const pagesRoutes: Routes = [
         path: 'cuentas',
         component: CuentasPorCobrarComponent,
         children: [
-          {path: 'vendedor', component: CuentasVendedorComponent, data: {titulo: 'Cuentas por cobrar - Vendedor'}},
-          {path: 'general', component: CuentasGeneralComponent, data: {titulo: 'Cuentas por cobrar - General'}},
-          {path: '', redirectTo: 'vendedor', pathMatch: 'full'}
+          {path: 'vendedores', component: CuentasVendedorComponent, data: {titulo: 'Cuentas por cobrar - Vendedores'}},
+          {path: 'vendedor', component: CuentasEscuelaComponent, data: {titulo: 'Cuentas por cobrar - Escuela'}},
+          {path: 'vendedor/escuela', component: CuentasMaestroComponent, data: {titulo: 'Cuentas por cobrar - Maestro'}},
+          {path: '', redirectTo: 'vendedores', pathMatch: 'full'}
         ],
         data: {titulo: 'Cuentas por cobrar'}
       },

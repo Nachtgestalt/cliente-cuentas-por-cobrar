@@ -5,6 +5,9 @@
 </div>
 
 <div class="example-container mat-elevation-z8">
+  <!--<div class="spinner-container" *ngIf="$loading">-->
+    <!--<mat-spinner></mat-spinner>-->
+  <!--</div>-->
   <mat-table #table [dataSource]="dataSource" matSort>
 
     <!-- Clave Column -->
@@ -16,7 +19,7 @@
     <!-- Nombre Column -->
     <ng-container matColumnDef="nombre">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </mat-header-cell>
-      <mat-cell *matCellDef="let row"> <a [routerLink]="['/cuentas/vendedor', {claveVendedor: row.clave}]"> {{row.nombre}} </a> </mat-cell>
+      <mat-cell *matCellDef="let row"> <a [routerLink]="['/cuentas/vendedor/escuela', {claveEscuela: row.clave, claveVendedor: idVendedor}]"> {{row.nombre}} </a> </mat-cell>
     </ng-container>
 
     <!-- Deuda Column -->

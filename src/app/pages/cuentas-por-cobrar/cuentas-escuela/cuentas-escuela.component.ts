@@ -1,28 +1,39 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {MatPaginator, MatSort} from '@angular/material';
 import {CuentasXcobrarService} from '../../../services/cuentas-xcobrar/cuentas-xcobrar.service';
 import {HttpClient} from '@angular/common/http';
-import {MatPaginator, MatSort} from '@angular/material';
 import {Observable} from 'rxjs/Observable';
 import {DataSource} from '@angular/cdk/collections';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 
 @Component({
-  selector: 'app-cuentas-vendedor',
-  templateUrl: './cuentas-vendedor.component.html',
-  styleUrls: ['./cuentas-vendedor.component.css']
+  selector: 'app-cuentas-escuela',
+  templateUrl: './cuentas-escuela.component.html',
+  styleUrls: ['./cuentas-escuela.component.css']
 })
-export class CuentasVendedorComponent implements OnInit {
+export class CuentasEscuelaComponent implements OnInit {
+  idVendedor: any;
   season = JSON.parse(localStorage.getItem('season'));
 
   displayedColumns = ['clave', 'nombre', 'deuda', 'pagado', 'restante'];
   exampleDatabase: CuentasXcobrarService | null;
-  dataSource: CuentasVendedorDataSource | null;
+  dataSource: CuentasEscuelaDataSource | null;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('filter') filter: ElementRef;
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private router: Router,
+              private route: ActivatedRoute,
+              private httpClient: HttpClient) {
+    this.route.params
+      .subscribe(parametros => {
+        console.log(parametros);
+        this.idVendedor = parametros.claveVendedor;
+        console.log(this.idVendedor);
+      });
+  }
 
   ngOnInit() {
     this.loadData();
@@ -30,7 +41,8 @@ export class CuentasVendedorComponent implements OnInit {
 
   public loadData() {
     this.exampleDatabase = new CuentasXcobrarService(this.httpClient);
-    this.dataSource = new CuentasVendedorDataSource(this.exampleDatabase, this.paginator, this.sort);
+    this.dataSource = new CuentasEscuelaDataSource(this.exampleDatabase, this.paginator, this.sort, this.idVendedor);
+    console.log(this.dataSource);
     Observable.fromEvent(this.filter.nativeElement, 'keyup')
       .debounceTime(150)
       .distinctUntilChanged()
@@ -43,9 +55,13 @@ export class CuentasVendedorComponent implements OnInit {
   }
 }
 
-export class CuentasVendedorDataSource extends DataSource<any> {
+export class CuentasEscuelaDataSource extends DataSource<any> {
   season = JSON.parse(localStorage.getItem('season'));
   _filterChange = new BehaviorSubject('');
+
+  private loadingSubject = new BehaviorSubject<boolean>(false);
+
+  public loading$ = this.loadingSubject.asObservable();
 
   get filter(): string {
     return this._filterChange.value;
@@ -60,7 +76,8 @@ export class CuentasVendedorDataSource extends DataSource<any> {
 
   constructor(public _exampleDatabase: CuentasXcobrarService,
               public _paginator: MatPaginator,
-              public _sort: MatSort) {
+              public _sort: MatSort,
+              public _claveVendedor: string) {
     super();
     // Reset to the first page when the user changes the filter.
     this._filterChange.subscribe(() => this._paginator.pageIndex = 0);
@@ -70,17 +87,19 @@ export class CuentasVendedorDataSource extends DataSource<any> {
   connect(): Observable<any[]> {
     // Listen for any changes in the base data, sorting, filtering, or pagination
     const displayDataChanges = [
-      this._exampleDatabase.dataChange,
+      this._exampleDatabase.dataChangeEscuela,
       this._sort.sortChange,
       this._filterChange,
       this._paginator.page
     ];
 
-    this._exampleDatabase.getCuentasXVendedor(this.season.idtemporada);
+    console.log(this._exampleDatabase.getCuentasXVendedorEscuela(this.season.idtemporada, this._claveVendedor));
+    // this._exampleDatabase.getCuentasXVendedorEscuela(this.season.idtemporada, this._claveVendedor);
+
 
     return Observable.merge(...displayDataChanges).map(() => {
       // Filter data
-      this.filteredData = this._exampleDatabase.data.slice().filter((cuentaVendedor: any) => {
+      this.filteredData = this._exampleDatabase.dataEscuela.slice().filter((cuentaVendedor: any) => {
         const searchStr = (cuentaVendedor.clave + cuentaVendedor.nombre).toLowerCase();
         return searchStr.indexOf(this.filter.toLowerCase()) !== -1;
       });
@@ -92,7 +111,8 @@ export class CuentasVendedorDataSource extends DataSource<any> {
       const startIndex = this._paginator.pageIndex * this._paginator.pageSize;
       this.renderedData = sortedData.splice(startIndex, this._paginator.pageSize);
       return this.renderedData;
-    });
+    }
+    );
   }
   disconnect() {
   }

@@ -9,14 +9,14 @@
 
     <!-- Clave Column -->
     <ng-container matColumnDef="clave">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Clave </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.clave}} </mat-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header> ID Profesor </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.idprofesor}} </mat-cell>
     </ng-container>
 
     <!-- Nombre Column -->
     <ng-container matColumnDef="nombre">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </mat-header-cell>
-      <mat-cell *matCellDef="let row"> <a [routerLink]="['/cuentas/vendedor', {claveVendedor: row.clave}]"> {{row.nombre}} </a> </mat-cell>
+      <mat-cell *matCellDef="let row"> {{row.nombre}} </mat-cell>
     </ng-container>
 
     <!-- Deuda Column -->
@@ -35,6 +35,18 @@
     <ng-container matColumnDef="restante">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Restante </mat-header-cell>
       <mat-cell *matCellDef="let row"> {{row.restante}} </mat-cell>
+    </ng-container>
+
+    <!-- Opciones Column -->
+    <ng-container matColumnDef="options">
+      <mat-header-cell *matHeaderCellDef> Acción </mat-header-cell>
+      <mat-cell *matCellDef="let row; let i=index;">
+        <button (click)="confirm(i, row.idprofesor, row.nombre, row.restante)" mat-raised-button color="primary">
+          <mat-icon>attach_money</mat-icon>
+          Abonar
+          {{row.index}}
+        </button>
+      </mat-cell>
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

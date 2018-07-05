@@ -23,7 +23,6 @@ import { AgregarEmpleadoComponent } from './recursos-humanos/agregar-empleado/ag
 import { ModificarEmpleadoComponent } from './recursos-humanos/modificar-empleado/modificar-empleado.component';
 import { CuentasPorCobrarComponent } from './cuentas-por-cobrar/cuentas-por-cobrar.component';
 import { CuentasVendedorComponent } from './cuentas-por-cobrar/cuentas-vendedor/cuentas-vendedor.component';
-import { CuentasGeneralComponent } from './cuentas-por-cobrar/cuentas-general/cuentas-general.component';
 import { AsignarFoliosEmpleadoComponent } from './recursos-humanos/asignar-folios-empleado/asignar-folios-empleado.component';
 import { UsuariosComponent } from './configuracion/usuarios/usuarios.component';
 import {UppercaseDirective} from '../directives/changeUppercase.directive';
@@ -57,6 +56,9 @@ import { InventarioComponent } from './inventario/inventario.component';
 import {ShowResurtidosDialogComponent} from '../dialogs/show-resurtidos/show-resurtidos.dialog.component';
 import {InventoryDialogComponent} from '../dialogs/inventory/inventory.dialog.component';
 import { BloqueFoliosComponent } from './recursos-humanos/bloque-folios/bloque-folios.component';
+import { CuentasEscuelaComponent } from './cuentas-por-cobrar/cuentas-escuela/cuentas-escuela.component';
+import { CuentasMaestroComponent } from './cuentas-por-cobrar/cuentas-maestro/cuentas-maestro.component';
+import {ConfirmPaymentComponent} from '../dialogs/confirm-payment/confirm-payment.component';
 
 
 
@@ -75,7 +77,6 @@ import { BloqueFoliosComponent } from './recursos-humanos/bloque-folios/bloque-f
     ModificarEmpleadoComponent,
     CuentasPorCobrarComponent,
     CuentasVendedorComponent,
-    CuentasGeneralComponent,
     AsignarFoliosEmpleadoComponent,
     UsuariosComponent,
     // Directivas
@@ -95,6 +96,8 @@ import { BloqueFoliosComponent } from './recursos-humanos/bloque-folios/bloque-f
     ModificarVentaComponent,
     InventarioComponent,
     BloqueFoliosComponent,
+    CuentasEscuelaComponent,
+    CuentasMaestroComponent,
     // Dialogs
   ],
   exports: [
@@ -110,7 +113,6 @@ import { BloqueFoliosComponent } from './recursos-humanos/bloque-folios/bloque-f
     ModificarEmpleadoComponent,
     CuentasPorCobrarComponent,
     CuentasVendedorComponent,
-    CuentasGeneralComponent,
     AsignarFoliosEmpleadoComponent,
     UsuariosComponent,
     AgregarMaestroComponent,
@@ -142,6 +144,7 @@ import { BloqueFoliosComponent } from './recursos-humanos/bloque-folios/bloque-f
     VentaDevolucionComponent,
     DeleteVentaComponent,
     ShowResurtidosDialogComponent,
-    InventoryDialogComponent
+    InventoryDialogComponent,
+    ConfirmPaymentComponent
     ]
 }) export class PagesModule {}

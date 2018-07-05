@@ -4,9 +4,6 @@
   <form [formGroup] = "forma">
 
     <div class="form-group row">
-      <!--<label>{{data.folio}}</label>-->
-      <!--<label>{{data.titulo}}</label>-->
-      <!--<label>{{data.cantidad}}</label>-->
       <mat-form-field color="accent">
         <input matInput #input class="form-control" placeholder="Folio de venta:" [(ngModel)]="forma.value.folio"
                formControlName="folio" [readonly]="true" required uppercase>

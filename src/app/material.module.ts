@@ -22,14 +22,15 @@ import {
   MatSnackBarModule,
   MatDatepickerModule,
   MatNativeDateModule,
-  MatTooltipModule
+  MatTooltipModule,
+  MatProgressSpinnerModule
 } from '@angular/material';
 
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import {
   MatDialogModule,
-} from "@angular/material/dialog";
+} from '@angular/material/dialog';
 import {MatMomentDateModule} from '@angular/material-moment-adapter';
 
 @NgModule({
@@ -57,7 +58,8 @@ import {MatMomentDateModule} from '@angular/material-moment-adapter';
     MatDatepickerModule,
     MatNativeDateModule,
     MatMomentDateModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatProgressSpinnerModule
   ],
 
   exports: [
@@ -84,7 +86,8 @@ import {MatMomentDateModule} from '@angular/material-moment-adapter';
     MatDatepickerModule,
     MatNativeDateModule,
     MatMomentDateModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatProgressSpinnerModule
   ],
 })
 export class MaterialModule { }
