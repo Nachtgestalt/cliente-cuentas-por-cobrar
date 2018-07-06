@@ -32,6 +32,9 @@ import {InventarioComponent} from './inventario/inventario.component';
 import {BloqueFoliosComponent} from './recursos-humanos/bloque-folios/bloque-folios.component';
 import {CuentasEscuelaComponent} from './cuentas-por-cobrar/cuentas-escuela/cuentas-escuela.component';
 import {CuentasMaestroComponent} from './cuentas-por-cobrar/cuentas-maestro/cuentas-maestro.component';
+import {ComisionesVendedorComponent} from './comisiones/comisiones-vendedor/comisiones-vendedor.component';
+import {ComisionesDirectorComponent} from './comisiones/comisiones-director/comisiones-director.component';
+import {ComisionesComponent} from './comisiones/comisiones.component';
 
 
 const pagesRoutes: Routes = [
@@ -99,6 +102,16 @@ const pagesRoutes: Routes = [
           {path: '', redirectTo: 'vendedores', pathMatch: 'full'}
         ],
         data: {titulo: 'Cuentas por cobrar'}
+      },
+      {
+        path: 'comisiones',
+        component: ComisionesComponent,
+        children:  [
+          {path: 'vendedor', component: ComisionesVendedorComponent, data: {titulo: 'Comisiones - Vendedor'}},
+          {path: 'director', component: ComisionesDirectorComponent, data: {titulo: 'Comisiones - Director'}},
+          {path: '**', redirectTo: 'vendedor', pathMatch: 'full'}
+        ],
+        data: {titulo: 'Almacen'}
       },
       {
         path: 'entregas',

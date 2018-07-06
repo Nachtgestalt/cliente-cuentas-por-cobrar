@@ -44,6 +44,11 @@ export class SidebarService {
       url: '/cuentas'
     },
     {
+      titulo: 'Comisiones',
+      icono: 'fas fa-hand-holding-usd mr-3',
+      url: '/comisiones'
+    },
+    {
       titulo: 'Configuración',
       icono: 'fa fa-cog mr-3',
       url: '/configuracion'

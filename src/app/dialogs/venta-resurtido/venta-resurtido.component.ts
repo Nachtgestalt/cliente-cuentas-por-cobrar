@@ -28,25 +28,7 @@ export class VentaResurtidoComponent implements OnInit {
   historialVenta: HistorialVenta[] = [];
 
   venta: Venta;
-  //   {
-  //   escuela: null,
-  //   comision_director: null,
-  //   vendedor_clave: '',
-  //   comision_profesor: null,
-  //   comision_vendedor: null,
-  //   escuela_clave: '',
-  //   fecha: '',
-  //   folio: '',
-  //   idfolios: null,
-  //   idprofesor: '',
-  //   pedidos: [
-  //     {
-  //       libro_clave: null,
-  //       idHistorial: null,
-  //       pedidos: null
-  //     }
-  //   ]
-  // };
+
   constructor(private _productoService: ProductosService,
               private _ventaService: VentaService,
               private _historialVenta: HistorialVentaService,

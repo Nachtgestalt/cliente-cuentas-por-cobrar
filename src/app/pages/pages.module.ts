@@ -50,7 +50,6 @@ import { NuevaVentaComponent } from './ventas/nueva-venta/nueva-venta.component'
 import { ModificarVentaComponent } from './ventas/modificar-venta/modificar-venta.component';
 import {EditPedidoDialogComponent} from '../dialogs/edit-pedido/edit-pedido.dialog.component';
 import {VentaResurtidoComponent} from '../dialogs/venta-resurtido/venta-resurtido.component';
-import {VentaDevolucionComponent} from '../dialogs/venta-devolucion/venta-devolucion.component';
 import {DeleteVentaComponent} from '../dialogs/delete-venta/delete-venta.component';
 import { InventarioComponent } from './inventario/inventario.component';
 import {ShowResurtidosDialogComponent} from '../dialogs/show-resurtidos/show-resurtidos.dialog.component';
@@ -59,6 +58,9 @@ import { BloqueFoliosComponent } from './recursos-humanos/bloque-folios/bloque-f
 import { CuentasEscuelaComponent } from './cuentas-por-cobrar/cuentas-escuela/cuentas-escuela.component';
 import { CuentasMaestroComponent } from './cuentas-por-cobrar/cuentas-maestro/cuentas-maestro.component';
 import {ConfirmPaymentComponent} from '../dialogs/confirm-payment/confirm-payment.component';
+import { ComisionesComponent } from './comisiones/comisiones.component';
+import { ComisionesVendedorComponent } from './comisiones/comisiones-vendedor/comisiones-vendedor.component';
+import { ComisionesDirectorComponent } from './comisiones/comisiones-director/comisiones-director.component';
 
 
 
@@ -98,6 +100,9 @@ import {ConfirmPaymentComponent} from '../dialogs/confirm-payment/confirm-paymen
     BloqueFoliosComponent,
     CuentasEscuelaComponent,
     CuentasMaestroComponent,
+    ComisionesComponent,
+    ComisionesVendedorComponent,
+    ComisionesDirectorComponent,
     // Dialogs
   ],
   exports: [
@@ -141,7 +146,6 @@ import {ConfirmPaymentComponent} from '../dialogs/confirm-payment/confirm-paymen
     ConfirmInventoryDialogComponent,
     EditPedidoDialogComponent,
     VentaResurtidoComponent,
-    VentaDevolucionComponent,
     DeleteVentaComponent,
     ShowResurtidosDialogComponent,
     InventoryDialogComponent,

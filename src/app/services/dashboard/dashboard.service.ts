@@ -40,6 +40,11 @@ export class DashboardService {
       url: '/cuentas'
     },
     {
+      titulo: 'Comisiones',
+      icono: 'fas fa-hand-holding-usd fa-4x',
+      url: '/comisiones'
+    },
+    {
       titulo: 'Configuración',
       icono: 'fa fa-cog fa-4x',
       url: '/configuracion'

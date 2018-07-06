@@ -3,7 +3,7 @@ h1.example-app-name {
 }
 
 .mat-toolbar.mat-primary {
-  background: #607d8b;
+  background: #142F75;
   color: #fff;
 }
 
@@ -40,7 +40,7 @@ h1.example-app-name {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: #607d8b;
+  background: #142F75;
   display: flex;
   justify-content: center;
   align-items: center;

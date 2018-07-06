@@ -1,0 +1,61 @@
+<div class="example-header fadeIn fast">
+  <mat-form-field>
+    <input matInput #filter placeholder="¿Que estas buscando?">
+  </mat-form-field>
+</div>
+
+<div class="example-container mat-elevation-z8">
+  <mat-table #table [dataSource]="dataSource" matSort>
+
+    <!-- Nombre Column -->
+    <ng-container matColumnDef="nombre">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </mat-header-cell>
+      <mat-cell *matCellDef="let row">{{row.nombre}}</mat-cell>
+    </ng-container>
+
+    <!-- Deuda Column -->
+    <ng-container matColumnDef="deuda">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Deuda </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.deuda}} </mat-cell>
+    </ng-container>
+
+    <!-- Pagado Column -->
+    <ng-container matColumnDef="pagado">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Pagado </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.pagado}} </mat-cell>
+    </ng-container>
+
+    <!-- Restante Column -->
+    <ng-container matColumnDef="restante">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Restante </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.restante}} </mat-cell>
+    </ng-container>
+
+    <!-- Opciones Column -->
+    <!--<ng-container matColumnDef="options">-->
+    <!--<mat-header-cell *matHeaderCellDef> Acción </mat-header-cell>-->
+    <!--<mat-cell *matCellDef="let row; let i=index;">-->
+    <!--<button (click)="confirm(i, row.idprofesor, row.nombre, row.restante)" mat-raised-button color="primary">-->
+    <!--<mat-icon>attach_money</mat-icon>-->
+    <!--Abonar-->
+    <!--{{row.index}}-->
+    <!--</button>-->
+    <!--</mat-cell>-->
+    <!--</ng-container>-->
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;">
+    </mat-row>
+  </mat-table>
+
+  <div class="no-results" [style.display]="dataSource.renderedData.length == 0 ? '' : 'none'">
+    Sin resultados
+  </div>
+
+  <mat-paginator #paginator
+                 [length]="dataSource.filteredData.length"
+                 [pageIndex]="0"
+                 [pageSize]="25"
+                 [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+</div>
+

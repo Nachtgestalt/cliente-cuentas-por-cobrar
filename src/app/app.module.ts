@@ -5,13 +5,13 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LayoutModule } from '@angular/cdk/layout';
 
-//Rutas
+// Rutas
 import {APP_ROUTING} from './app.routes';
 
-//Modulos
+// Modulos
 import {PagesModule} from './pages/pages.module';
 
-//Componentes
+// Componentes
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { ProgressComponent } from './pages/progress/progress.component';
@@ -33,7 +33,6 @@ import {DeleteFolioDialogComponent} from './dialogs/delete-folio/delete-folio.di
 import {ConfirmInventoryDialogComponent} from './dialogs/confirm-inventory/confirm-inventory.dialog.component';
 import {EditPedidoDialogComponent} from './dialogs/edit-pedido/edit-pedido.dialog.component';
 import {VentaResurtidoComponent} from './dialogs/venta-resurtido/venta-resurtido.component';
-import {VentaDevolucionComponent} from './dialogs/venta-devolucion/venta-devolucion.component';
 import {DeleteVentaComponent} from './dialogs/delete-venta/delete-venta.component';
 import {ShowResurtidosDialogComponent} from './dialogs/show-resurtidos/show-resurtidos.dialog.component';
 import {InventoryDialogComponent} from './dialogs/inventory/inventory.dialog.component';
@@ -56,7 +55,6 @@ import {ConfirmPaymentComponent} from './dialogs/confirm-payment/confirm-payment
     ConfirmInventoryDialogComponent,
     EditPedidoDialogComponent,
     VentaResurtidoComponent,
-    VentaDevolucionComponent,
     DeleteVentaComponent,
     ShowResurtidosDialogComponent,
     InventoryDialogComponent,
@@ -85,7 +83,6 @@ import {ConfirmPaymentComponent} from './dialogs/confirm-payment/confirm-payment
     ConfirmInventoryDialogComponent,
     EditPedidoDialogComponent,
     VentaResurtidoComponent,
-    VentaDevolucionComponent,
     DeleteVentaComponent,
     ShowResurtidosDialogComponent,
     InventoryDialogComponent,
