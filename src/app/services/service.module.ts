@@ -23,6 +23,7 @@ import {DashboardService} from './dashboard/dashboard.service';
 import {CatchInterceptorService} from './interceptors/catch-interceptor.service';
 import {TokenInterceptorService} from './interceptors/token-interceptor.service';
 import {CuentasXcobrarService} from './cuentas-xcobrar/cuentas-xcobrar.service';
+import {ComisionesService} from './comisiones/comisiones.service';
 @NgModule({
   imports: [
     CommonModule,
@@ -47,6 +48,7 @@ import {CuentasXcobrarService} from './cuentas-xcobrar/cuentas-xcobrar.service';
     BloqueFoliosService,
     DashboardService,
     CuentasXcobrarService,
+    ComisionesService,
     TokenInterceptorService,
     {
       provide: HTTP_INTERCEPTORS,

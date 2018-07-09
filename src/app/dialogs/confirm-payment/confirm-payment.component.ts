@@ -4,6 +4,7 @@ import {ConfirmInventoryDialogComponent} from '../confirm-inventory/confirm-inve
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {InventarioService} from '../../services/inventario/inventario.service';
 import {CuentasXcobrarService} from '../../services/cuentas-xcobrar/cuentas-xcobrar.service';
+import {ComisionesService} from '../../services/comisiones/comisiones.service';
 
 @Component({
   selector: 'app-confirm-payment',
@@ -15,10 +16,11 @@ export class ConfirmPaymentComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<ConfirmInventoryDialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any,
-              public _cuentasService: CuentasXcobrarService) { }
+              private _cuentasService: CuentasXcobrarService,
+              private _comisionesService: ComisionesService) { }
 
   ngOnInit() {
-    console.log(this.data)
+    console.log(this.data);
     this.createForm();
   }
 
@@ -35,7 +37,46 @@ export class ConfirmPaymentComponent implements OnInit {
 
   confirmMovement() {
     const season = JSON.parse(localStorage.getItem('season'));
-    this._cuentasService.abonar(this.data.idProfesor, season.idtemporada, this.forma.get('cantidad').value, this.data.parametros)
+    const monto = this.forma.get('cantidad').value;
+    if (this.data.source.component === 'cuentas') {
+      this.abonarCuentaMaestro(this.data.source.id, season.idtemporada, this.forma.get('cantidad').value, this.data.parametros);
+    } else if (this.data.source.component === 'ComisionesVendedor') {
+      this.abonarComisionVendedor(season.idtemporada, monto, this.data.source.id);
+    } else if (this.data.source.component === 'ComisionesDirector') {
+      this.abonarComisionDirector(season.idtemporada, monto, this.data.source.id);
+    }
+  }
+
+  abonarCuentaMaestro(idProfesor, season, cantidad, parametros) {
+    this._cuentasService.abonar(idProfesor, season, cantidad, parametros)
+      .subscribe(
+        res => {
+          console.log(res);
+          this.dialogRef.close(true);
+        },
+        error1 => {
+          swal('Algo malo ha ocurrido', 'Error con el servidor', 'error');
+          this.dialogRef.close(false);
+        }
+      );
+  }
+
+  abonarComisionVendedor(season, monto, id) {
+    this._comisionesService.postAbonarComisionVendedor(season, monto, id)
+      .subscribe(
+        res => {
+          console.log(res);
+          this.dialogRef.close(true);
+        },
+        error1 => {
+          swal('Algo malo ha ocurrido', 'Error con el servidor', 'error');
+          this.dialogRef.close(false);
+        }
+      );
+  }
+
+  abonarComisionDirector(season, monto, id) {
+    this._comisionesService.postAbonarComisionDirector(season, monto, id)
       .subscribe(
         res => {
           console.log(res);

@@ -61,8 +61,11 @@ export class CuentasMaestroComponent implements OnInit {
 
     const dialogRef = this.dialog.open(ConfirmPaymentComponent, {
       data: {
+        source: {
+          id: idProfesor,
+          component: 'cuentas'
+        },
         parametros: this.parametros,
-        idProfesor: idProfesor,
         nombre: nombre,
         restante: restante
       }

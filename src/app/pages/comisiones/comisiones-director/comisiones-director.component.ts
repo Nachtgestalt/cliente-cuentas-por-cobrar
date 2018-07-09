@@ -16,7 +16,7 @@ export class ComisionesDirectorComponent implements OnInit {
 
   season = JSON.parse(localStorage.getItem('season'));
 
-  displayedColumns = ['nombre', 'deuda', 'pagado', 'restante'];
+  displayedColumns = ['id', 'nombre', 'deuda', 'pagado', 'restante', 'options'];
   exampleDatabase: ComisionesService | null;
   dataSource: ComisionesDirectorDataSource | null;
 
@@ -46,11 +46,14 @@ export class ComisionesDirectorComponent implements OnInit {
       });
   }
 
-  confirm(i: number, idProfesor: number, nombre: string, restante: number) {
+  confirm(i: number, idDirector: number, nombre: string, restante: number) {
 
     const dialogRef = this.dialog.open(ConfirmPaymentComponent, {
       data: {
-        idProfesor: idProfesor,
+        source: {
+          id: idDirector,
+          component: 'ComisionesDirector'
+        },
         nombre: nombre,
         restante: restante
       }

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpErrorResponse, HttpParams} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
 import {URL_SERVICIOS} from '../../config/config';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 
@@ -48,6 +48,36 @@ export class ComisionesService {
         (error: HttpErrorResponse) => {
           console.log (error.name + ' ' + error.message);
         });
+  }
+
+
+  postAbonarComisionVendedor(idTemporada, monto, idVendedor) {
+    const body = {
+      monto: monto,
+      temporada: idTemporada,
+      vendedor: idVendedor
+    };
+    console.log(body);
+    const url = `${this.URLComisiones}/abonarVendedor`;
+    let headers = new HttpHeaders();
+    headers.append('Content-Type', 'application/json');
+
+    return this.http.post(url, body, {headers});
+
+  }
+
+  postAbonarComisionDirector(idTemporada, monto, idDirector) {
+    const body = {
+      monto: monto,
+      temporada: idTemporada,
+      director: idDirector
+    };
+    const url = `${this.URLComisiones}/abonarDirector`;
+    let headers = new HttpHeaders();
+    headers.append('Content-Type', 'application/json');
+
+    return this.http.post(url, body, {headers});
+
   }
 
 }
