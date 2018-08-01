@@ -115,6 +115,5 @@ export class InventarioService {
     // return this.http.get(url, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}});
   }
 
-
 }
 

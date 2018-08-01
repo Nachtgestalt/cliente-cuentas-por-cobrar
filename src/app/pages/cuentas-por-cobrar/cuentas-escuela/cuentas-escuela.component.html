@@ -8,42 +8,47 @@
   <!--<div class="spinner-container" *ngIf="$loading">-->
     <!--<mat-spinner></mat-spinner>-->
   <!--</div>-->
-  <mat-table #table [dataSource]="dataSource" matSort>
+  <table mat-table #table [dataSource]="dataSource" matSort>
 
     <!-- Clave Column -->
     <ng-container matColumnDef="clave">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Clave </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.clave}} </mat-cell>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Clave </th>
+      <td mat-cell *matCellDef="let row"> {{row.clave}} </td>
+      <td mat-footer-cell *matFooterCellDef></td>
     </ng-container>
 
     <!-- Nombre Column -->
     <ng-container matColumnDef="nombre">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </mat-header-cell>
-      <mat-cell *matCellDef="let row"> <a [routerLink]="['/cuentas/vendedor/escuela', {claveEscuela: row.clave, claveVendedor: idVendedor}]"> {{row.nombre}} </a> </mat-cell>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
+      <td mat-cell *matCellDef="let row"> <a [routerLink]="['/cuentas/vendedor/escuela', {claveEscuela: row.clave, claveVendedor: idVendedor}]"> {{row.nombre}} </a> </td>
+      <td mat-footer-cell *matFooterCellDef>Total</td>
     </ng-container>
 
     <!-- Deuda Column -->
     <ng-container matColumnDef="deuda">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Deuda </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.deuda}} </mat-cell>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Deuda </th>
+      <td mat-cell *matCellDef="let row"> {{row.deuda | currency}} </td>
+      <td mat-footer-cell *matFooterCellDef> {{getDeudaTotal() | currency}} </td>
     </ng-container>
 
     <!-- Pagado Column -->
     <ng-container matColumnDef="pagado">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Pagado </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.pagado}} </mat-cell>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Pagado </th>
+      <td mat-cell *matCellDef="let row"> {{row.pagado | currency}} </td>
+      <td mat-footer-cell *matFooterCellDef> {{getPagadoTotal() | currency}} </td>
     </ng-container>
 
     <!-- Restante Column -->
     <ng-container matColumnDef="restante">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Restante </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.restante}} </mat-cell>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Restante </th>
+      <td mat-cell *matCellDef="let row"> {{row.restante | currency}} </td>
+      <td mat-footer-cell *matFooterCellDef> {{getRestanteTotal() | currency}} </td>
     </ng-container>
 
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;">
-    </mat-row>
-  </mat-table>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
+  </table>
 
   <div class="no-results" [style.display]="dataSource.renderedData.length == 0 ? '' : 'none'">
     Sin resultados

@@ -74,6 +74,18 @@ export class ComisionesVendedorComponent implements OnInit {
     });
   }
 
+  getDeudaTotal() {
+    return this.dataSource.renderedData.map(t => t.deuda).reduce((acc, value) => acc + value, 0);
+  }
+
+  getRestanteTotal() {
+    return this.dataSource.renderedData.map(t => t.restante).reduce((acc, value) => acc + value, 0);
+  }
+
+  getPagadoTotal() {
+    return this.dataSource.renderedData.map(t => t.pagado).reduce((acc, value) => acc + value, 0);
+  }
+
 }
 
 export class ComisionesVendedorDataSource extends DataSource<any> {

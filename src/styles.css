@@ -9,6 +9,10 @@ body{
   font-size: 1rem;
 }
 
+tr.mat-footer-row {
+  font-weight: bold;
+}
+
 /*.mat-ink-bar {*/
   /*background-color: rgb(96,125,139);*/
 /*}*/

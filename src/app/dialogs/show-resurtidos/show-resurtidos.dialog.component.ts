@@ -13,6 +13,7 @@ import {VendedorService} from '../../services/vendedor/vendedor.service';
 import {HttpClient} from '@angular/common/http';
 import {DomSanitizer} from '@angular/platform-browser';
 import * as moment from 'moment';
+import {HistorialVentaService} from '../../services/historial-venta/historial-venta.service';
 
 @Component({
   selector: 'app-show-resurtidos',
@@ -34,6 +35,7 @@ export class ShowResurtidosDialogComponent implements OnInit {
   @ViewChild('filter') filter: ElementRef;
 
   constructor( private httpClient: HttpClient,
+               private _historialVentaService: HistorialVentaService,
                public _inventarioService: InventarioService,
                public dialogRef: MatDialogRef<AddTemporadaComponent>,
                @Inject(MAT_DIALOG_DATA) public data: any,
@@ -72,6 +74,39 @@ export class ShowResurtidosDialogComponent implements OnInit {
           console.log(pdfResult);
         }
       );
+  }
+
+
+  deleteResurtido(numResurtido) {
+    swal({
+      title: '¿Estas seguro?',
+      text: 'Una vez eliminado el paciente, no hay vuelta atras',
+      icon: 'warning',
+      buttons: {
+        cancel: true,
+        confirm: true
+      },
+      dangerMode: true
+    })
+      .then((willDelete) => {
+        if (willDelete) {
+          this._historialVentaService.deleteResurtido(this.data.folio, numResurtido)
+            .subscribe(
+              res => {
+                console.log(res);
+                swal('Resurtido eliminado exitosamente', {
+                  icon: 'success',
+                });
+                this.loadData();
+              },
+              error => {
+                swal('Algo salio mal', 'No se pudo eliminar este resurtido', {
+                  icon: 'error',
+                });
+              }
+            );
+        }
+      });
   }
 
 }

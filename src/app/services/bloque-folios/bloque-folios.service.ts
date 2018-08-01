@@ -32,7 +32,7 @@ export class BloqueFoliosService {
     let params = new HttpParams();
     params = params.append('clave', clave_vendedor);
     params = params.append('valor', folio);
-    return this.http.get(url, {headers, params});
+    return this.http.get(url, {headers, params})
   }
 
   obtenerBloqueFolios() {

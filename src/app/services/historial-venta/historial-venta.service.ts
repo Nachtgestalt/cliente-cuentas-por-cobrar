@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {URL_SERVICIOS} from '../../config/config';
 import {Producto} from '../../interfaces/producto.interface';
 
@@ -24,6 +24,14 @@ export class HistorialVentaService {
           return libro;
         }
       );
+  }
+
+  deleteResurtido(folio, numResurtido) {
+    const url = `${this.urlHistorialVenta}/deleteResurtido`;
+    let params = new HttpParams()
+    params = params.append('folio', folio);
+    params = params.append('numresurtido', numResurtido);
+    return this.http.delete(url,{params});
   }
 
 }

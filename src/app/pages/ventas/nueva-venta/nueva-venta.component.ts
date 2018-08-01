@@ -141,6 +141,7 @@ export class NuevaVentaComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.crearForma();
     this.createValueChanges();
+    console.log('Venta: ', this.venta);
   }
 
   createValueChanges() {
@@ -362,6 +363,29 @@ export class NuevaVentaComponent implements OnInit, OnDestroy {
                       this.createValueChanges();
                       this.active = true;
                       this.isAlive = true;
+                      this.venta = {
+                        profesor: '',
+                        escuela: null,
+                        comision_director: null,
+                        vendedor_clave: '',
+                        comision_profesor: null,
+                        comision_vendedor: null,
+                        escuela_clave: '',
+                        fecha: '',
+                        folio: '',
+                        idfolios: null,
+                        idprofesor: '',
+                        pedidos: [
+                          {
+                            libro_clave: null,
+                            idHistorial: null,
+                            pedidos: null,
+                            precioventa: null,
+                            tipo_movimiento: '',
+                            motivo: ''
+                          }
+                        ]
+                      };
                     }, 1000);
                   }
                 );
@@ -445,12 +469,4 @@ export class NuevaVentaComponent implements OnInit, OnDestroy {
         return res ? null : {folioExisteEnRango: true};
       });
   }
-
-  // validarFechaValida(control: AbstractControl) {
-  //   // const fechaForm: Moment = control.value;
-  //   // const fecha = fechaForm.format('YYYY[-]MM[-]DD');
-  //   const date: Moment = moment(control.value);
-  //   console.log(date.isValid());
-  //   return date.isValid() ? null : {fechaInvalida: true};
-  // }
 }

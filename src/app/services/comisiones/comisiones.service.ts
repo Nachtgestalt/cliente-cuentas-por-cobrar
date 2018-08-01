@@ -27,7 +27,6 @@ export class ComisionesService {
 
     return this.http.get<any[]>(url, {params})
       .subscribe(data => {
-          console.log(data);
           this.dataChangeVendedor.next(data);
         },
         (error: HttpErrorResponse) => {

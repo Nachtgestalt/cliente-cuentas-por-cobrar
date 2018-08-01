@@ -35,6 +35,10 @@
           <mat-icon>print</mat-icon>
           {{row.index}}
         </button>
+
+        <button (click)="deleteResurtido(row.numresurtido)" mat-icon-button>
+          <mat-icon>delete_forever</mat-icon>
+        </button>
       </mat-cell>
     </ng-container>
 
