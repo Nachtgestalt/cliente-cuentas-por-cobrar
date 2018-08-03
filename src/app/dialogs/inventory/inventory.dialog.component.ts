@@ -68,8 +68,10 @@ export class InventoryDialogComponent implements OnInit {
           console.log(res);
         }
       );
+  }
 
-
+  onNoClick(): void {
+    this.dialogRef.close();
   }
 
 }

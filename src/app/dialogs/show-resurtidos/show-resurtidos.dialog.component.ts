@@ -80,7 +80,7 @@ export class ShowResurtidosDialogComponent implements OnInit {
   deleteResurtido(numResurtido) {
     swal({
       title: '¿Estas seguro?',
-      text: 'Una vez eliminado el paciente, no hay vuelta atras',
+      text: 'Una vez eliminado el resurtido, no hay vuelta atras',
       icon: 'warning',
       buttons: {
         cancel: true,
