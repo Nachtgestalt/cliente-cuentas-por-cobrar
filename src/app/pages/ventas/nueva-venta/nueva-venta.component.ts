@@ -39,6 +39,8 @@ export class NuevaVentaComponent implements OnInit, OnDestroy {
   active = true;
   isValid = false;
 
+  isValidSell = true;
+
   zonas: Zona[] = [];
   forma: FormGroup;
   vendedores: Vendedor[];
@@ -46,7 +48,7 @@ export class NuevaVentaComponent implements OnInit, OnDestroy {
   maestros: Maestro[];
   productos: Producto[] = [];
   isAlive = true;
-  venta: Venta = {
+  venta: any = {
     profesor: '',
     escuela: null,
     comision_director: null,
@@ -67,7 +69,13 @@ export class NuevaVentaComponent implements OnInit, OnDestroy {
         tipo_movimiento: '',
         motivo: ''
       }
-    ]
+    ],
+    lideres: []
+      // {
+      //   comision_lider: null,
+      //   lider: null
+      // }
+    // ]
   };
 
   vendedorFlag = false;
@@ -76,8 +84,6 @@ export class NuevaVentaComponent implements OnInit, OnDestroy {
   comisionesFlag = false;
   pedidosFlag = false;
   showPDF = false;
-
-  countBooks = 0;
 
   reciboVenta;
 
@@ -227,6 +233,7 @@ export class NuevaVentaComponent implements OnInit, OnDestroy {
       'comision_profesor': new FormControl(),
       'comision_vendedor': new FormControl(),
       'comision_director': new FormControl(),
+      'lideres': new FormArray([]),
       'pedidos': new FormArray([this.createItem()])
     });
 
@@ -270,7 +277,14 @@ export class NuevaVentaComponent implements OnInit, OnDestroy {
       title: '',
       amount: ['', [Validators.required, Validators.min(1)]],
       price: '',
-      total: '',
+      total: ''
+    });
+  }
+
+  createLider(): FormGroup {
+    return this.formBuilder.group({
+      lider: ['', [Validators.required]],
+      comision_lider: ['', Validators.required]
     });
   }
 
@@ -293,7 +307,7 @@ export class NuevaVentaComponent implements OnInit, OnDestroy {
   }
 
   confirmSell() {
-    // let tab = window.open();
+    this.isValidSell = false;
     const control = this.forma.controls['pedidos'].value;
     const fechaForm: Moment = this.forma.get('fecha').value;
     const fecha = fechaForm.format('YYYY[-]MM[-]DD');
@@ -312,6 +326,7 @@ export class NuevaVentaComponent implements OnInit, OnDestroy {
       );
     }
     this.venta.fecha = fecha;
+    this.venta.lideres = this.forma.get('lideres').value;
     this.venta.comision_vendedor = this.forma.get('comision_vendedor').value;
     this.venta.comision_profesor = this.forma.get('comision_profesor').value;
     this.venta.comision_director = this.forma.get('comision_director').value;
@@ -361,6 +376,7 @@ export class NuevaVentaComponent implements OnInit, OnDestroy {
                     setTimeout(() => {
                       this.crearForma();
                       this.createValueChanges();
+                      this.isValidSell = true;
                       this.active = true;
                       this.isAlive = true;
                       this.venta = {
@@ -384,9 +400,15 @@ export class NuevaVentaComponent implements OnInit, OnDestroy {
                             tipo_movimiento: '',
                             motivo: ''
                           }
-                        ]
+                        ],
+                        lideres: []
+                          // {
+                          //   comision_lider: null,
+                          //   lider: null
+                          // }
+                        // ]
                       };
-                    }, 1000);
+                    }, 250);
                   }
                 );
             });
@@ -444,6 +466,19 @@ export class NuevaVentaComponent implements OnInit, OnDestroy {
       );
 
     this.cdref.detectChanges();
+  }
+
+  addNewLider() {
+    const control = <FormArray>this.forma.controls['lideres'];
+    control.push(this.createLider());
+  }
+
+  deleteLider(index) {
+    // control refers to your formarray
+    const control = <FormArray>this.forma.controls['lideres'];
+    // remove the chosen row
+    control.removeAt(index);
+    // console.log(control);
   }
 
   deleteBook(index) {

@@ -35,6 +35,9 @@ import {CuentasMaestroComponent} from './cuentas-por-cobrar/cuentas-maestro/cuen
 import {ComisionesVendedorComponent} from './comisiones/comisiones-vendedor/comisiones-vendedor.component';
 import {ComisionesDirectorComponent} from './comisiones/comisiones-director/comisiones-director.component';
 import {ComisionesComponent} from './comisiones/comisiones.component';
+import {AdminGuard} from '../services/guards/admin.guard';
+import {AbonoRapidoComponent} from './cuentas-por-cobrar/abono-rapido/abono-rapido.component';
+import {VentaDetailResolveService} from '../services/venta/venta-detail-resolve.service';
 
 
 const pagesRoutes: Routes = [
@@ -95,7 +98,13 @@ const pagesRoutes: Routes = [
       {
         path: 'cuentas',
         component: CuentasPorCobrarComponent,
+        canActivate: [AdminGuard],
         children: [
+          {path: 'abono-rapido', component: AbonoRapidoComponent,
+            resolve: {
+              ventas: VentaDetailResolveService
+            },
+            data: {titulo: 'Cuentas por cobrar - Abono rapido'}},
           {path: 'vendedores', component: CuentasVendedorComponent, data: {titulo: 'Cuentas por cobrar - Vendedores'}},
           {path: 'vendedor', component: CuentasEscuelaComponent, data: {titulo: 'Cuentas por cobrar - Escuela'}},
           {path: 'vendedor/escuela', component: CuentasMaestroComponent, data: {titulo: 'Cuentas por cobrar - Maestro'}},
@@ -106,6 +115,7 @@ const pagesRoutes: Routes = [
       {
         path: 'comisiones',
         component: ComisionesComponent,
+        canActivate: [AdminGuard],
         children:  [
           {path: 'vendedor', component: ComisionesVendedorComponent, data: {titulo: 'Comisiones - Vendedor'}},
           {path: 'director', component: ComisionesDirectorComponent, data: {titulo: 'Comisiones - Director'}},
@@ -115,16 +125,19 @@ const pagesRoutes: Routes = [
       },
       {
         path: 'entregas',
+        canActivate: [AdminGuard],
         component: EntregasDevolucionesComponent,
         data: {titulo: 'Entregas y devoluciones'}
       },
       {
         path: 'inventario',
+        canActivate: [AdminGuard],
         component: InventarioComponent,
         data: {titulo: 'Inventario'}
       },
       {
         path: 'nomina',
+        canActivate: [AdminGuard],
         component: RecursosHumanosComponent,
         children: [
           {path: 'empleado', component: AgregarEmpleadoComponent, data: {titulo: 'Recursos humanos'}},
@@ -139,6 +152,7 @@ const pagesRoutes: Routes = [
       },
       {
         path: 'configuracion',
+        canActivate: [AdminGuard],
         component: ConfiguracionComponent,
         children: [
           {path: 'temporadas', component: TemporadasComponent, data: {titulo: 'Administrar temporada'}},

@@ -14,6 +14,7 @@ export class UsuariosComponent implements OnInit {
   roles = [
     {value: 'ADMIN_ROLE', viewValue: 'Administrador'},
     {value: 'VENDOR_ROLE', viewValue: 'Vendedor'},
+    {value: 'ALMACEN_ROLE', viewValue: 'Almacen'},
     {value: 'HACIENDA_ROLE', viewValue: 'Hacienda'}
   ];
 
@@ -32,6 +33,8 @@ export class UsuariosComponent implements OnInit {
     this._userService.agregarUsuario(this.forma.value)
       .subscribe(res => {
         console.log(res);
+        swal('Usuario agregado', 'Usuario agregado con exito', 'success');
+        this.forma.reset();
       });
   }
 

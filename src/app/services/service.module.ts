@@ -24,6 +24,7 @@ import {CatchInterceptorService} from './interceptors/catch-interceptor.service'
 import {TokenInterceptorService} from './interceptors/token-interceptor.service';
 import {CuentasXcobrarService} from './cuentas-xcobrar/cuentas-xcobrar.service';
 import {ComisionesService} from './comisiones/comisiones.service';
+import {AdminGuard} from './guards/admin.guard';
 @NgModule({
   imports: [
     CommonModule,
@@ -39,6 +40,7 @@ import {ComisionesService} from './comisiones/comisiones.service';
     TemporadaService,
     ZonaService,
     LoginGuardGuard,
+    AdminGuard,
     FolioService,
     BloqueFoliosService,
     VentaService,

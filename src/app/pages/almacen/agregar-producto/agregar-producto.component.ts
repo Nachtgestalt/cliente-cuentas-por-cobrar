@@ -160,7 +160,7 @@ export class AgregarProductoComponent implements OnInit {
               data => {
                 console.log(data);
               }
-            )
+            );
             this.productoActualizar = true;
             this.forma.reset();
             this.active = false;

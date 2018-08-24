@@ -41,6 +41,12 @@
           <mat-icon>remove</mat-icon>
           {{row.index}}
         </button>
+        <button (click)="historial(row.claveProducto)" mat-mini-fab color="accent"
+                matTooltip="Entrada"
+                aria-label="Button that displays a tooltip when focused or hovered over">
+          <mat-icon>history</mat-icon>
+          {{row.index}}
+        </button>
       </mat-cell>
     </ng-container>
 

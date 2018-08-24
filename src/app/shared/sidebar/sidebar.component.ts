@@ -13,6 +13,7 @@ import {MatSidenav} from '@angular/material';
 export class SidebarComponent implements OnInit, OnDestroy{
   @Input() opened;
   mobileQuery: MediaQueryList;
+  menu: any = [];
 
   private _mobileQueryListener: () => void;
 
@@ -24,6 +25,7 @@ export class SidebarComponent implements OnInit, OnDestroy{
   }
 
   ngOnInit() {
+    this._sidebar.loadSidebarMenu();
   }
 
 

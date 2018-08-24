@@ -19,5 +19,11 @@ export interface Venta {
       tipo_movimiento: string;
       motivo: string;
     }
-  ];
+    ];
+  lideres: [
+    {
+      comision_lider: number;
+      lider: number;
+    }
+    ];
 }

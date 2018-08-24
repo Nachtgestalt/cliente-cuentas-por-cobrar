@@ -26,8 +26,8 @@ export class VentaService {
     return this.http.get<Venta[]>(this.ventasURL, {headers: {'Content-Type': 'application/json'}})
       .map(
         res => {
-          for ( let venta of res) {
-            venta.fecha = moment(venta.fecha).format("DD MMM YYYY") //parse integer
+          for ( const venta of res) {
+            venta.fecha = moment(venta.fecha).locale('es').format('DD MMM YYYY'); //parse integer
           }
           return res;
         }
@@ -39,6 +39,10 @@ export class VentaService {
         (error: HttpErrorResponse) => {
           console.log (error.name + ' ' + error.message);
         });
+  }
+
+  obtenerVentas() {
+    return this.http.get<Venta[]>(this.ventasURL, {headers: {'Content-Type': 'application/json'}});
   }
 
   getVenta(id) {
@@ -57,7 +61,8 @@ export class VentaService {
             comision_director: res.comisionDirector,
             comision_profesor: res.comisionProfesor,
             comision_vendedor: res.comisionVendedor,
-            idfolios: res.bloqueFolio.folio.idfolios
+            idfolios: res.bloqueFolio.folio.idfolios,
+            lideres: res.lideres
           };
           console.log(venta);
           console.log(res);
@@ -67,9 +72,9 @@ export class VentaService {
   }
 
   postVenta(venta) {
-    const url = `${this.ventasURL}/nuevo`
+    const url = `${this.ventasURL}/nuevo`;
     const body = JSON.stringify(venta);
-    return this.http.post(url, body, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}})
+    return this.http.post(url, body, {headers: {'Content-Type': 'application/json'}});
   }
 
   postResurtido(historial, folio) {
@@ -87,13 +92,13 @@ export class VentaService {
 
   putVenta(venta) {
     const body = JSON.stringify(venta);
-    return this.http.put(this.ventasURL, body, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}})
+    return this.http.put(this.ventasURL, body, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}});
   }
 
   getPFDVenta(folio) {
     // console.log(`${this.pdfURL}${folio}`);
     return this.http
-      .get(`${this.pdfURL}${folio}`,{headers: {'authorization': this.token}, responseType: 'blob'})
+      .get(`${this.pdfURL}${folio}`, {headers: {'authorization': this.token}, responseType: 'blob'})
       .map( res => {
         console.log(`${this.pdfURL}${folio}`);
           return new Blob([res], { type: 'application/pdf' });
@@ -107,6 +112,6 @@ export class VentaService {
 
   deleteVenta(folio) {
     const url = `${this.ventasURL}/${folio}`;
-    return this.http.delete(url, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}})
+    return this.http.delete(url, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}});
   }
 }

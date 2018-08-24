@@ -25,7 +25,7 @@ export class ModificarVentaComponent implements OnInit {
 
   private isAlive = true;
 
-  displayedColumns = ['folio', 'fecha', 'escuela', 'profesor', 'edit'];
+  displayedColumns = ['folio', 'fecha', 'escuela', 'profesor', 'pagado', 'restante', 'edit'];
   exampleDatabase: VentaService | null;
   dataSource: VentaDataSource | null;
 
@@ -33,6 +33,8 @@ export class ModificarVentaComponent implements OnInit {
 
   index: number;
   id: number;
+
+  user = JSON.parse(localStorage.getItem('user'));
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -45,6 +47,7 @@ export class ModificarVentaComponent implements OnInit {
               private domSanitizer: DomSanitizer) { }
 
   ngOnInit() {
+    this.user.role === 'ADMIN_ROLE' ? this.displayedColumns = ['folio', 'fecha', 'escuela', 'profesor', 'pagado', 'restante', 'edit'] : this.displayedColumns = ['folio', 'fecha', 'escuela', 'profesor', 'edit']
     this.loadData();
   }
 

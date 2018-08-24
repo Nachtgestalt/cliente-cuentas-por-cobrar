@@ -43,8 +43,9 @@
           <mat-form-field class="col-md-6">
             <input type="text" matInput placeholder="Folio"
                    formControlName="folio" [(ngModel)]="forma.value.folio " required>
-            <mat-error *ngIf="forma.get('folio').hasError('folioexiste')"> Folio asignado a una venta </mat-error>
-            <mat-error *ngIf="forma.get('folio').hasError('folioExisteEnRango')"> Folio no le pertenece al vendedor </mat-error>
+            <mat-error *ngIf="forma.get('folio').hasError('folioexiste')"> Folio asignado a una venta</mat-error>
+            <mat-error *ngIf="forma.get('folio').hasError('folioExisteEnRango')"> Folio no le pertenece al vendedor
+            </mat-error>
           </mat-form-field>
           <mat-form-field class="col-md-6">
             <input matInput [matDatepicker]="picker1" placeholder="Elige la fecha"
@@ -52,7 +53,7 @@
                    formControlName="fecha" readonly required>
             <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
             <mat-datepicker #picker1 disabled="false"></mat-datepicker>
-            <mat-error *ngIf="forma.get('fecha').hasError('fechaInvalida')"> No es una fecha valida </mat-error>
+            <mat-error *ngIf="forma.get('fecha').hasError('fechaInvalida')"> No es una fecha valida</mat-error>
             <!--<mat-error *ngIf="forma.get('fecha_inicio').invalid">{{getErrorMessages()}}</mat-error>-->
           </mat-form-field>
         </div>
@@ -109,6 +110,47 @@
           </mat-form-field>
         </div>
       </div>
+    </div>
+
+    <div class="row" *ngIf="comisionesFlag">
+      <div class="col-md-12">
+        <div class="row">
+          <label class="col-md-12 pb-0">Comisiones Especiales</label>
+        </div>
+        <div formArrayName="lideres" class="col-md-12">
+          <div class="row" *ngFor="let pedido of forma.controls['lideres'].controls; let i = index"
+               [formGroupName]="i">
+            <mat-form-field class="col-md-6">
+              <mat-select placeholder="Selecciona un maestro" formControlName="lider">
+                <mat-option *ngFor="let maestro of maestros" [value]="maestro.idprofesor">
+                  {{ maestro.nombre + ' ' + maestro.apellidos}}
+                </mat-option>
+              </mat-select>
+              <!--<mat-error *ngIf="forma.get('idtemporada').hasError">{{getErrorMessages()}}</mat-error>-->
+            </mat-form-field>
+
+            <mat-form-field class="col-md-4">
+              <input type="number" matInput placeholder="Cantidad"
+                     formControlName="comision_lider">
+              <!--<mat-error *ngIf="forma.get('isbn').hasError('required')"> {{getErrorMessages()}} </mat-error>-->
+            </mat-form-field>
+
+            <button class="col-md-1" type="button" mat-icon-button color="primary" (click)="deleteLider(i)">
+              <mat-icon aria-label="+">remove</mat-icon>
+            </button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <button class="float-right" type="button" mat-raised-button (click)="addNewLider()">
+              <mat-icon aria-label="+">add</mat-icon>
+              Agregar otro maestro
+            </button>
+          </div>
+        </div>
+
+      </div>
+
     </div>
     <hr>
     <div class="row" *ngIf="pedidosFlag">
@@ -167,13 +209,18 @@
     </div>
 
     <div class="row mt-3" mat-dialog-actions>
-      <button mat-raised-button color="primary" [disabled]="!forma.valid" (click)="confirmSell()">Guardar</button>
+      <button mat-raised-button color="primary" [disabled]="!forma.valid && isValidSell" (click)="confirmSell()">
+        Guardar
+      </button>
     </div>
 
   </form>
 </div>
 <ng-template #other_content>
   <mat-card class="mt-5">
-    <h2 class="text-center"><mat-icon>warning</mat-icon> No hay una temporada activa </h2>
+    <h2 class="text-center">
+      <mat-icon>warning</mat-icon>
+      No hay una temporada activa
+    </h2>
   </mat-card>
 </ng-template>

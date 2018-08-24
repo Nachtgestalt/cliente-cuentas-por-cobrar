@@ -8,6 +8,7 @@ import {InventarioService} from '../../services/inventario/inventario.service';
 import {HttpClient} from '@angular/common/http';
 import {ConfirmInventoryDialogComponent} from '../../dialogs/confirm-inventory/confirm-inventory.dialog.component';
 import {InventoryDialogComponent} from '../../dialogs/inventory/inventory.dialog.component';
+import {HistoryStockComponent} from '../../dialogs/history-stock/history-stock.component';
 
 @Component({
   selector: 'app-inventario',
@@ -56,6 +57,25 @@ export class InventarioComponent implements OnInit {
       data: {
         claveProducto: claveProducto,
         tipoEntrada: tipoEntrada
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+      if (result) {
+        this.loadData();
+        // const foundIndex = this.exampleDatabase.dataChange.value.findIndex(x => x.idHistorial === this.id);
+        // // for delete we use splice in order to remove single object from DataService
+        // this.exampleDatabase.dataChange.value.splice(foundIndex, 1);
+        // this.refreshTable();
+      }
+    });
+  }
+
+  historial(id: number) {
+    const dialogRef = this.dialog.open(HistoryStockComponent, {
+      data: {
+        id: id
       }
     });
 

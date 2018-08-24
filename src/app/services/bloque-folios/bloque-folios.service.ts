@@ -56,4 +56,12 @@ export class BloqueFoliosService {
     return this.http.get(url, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}, params});
   }
 
+  bloqueFolioInRange(valor, idFolio) {
+    const url = `${this.urlBloqueFolios}/range`;
+    let params = new HttpParams();
+    params = params.append('valor', valor);
+    params = params.append('idfolio', idFolio);
+    return this.http.get(url, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}, params});
+  }
+
 }

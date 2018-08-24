@@ -31,11 +31,24 @@
       <mat-cell *matCellDef="let row"> {{row.profesor.nombre + ' ' + row.profesor.apellidos}} </mat-cell>
     </ng-container>
 
+    <!--Pagado Column-->
+    <ng-container matColumnDef="pagado" *ngIf="(user.role === 'ADMIN_ROLE')">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Pagado </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.pagado | currency}} </mat-cell>
+    </ng-container>
+
+    <!--Restannte Column-->
+    <ng-container matColumnDef="restante" *ngIf="(user.role === 'ADMIN_ROLE')">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Restante </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.restante | currency}} </mat-cell>
+    </ng-container>
+
     <!-- Opciones Column -->
     <ng-container matColumnDef="edit">
       <mat-header-cell *matHeaderCellDef> Acción </mat-header-cell>
       <mat-cell *matCellDef="let row; let i=index;">
         <button (click)="deleteItem(i, row.folio, row.fecha, row.escuela.nombre)"
+                *ngIf="(user.role === 'ADMIN_ROLE')"
                 mat-mini-fab color="warn"
                 matTooltip="Borrar venta"
                 aria-label="Button that displays a tooltip when focused or hovered over">

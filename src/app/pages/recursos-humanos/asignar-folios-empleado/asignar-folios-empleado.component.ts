@@ -16,7 +16,7 @@ import 'rxjs/add/operator/takeWhile';
   styleUrls: ['./asignar-folios-empleado.component.css']
 })
 export class AsignarFoliosEmpleadoComponent implements OnInit {
-  private alive: boolean = true;
+  private alive = true;
 
   formGroup: FormGroup;
   vendedores: Vendedor[];
@@ -31,6 +31,7 @@ export class AsignarFoliosEmpleadoComponent implements OnInit {
       folioIdfolios: null
     }
   };
+  isActive = true;
 
   /** Returns a FormArray with the name 'formArray'. */
   get formArray(): AbstractControl | null { return this.formGroup.get('formArray'); }
@@ -91,8 +92,10 @@ export class AsignarFoliosEmpleadoComponent implements OnInit {
       .subscribe( values => {
         console.log(values);
         this.bloqueFolios.id.folioIdfolios = values.idfolios;
-        (this.formGroup.get('formArray') as FormArray).at(2).get('inicio').setValidators([Validators.required, Validators.min(values.inicio)]);
-        (this.formGroup.get('formArray') as FormArray).at(2).get('fin').setValidators([Validators.required, Validators.max(values.fin)]);
+        (this.formGroup.get('formArray') as FormArray).at(2).get('inicio').setValidators([Validators.required, Validators.min(values.inicio), Validators.max(values.fin)]);
+        (this.formGroup.get('formArray') as FormArray).at(2).get('fin').setValidators([Validators.required, Validators.min(values.inicio), Validators.max(values.fin)]);
+        (this.formGroup.get('formArray') as FormArray).at(2).get('inicio').setAsyncValidators([this.ValidarRango.bind(this)]);
+        (this.formGroup.get('formArray') as FormArray).at(2).get('fin').setAsyncValidators([this.ValidarRango.bind(this)]);
         console.log(this.bloqueFolios);
     });
 
@@ -124,13 +127,16 @@ export class AsignarFoliosEmpleadoComponent implements OnInit {
       .takeWhile(() => this.alive)
       .subscribe(res => {
         console.log(res);
+        this.crearForma();
+        this.formGroup.reset();
+        this.alive = false;
+        this.hayFolios = false;
+        this.createValueChanges();
+        console.log(this.formGroup.value);
+        this.isActive = false;
+        swal('Bloque de folios agregado', 'Bloque de folios agregado con exito', 'success');
+        setTimeout( () => this.isActive = true, 200);
       });
-    this.crearForma();
-    this.formGroup.reset();
-    this.alive = false;
-    this.hayFolios = false;
-    this.createValueChanges();
-    console.log(this.formGroup.value);
 
     // this.bloqueFolios.id.folioIdfolios = this.formGroup.get('formArray').get('0').value;
   }
@@ -140,6 +146,18 @@ export class AsignarFoliosEmpleadoComponent implements OnInit {
       .map(
         res => {
           return res ? {existeClave: true} : null;
+        });
+
+  }
+
+  ValidarRango(control: AbstractControl) {
+    const idFolios = this.bloqueFolios.id.folioIdfolios;
+
+    return this._bloqueFolioService.bloqueFolioInRange(control.value, idFolios)
+      .map(
+        res => {
+          console.log(res);
+          return res ?  {fueraRango: true} : null ;
         });
 
   }

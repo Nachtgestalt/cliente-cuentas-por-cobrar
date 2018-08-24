@@ -37,6 +37,7 @@ import {DeleteVentaComponent} from './dialogs/delete-venta/delete-venta.componen
 import {ShowResurtidosDialogComponent} from './dialogs/show-resurtidos/show-resurtidos.dialog.component';
 import {InventoryDialogComponent} from './dialogs/inventory/inventory.dialog.component';
 import {ConfirmPaymentComponent} from './dialogs/confirm-payment/confirm-payment.component';
+import {HistoryStockComponent} from './dialogs/history-stock/history-stock.component';
 
 
 @NgModule({
@@ -58,7 +59,8 @@ import {ConfirmPaymentComponent} from './dialogs/confirm-payment/confirm-payment
     DeleteVentaComponent,
     ShowResurtidosDialogComponent,
     InventoryDialogComponent,
-    ConfirmPaymentComponent
+    ConfirmPaymentComponent,
+    HistoryStockComponent
   ],
   imports: [
     BrowserModule,
@@ -86,7 +88,8 @@ import {ConfirmPaymentComponent} from './dialogs/confirm-payment/confirm-payment
     DeleteVentaComponent,
     ShowResurtidosDialogComponent,
     InventoryDialogComponent,
-    ConfirmPaymentComponent
+    ConfirmPaymentComponent,
+    HistoryStockComponent
   ],
   providers: [
     {provide: LocationStrategy, useClass: HashLocationStrategy}

@@ -49,7 +49,6 @@ export class AgregarMaestroComponent implements OnInit, OnDestroy {
       });
 
     this.crearFormaActualizar();
-    console.log()
     this.route.params
       .subscribe(parametros => {
         this.clave = parametros['clave'];

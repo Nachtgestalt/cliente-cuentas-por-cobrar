@@ -2,7 +2,7 @@ import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {VentaService} from '../../services/venta/venta.service';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {AddTemporadaComponent, MY_FORMATS} from '../add-temporada/add-temporada.dialog.component';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
 import {MomentDateAdapter} from '@angular/material-moment-adapter';
 import {Escuela} from '../../interfaces/escuela.interface';
@@ -35,6 +35,7 @@ export class EditPedidoDialogComponent implements OnInit, OnDestroy{
 
   constructor(public dialogRef: MatDialogRef<AddTemporadaComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any,
+              private formBuilder: FormBuilder,
               private _ventaService: VentaService,
               private _escuelaService: EscuelaService) {
 
@@ -66,9 +67,7 @@ export class EditPedidoDialogComponent implements OnInit, OnDestroy{
                 console.log(respuesta);
               }
             );
-          this.forma.setValue(res);
-          console.log(this.venta);
-          console.log(res);
+          this.setData2Form(res);
         }
       );
   }
@@ -93,8 +92,42 @@ export class EditPedidoDialogComponent implements OnInit, OnDestroy{
       'comision_profesor': new FormControl(),
       'comision_vendedor': new FormControl(),
       'comision_director': new FormControl(),
+      'lideres': new FormArray([]),
       'idfolios': new FormControl(),
     });
+  }
+
+  createLider(): FormGroup {
+    return this.formBuilder.group({
+      lider: ['', [Validators.required]],
+      comision_lider: ['', Validators.required]
+    });
+  }
+
+  setData2Form(data) {
+    const lideres = this.forma.get('lideres') as FormArray;
+    while (lideres.length) {
+      lideres.removeAt(0);
+    }
+    for (let i = 0; i < data.lideres.length; i++) {
+      this.addNewLider();
+    }
+
+    this.forma.setValue(data);
+
+  }
+
+  addNewLider() {
+    const control = <FormArray>this.forma.controls['lideres'];
+    control.push(this.createLider());
+  }
+
+  deleteLider(index) {
+    // control refers to your formarray
+    const control = <FormArray>this.forma.controls['lideres'];
+    // remove the chosen row
+    control.removeAt(index);
+    // console.log(control);
   }
 
   filterSchool(nombre: string): Escuela[] {
@@ -109,15 +142,31 @@ export class EditPedidoDialogComponent implements OnInit, OnDestroy{
   confirmAdd() {
     let maestro = this.forma.get('maestro').value;
     let escuela = this.forma.get('escuela').value;
+    let lideres: any[] = (this.forma.get('lideres').value as Array<any>).map(
+      (x) => {
+        return {
+          lider: x.lider.idprofesor,
+          comision_lider: x.comision_lider
+        };
+      }
+    );
+    // lideres = lideres.map(
+    //   (x) => {
+    //     return {
+    //       lider: x.lider.idprofesor,
+    //       comision_lider: x.comision_lider
+    //     };
+    //   }
+    // );
     let venta: any = this.forma.value;
     delete venta.maestro;
     delete venta.escuela;
+    venta.lideres = lideres;
     venta.idprofesor = maestro.idprofesor;
     venta.escuela_clave = escuela.clave;
     console.log(venta);
     this._ventaService.putVenta(venta)
       .subscribe(res => {
-        console.log(res);
         this.dialogRef.close(true);
         },
         error1 => {
@@ -129,6 +178,17 @@ export class EditPedidoDialogComponent implements OnInit, OnDestroy{
 
   onNoClick(): void {
     this.dialogRef.close();
+  }
+
+  compareFn(x: any, y: any): boolean {
+    console.log('x: ', x, 'y: ', y)
+    return x && y ? x.idprofesor === y.idprofesor : x === y;
+  }
+
+
+  compareFnLider(x: any, y: any): boolean {
+    console.log('x: ', x, 'y: ', y);
+    return x && y ? x.idprofesor === y.idprofesor : x === y;
   }
 
 }

@@ -22,6 +22,7 @@ import {HistorialVentaService} from '../../services/historial-venta/historial-ve
 })
 export class ShowResurtidosDialogComponent implements OnInit {
 
+  user = JSON.parse(localStorage.getItem('user'));
   noData: boolean = false;
   displayedColumns = ['numresurtido', 'fecha', 'edit'];
   exampleDatabase: InventarioService | null;

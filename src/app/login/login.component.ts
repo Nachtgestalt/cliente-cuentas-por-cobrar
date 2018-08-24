@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {Router, ActivatedRoute} from '@angular/router';
 import {User} from '../interfaces/user.interfaces';
 import {UserService} from '../services/service.index';
 import {Title} from '@angular/platform-browser';
@@ -39,7 +39,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     this.formulario = new FormGroup({
-      username: new FormControl('', Validators.required ),
+      username: new FormControl('', Validators.required),
       password: new FormControl('', Validators.required)
     });
   }
@@ -47,14 +47,15 @@ export class LoginComponent implements OnInit {
   login() {
     this._userService.autenticar(this.formulario.value)
       .subscribe((resp: any) => {
-        this._userService.setTokenInStorage(resp);
+          this._userService.setTokenInStorage(resp);
           Observable.forkJoin(
             this._userService.obtenerUsuario(this.formulario.value)
-              .map( (res: any) => {
+              .map((res: any) => {
+                console.log(res);
                 return res;
               }),
             this._temporadaService.getCurrentSeason()
-              .map( (res: any) => {
+              .map((res: any) => {
                 return res;
               })
           ).subscribe(
@@ -62,32 +63,16 @@ export class LoginComponent implements OnInit {
               console.log(res);
               this._userService.setInStorage(res[0]);
               this._userService.setSeasonInStorage(res[1]);
+            },
+            error => console.log(error),
+            () => {
               this.router.navigate(['/home']);
             }
           );
-        //
-        // this._userService.obtenerUsuario(this.formulario.value)
-        //   .subscribe(
-        //     (data: any) => {
-        //       this._userService.setInStorage(data);
-        //       this._temporadaService.getCurrentSeason().subscribe(
-        //         res => {
-        //           console.log(res);
-        //           this._userService.setSeasonInStorage(res);
-        //           this.router.navigate(['/home']);
-        //         }
-        //       );
-        //     },
-        //     (error) => {
-        //       console.log(error);
-        //     },
-        //     () => {
-        //     }
-        //   );
-      },
-      error => {
-        swal('Error al iniciar sesión', 'Usuario y/o contraseña invalidos', 'error');
-        console.log(error);
-      });
+        },
+        error => {
+          swal('Error al iniciar sesión', 'Usuario y/o contraseña invalidos', 'error');
+          console.log(error);
+        });
   }
 }

@@ -1,0 +1,29 @@
+<div class="main-container mt-2 animated fadeIn fast" *ngIf="isActive">
+  <h5>Abono rapido</h5>
+  <form [formGroup]="forma" (ngSubmit)="abonar()" novalidate="novalidate">
+    <div class="row">
+      <div class="col-md-6">
+        <mat-form-field class="col-md-12 p-0">
+          <input type="text" placeholder="Folio:"
+                 formControlName="folio"
+                 matInput [matAutocomplete]="auto">
+          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+            <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+              {{option.folio + ' - ' + option.profesor.nombre + ' ' + option.profesor.apellidos}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+      <div class="col-md-6">
+        <mat-form-field class="col-md-12 p-0">
+          <input type="text" placeholder="Cantidad:" matInput formControlName="monto">
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col float-right">
+        <button mat-raised-button color="primary" type="submit" [disabled]="!forma.valid">Abonar</button>
+      </div>
+    </div>
+  </form>
+</div>

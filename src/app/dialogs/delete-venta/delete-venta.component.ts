@@ -22,11 +22,9 @@ export class DeleteVentaComponent implements OnInit {
   }
 
   confirmDelete(): void {
-    console.log('Entre al delete')
     this._ventaService.deleteVenta(this.data.folio)
       .subscribe(res => {
         console.log(res);
-        console.log('esta madre se borro!');
         this.dialogRef.close(true);
       },
         error => {

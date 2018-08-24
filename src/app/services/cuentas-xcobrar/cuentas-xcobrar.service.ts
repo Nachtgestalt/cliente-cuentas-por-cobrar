@@ -92,6 +92,14 @@ export class CuentasXcobrarService {
     params = params.append('idtemporada', idTemporada);
 
     return this.http.get(url, {params});
+  }
 
+  abonoRapido(folio, monto) {
+    const url = `${this.URLCuentasXCobrar}/abonoRapido`;
+    let params = new HttpParams();
+    params = params.append('monto', monto);
+    params = params.append('folio', folio);
+
+    return this.http.get(url, {params});
   }
 }
