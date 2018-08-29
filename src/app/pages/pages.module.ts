@@ -63,6 +63,10 @@ import { ComisionesVendedorComponent } from './comisiones/comisiones-vendedor/co
 import { ComisionesDirectorComponent } from './comisiones/comisiones-director/comisiones-director.component';
 import { AbonoRapidoComponent } from './cuentas-por-cobrar/abono-rapido/abono-rapido.component';
 import {HistoryStockComponent} from '../dialogs/history-stock/history-stock.component';
+import { ComisionesLiderComponent } from './comisiones/comisiones-lider/comisiones-lider.component';
+import {HistoryLiderComponent} from '../dialogs/history-comisiones/history-lider/history-lider.component';
+import {HistoryDirectorComponent} from '../dialogs/history-comisiones/history-director/history-director.component';
+import {HistoryVendedorComponent} from '../dialogs/history-comisiones/history-vendedor/history-vendedor.component';
 
 
 
@@ -106,6 +110,10 @@ import {HistoryStockComponent} from '../dialogs/history-stock/history-stock.comp
     ComisionesVendedorComponent,
     ComisionesDirectorComponent,
     AbonoRapidoComponent,
+    ComisionesLiderComponent,
+    HistoryLiderComponent,
+    HistoryDirectorComponent,
+    HistoryVendedorComponent
     // Dialogs
   ],
   exports: [
@@ -153,6 +161,9 @@ import {HistoryStockComponent} from '../dialogs/history-stock/history-stock.comp
     ShowResurtidosDialogComponent,
     InventoryDialogComponent,
     ConfirmPaymentComponent,
-    HistoryStockComponent
+    HistoryStockComponent,
+    HistoryLiderComponent,
+    HistoryDirectorComponent,
+    HistoryVendedorComponent
     ]
 }) export class PagesModule {}

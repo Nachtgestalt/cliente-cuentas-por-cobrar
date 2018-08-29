@@ -6,6 +6,8 @@ import {Observable} from 'rxjs/Observable';
 import {ConfirmPaymentComponent} from '../../../dialogs/confirm-payment/confirm-payment.component';
 import {HttpClient} from '@angular/common/http';
 import {ComisionesService} from '../../../services/comisiones/comisiones.service';
+import {HistoryLiderComponent} from '../../../dialogs/history-comisiones/history-lider/history-lider.component';
+import {HistoryDirectorComponent} from '../../../dialogs/history-comisiones/history-director/history-director.component';
 
 @Component({
   selector: 'app-comisiones-director',
@@ -63,6 +65,25 @@ export class ComisionesDirectorComponent implements OnInit {
       if (result) {
         this.openSnackBar('Abono realizado con exito', 'Aceptar');
         this.loadData();
+      }
+    });
+  }
+
+  historial(id: number) {
+    const dialogRef = this.dialog.open(HistoryDirectorComponent, {
+      data: {
+        id: id
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+      if (result) {
+        this.loadData();
+        // const foundIndex = this.exampleDatabase.dataChange.value.findIndex(x => x.idHistorial === this.id);
+        // // for delete we use splice in order to remove single object from DataService
+        // this.exampleDatabase.dataChange.value.splice(foundIndex, 1);
+        // this.refreshTable();
       }
     });
   }

@@ -38,6 +38,9 @@ import {ShowResurtidosDialogComponent} from './dialogs/show-resurtidos/show-resu
 import {InventoryDialogComponent} from './dialogs/inventory/inventory.dialog.component';
 import {ConfirmPaymentComponent} from './dialogs/confirm-payment/confirm-payment.component';
 import {HistoryStockComponent} from './dialogs/history-stock/history-stock.component';
+import {HistoryLiderComponent} from './dialogs/history-comisiones/history-lider/history-lider.component';
+import {HistoryDirectorComponent} from './dialogs/history-comisiones/history-director/history-director.component';
+import {HistoryVendedorComponent} from './dialogs/history-comisiones/history-vendedor/history-vendedor.component';
 
 
 @NgModule({
@@ -89,7 +92,10 @@ import {HistoryStockComponent} from './dialogs/history-stock/history-stock.compo
     ShowResurtidosDialogComponent,
     InventoryDialogComponent,
     ConfirmPaymentComponent,
-    HistoryStockComponent
+    HistoryStockComponent,
+    HistoryLiderComponent,
+    HistoryDirectorComponent,
+    HistoryVendedorComponent
   ],
   providers: [
     {provide: LocationStrategy, useClass: HashLocationStrategy}

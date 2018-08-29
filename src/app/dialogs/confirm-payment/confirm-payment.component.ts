@@ -44,6 +44,8 @@ export class ConfirmPaymentComponent implements OnInit {
       this.abonarComisionVendedor(season.idtemporada, monto, this.data.source.id);
     } else if (this.data.source.component === 'ComisionesDirector') {
       this.abonarComisionDirector(season.idtemporada, monto, this.data.source.id);
+    } else if (this.data.source.component === 'ComisionesLider') {
+      this.abonarComisionLider(season.idtemporada, monto, this.data.source.id);
     }
   }
 
@@ -77,6 +79,20 @@ export class ConfirmPaymentComponent implements OnInit {
 
   abonarComisionDirector(season, monto, id) {
     this._comisionesService.postAbonarComisionDirector(season, monto, id)
+      .subscribe(
+        res => {
+          console.log(res);
+          this.dialogRef.close(true);
+        },
+        error1 => {
+          swal('Algo malo ha ocurrido', 'Error con el servidor', 'error');
+          this.dialogRef.close(false);
+        }
+      );
+  }
+
+  abonarComisionLider(season, monto, id) {
+    this._comisionesService.postAbonarComisionLider(season, monto, id)
       .subscribe(
         res => {
           console.log(res);

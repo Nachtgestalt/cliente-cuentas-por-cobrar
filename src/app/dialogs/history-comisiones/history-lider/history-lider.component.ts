@@ -1,27 +1,24 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import {DataSource} from '@angular/cdk/collections';
-import {MatDialog, MatPaginator, MatSnackBar, MatSort} from '@angular/material';
-import {Observable} from 'rxjs/Observable';
-import {HttpClient} from '@angular/common/http';
+import {Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
 import {ComisionesService} from '../../../services/comisiones/comisiones.service';
-import {ConfirmPaymentComponent} from '../../../dialogs/confirm-payment/confirm-payment.component';
-import {HistoryStockComponent} from '../../../dialogs/history-stock/history-stock.component';
-import {HistoryLiderComponent} from '../../../dialogs/history-comisiones/history-lider/history-lider.component';
-import {HistoryVendedorComponent} from '../../../dialogs/history-comisiones/history-vendedor/history-vendedor.component';
+import {Observable} from 'rxjs/Observable';
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {ConfirmPaymentComponent} from '../../confirm-payment/confirm-payment.component';
+import {HttpClient} from '@angular/common/http';
+import {DataSource} from '@angular/cdk/collections';
+import {MAT_DIALOG_DATA, MatDialog, MatPaginator, MatSnackBar, MatSort} from '@angular/material';
 
 @Component({
-  selector: 'app-comisiones-vendedor',
-  templateUrl: './comisiones-vendedor.component.html',
-  styleUrls: ['./comisiones-vendedor.component.css']
+  selector: 'app-history-lider',
+  templateUrl: './history-lider.component.html',
+  styleUrls: ['./history-lider.component.css']
 })
-export class ComisionesVendedorComponent implements OnInit {
+export class HistoryLiderComponent implements OnInit {
 
   season = JSON.parse(localStorage.getItem('season'));
 
-  displayedColumns = ['id', 'nombre', 'deuda', 'pagado', 'restante', 'options'];
+  displayedColumns = ['fecha', 'cantidad'];
   exampleDatabase: ComisionesService | null;
-  dataSource: ComisionesVendedorDataSource | null;
+  dataSource: ComisionLiderDataSource | null;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -29,7 +26,8 @@ export class ComisionesVendedorComponent implements OnInit {
 
   constructor(private httpClient: HttpClient,
               public dialog: MatDialog,
-              public snackBar: MatSnackBar) { }
+              public snackBar: MatSnackBar,
+              @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit() {
     this.loadData();
@@ -37,7 +35,7 @@ export class ComisionesVendedorComponent implements OnInit {
 
   public loadData() {
     this.exampleDatabase = new ComisionesService(this.httpClient);
-    this.dataSource = new ComisionesVendedorDataSource(this.exampleDatabase, this.paginator, this.sort);
+    this.dataSource = new ComisionLiderDataSource(this.exampleDatabase, this.paginator, this.sort, this.data.id);
     Observable.fromEvent(this.filter.nativeElement, 'keyup')
       .debounceTime(150)
       .distinctUntilChanged()
@@ -49,13 +47,13 @@ export class ComisionesVendedorComponent implements OnInit {
       });
   }
 
-  confirm(i: number, idVendedor: number, nombre: string, restante: number) {
+  confirm(i: number, idLider: number, nombre: string, restante: number) {
 
     const dialogRef = this.dialog.open(ConfirmPaymentComponent, {
       data: {
         source: {
-          id: idVendedor,
-          component: 'ComisionesVendedor'
+          id: idLider,
+          component: 'ComisionesLider'
         },
         nombre: nombre,
         restante: restante
@@ -67,25 +65,6 @@ export class ComisionesVendedorComponent implements OnInit {
       if (result) {
         this.openSnackBar('Abono realizado con exito', 'Aceptar');
         this.loadData();
-      }
-    });
-  }
-
-  historial(id: number) {
-    const dialogRef = this.dialog.open(HistoryVendedorComponent, {
-      data: {
-        id: id
-      }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
-      if (result) {
-        this.loadData();
-        // const foundIndex = this.exampleDatabase.dataChange.value.findIndex(x => x.idHistorial === this.id);
-        // // for delete we use splice in order to remove single object from DataService
-        // this.exampleDatabase.dataChange.value.splice(foundIndex, 1);
-        // this.refreshTable();
       }
     });
   }
@@ -110,7 +89,7 @@ export class ComisionesVendedorComponent implements OnInit {
 
 }
 
-export class ComisionesVendedorDataSource extends DataSource<any> {
+export class ComisionLiderDataSource extends DataSource<any> {
   season = JSON.parse(localStorage.getItem('season'));
   _filterChange = new BehaviorSubject('');
 
@@ -127,7 +106,8 @@ export class ComisionesVendedorDataSource extends DataSource<any> {
 
   constructor(public _exampleDatabase: ComisionesService,
               public _paginator: MatPaginator,
-              public _sort: MatSort) {
+              public _sort: MatSort,
+              public id) {
     super();
     // Reset to the first page when the user changes the filter.
     this._filterChange.subscribe(() => this._paginator.pageIndex = 0);
@@ -137,18 +117,18 @@ export class ComisionesVendedorDataSource extends DataSource<any> {
   connect(): Observable<any[]> {
     // Listen for any changes in the base data, sorting, filtering, or pagination
     const displayDataChanges = [
-      this._exampleDatabase.dataChangeVendedor,
+      this._exampleDatabase.dataChangeComisionLider,
       this._sort.sortChange,
       this._filterChange,
       this._paginator.page
     ];
 
-    this._exampleDatabase.getComisionesXVendedor(this.season.idtemporada);
+    this._exampleDatabase.getComisionXLider(this.season.idtemporada, this.id);
 
     return Observable.merge(...displayDataChanges).map(() => {
       // Filter data
-      this.filteredData = this._exampleDatabase.dataVendedor.slice().filter((cuentaVendedor: any) => {
-        const searchStr = (cuentaVendedor.clave + cuentaVendedor.nombre).toLowerCase();
+      this.filteredData = this._exampleDatabase.dataComisionLider.slice().filter((cuentaVendedor: any) => {
+        const searchStr = (cuentaVendedor.fecha).toLowerCase();
         return searchStr.indexOf(this.filter.toLowerCase()) !== -1;
       });
 
@@ -175,11 +155,7 @@ export class ComisionesVendedorDataSource extends DataSource<any> {
       let propertyB: number | string = '';
 
       switch (this._sort.active) {
-        case 'clave': [propertyA, propertyB] = [a.clave, b.clave]; break;
-        case 'nombre': [propertyA, propertyB] = [a.nombre, b.nombre]; break;
-        case 'deuda': [propertyA, propertyB] = [a.deuda, b.deuda]; break;
-        case 'pagado': [propertyA, propertyB] = [a.pagado, b.pagado]; break;
-        case 'restante': [propertyA, propertyB] = [a.restante, b.restante]; break;
+        case 'fecha': [propertyA, propertyB] = [a.fecha, b.fecha]; break;
       }
 
       const valueA = isNaN(+propertyA) ? propertyA : +propertyA;
@@ -188,5 +164,6 @@ export class ComisionesVendedorDataSource extends DataSource<any> {
       return (valueA < valueB ? -1 : 1) * (this._sort.direction === 'asc' ? 1 : -1);
     });
   }
+
 
 }

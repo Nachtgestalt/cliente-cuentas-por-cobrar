@@ -1,27 +1,25 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Observable} from 'rxjs/Observable';
+import {ComisionesService} from '../../../services/comisiones/comisiones.service';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {ConfirmPaymentComponent} from '../../../dialogs/confirm-payment/confirm-payment.component';
+import {HttpClient} from '@angular/common/http';
 import {DataSource} from '@angular/cdk/collections';
 import {MatDialog, MatPaginator, MatSnackBar, MatSort} from '@angular/material';
-import {Observable} from 'rxjs/Observable';
-import {HttpClient} from '@angular/common/http';
-import {ComisionesService} from '../../../services/comisiones/comisiones.service';
-import {ConfirmPaymentComponent} from '../../../dialogs/confirm-payment/confirm-payment.component';
-import {HistoryStockComponent} from '../../../dialogs/history-stock/history-stock.component';
 import {HistoryLiderComponent} from '../../../dialogs/history-comisiones/history-lider/history-lider.component';
-import {HistoryVendedorComponent} from '../../../dialogs/history-comisiones/history-vendedor/history-vendedor.component';
 
 @Component({
-  selector: 'app-comisiones-vendedor',
-  templateUrl: './comisiones-vendedor.component.html',
-  styleUrls: ['./comisiones-vendedor.component.css']
+  selector: 'app-comisiones-lider',
+  templateUrl: './comisiones-lider.component.html',
+  styleUrls: ['./comisiones-lider.component.css']
 })
-export class ComisionesVendedorComponent implements OnInit {
+export class ComisionesLiderComponent implements OnInit {
 
   season = JSON.parse(localStorage.getItem('season'));
 
   displayedColumns = ['id', 'nombre', 'deuda', 'pagado', 'restante', 'options'];
   exampleDatabase: ComisionesService | null;
-  dataSource: ComisionesVendedorDataSource | null;
+  dataSource: ComisionensLiderDataSource | null;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -37,7 +35,7 @@ export class ComisionesVendedorComponent implements OnInit {
 
   public loadData() {
     this.exampleDatabase = new ComisionesService(this.httpClient);
-    this.dataSource = new ComisionesVendedorDataSource(this.exampleDatabase, this.paginator, this.sort);
+    this.dataSource = new ComisionensLiderDataSource(this.exampleDatabase, this.paginator, this.sort);
     Observable.fromEvent(this.filter.nativeElement, 'keyup')
       .debounceTime(150)
       .distinctUntilChanged()
@@ -49,13 +47,13 @@ export class ComisionesVendedorComponent implements OnInit {
       });
   }
 
-  confirm(i: number, idVendedor: number, nombre: string, restante: number) {
+  confirm(i: number, idLider: number, nombre: string, restante: number) {
 
     const dialogRef = this.dialog.open(ConfirmPaymentComponent, {
       data: {
         source: {
-          id: idVendedor,
-          component: 'ComisionesVendedor'
+          id: idLider,
+          component: 'ComisionesLider'
         },
         nombre: nombre,
         restante: restante
@@ -72,7 +70,7 @@ export class ComisionesVendedorComponent implements OnInit {
   }
 
   historial(id: number) {
-    const dialogRef = this.dialog.open(HistoryVendedorComponent, {
+    const dialogRef = this.dialog.open(HistoryLiderComponent, {
       data: {
         id: id
       }
@@ -110,7 +108,7 @@ export class ComisionesVendedorComponent implements OnInit {
 
 }
 
-export class ComisionesVendedorDataSource extends DataSource<any> {
+export class ComisionensLiderDataSource extends DataSource<any> {
   season = JSON.parse(localStorage.getItem('season'));
   _filterChange = new BehaviorSubject('');
 
@@ -137,18 +135,18 @@ export class ComisionesVendedorDataSource extends DataSource<any> {
   connect(): Observable<any[]> {
     // Listen for any changes in the base data, sorting, filtering, or pagination
     const displayDataChanges = [
-      this._exampleDatabase.dataChangeVendedor,
+      this._exampleDatabase.dataChangeLider,
       this._sort.sortChange,
       this._filterChange,
       this._paginator.page
     ];
 
-    this._exampleDatabase.getComisionesXVendedor(this.season.idtemporada);
+    this._exampleDatabase.getComisionesXLider(this.season.idtemporada);
 
     return Observable.merge(...displayDataChanges).map(() => {
       // Filter data
-      this.filteredData = this._exampleDatabase.dataVendedor.slice().filter((cuentaVendedor: any) => {
-        const searchStr = (cuentaVendedor.clave + cuentaVendedor.nombre).toLowerCase();
+      this.filteredData = this._exampleDatabase.dataLider.slice().filter((cuentaVendedor: any) => {
+        const searchStr = (cuentaVendedor.idprofesor + cuentaVendedor.nombre).toLowerCase();
         return searchStr.indexOf(this.filter.toLowerCase()) !== -1;
       });
 
@@ -175,7 +173,7 @@ export class ComisionesVendedorDataSource extends DataSource<any> {
       let propertyB: number | string = '';
 
       switch (this._sort.active) {
-        case 'clave': [propertyA, propertyB] = [a.clave, b.clave]; break;
+        case 'clave': [propertyA, propertyB] = [a.idprofesor, b.idprofesor]; break;
         case 'nombre': [propertyA, propertyB] = [a.nombre, b.nombre]; break;
         case 'deuda': [propertyA, propertyB] = [a.deuda, b.deuda]; break;
         case 'pagado': [propertyA, propertyB] = [a.pagado, b.pagado]; break;
@@ -188,5 +186,6 @@ export class ComisionesVendedorDataSource extends DataSource<any> {
       return (valueA < valueB ? -1 : 1) * (this._sort.direction === 'asc' ? 1 : -1);
     });
   }
+
 
 }

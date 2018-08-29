@@ -38,6 +38,7 @@ import {ComisionesComponent} from './comisiones/comisiones.component';
 import {AdminGuard} from '../services/guards/admin.guard';
 import {AbonoRapidoComponent} from './cuentas-por-cobrar/abono-rapido/abono-rapido.component';
 import {VentaDetailResolveService} from '../services/venta/venta-detail-resolve.service';
+import {ComisionesLiderComponent} from './comisiones/comisiones-lider/comisiones-lider.component';
 
 
 const pagesRoutes: Routes = [
@@ -119,6 +120,7 @@ const pagesRoutes: Routes = [
         children:  [
           {path: 'vendedor', component: ComisionesVendedorComponent, data: {titulo: 'Comisiones - Vendedor'}},
           {path: 'director', component: ComisionesDirectorComponent, data: {titulo: 'Comisiones - Director'}},
+          {path: 'lider', component: ComisionesLiderComponent, data: {titulo: 'Comisiones - Lider'}},
           {path: '**', redirectTo: 'vendedor', pathMatch: 'full'}
         ],
         data: {titulo: 'Almacen'}
