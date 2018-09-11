@@ -67,6 +67,8 @@ import { ComisionesLiderComponent } from './comisiones/comisiones-lider/comision
 import {HistoryLiderComponent} from '../dialogs/history-comisiones/history-lider/history-lider.component';
 import {HistoryDirectorComponent} from '../dialogs/history-comisiones/history-director/history-director.component';
 import {HistoryVendedorComponent} from '../dialogs/history-comisiones/history-vendedor/history-vendedor.component';
+import { ReporteVentaComponent } from './ventas/reporte-venta/reporte-venta.component';
+import { ReporteCuentasPorCobrarComponent } from './cuentas-por-cobrar/reporte-cuentas-por-cobrar/reporte-cuentas-por-cobrar.component';
 
 
 
@@ -113,7 +115,9 @@ import {HistoryVendedorComponent} from '../dialogs/history-comisiones/history-ve
     ComisionesLiderComponent,
     HistoryLiderComponent,
     HistoryDirectorComponent,
-    HistoryVendedorComponent
+    HistoryVendedorComponent,
+    ReporteVentaComponent,
+    ReporteCuentasPorCobrarComponent
     // Dialogs
   ],
   exports: [

@@ -1,0 +1,59 @@
+<div class="main-container mt-2 animated fadeIn fast">
+  <form [formGroup]="form">
+    <mat-form-field class="col-md-6">
+      <input matInput [matDatepicker]="picker1" placeholder="Fecha inicio"
+             formControlName="fecha_inicio"
+             readonly>
+      <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+      <mat-datepicker #picker1 disabled="false"></mat-datepicker>
+      <!--<mat-error *ngIf="forma.get('fecha').hasError('fechaInvalida')"> No es una fecha valida</mat-error>-->
+    </mat-form-field>
+
+    <mat-form-field class="col-md-6">
+      <input matInput [matDatepicker]="picker2" placeholder="Fecha fin"
+             formControlName="fecha_fin"
+             readonly>
+      <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+      <mat-datepicker #picker2 disabled="false"></mat-datepicker>
+      <!--<mat-error *ngIf="forma.get('fecha').hasError('fechaInvalida')"> No es una fecha valida</mat-error>-->
+    </mat-form-field>
+
+    <mat-form-field class="col-md-12">
+      <mat-select placeholder="Vendedor" formControlName="vendedor">
+        <mat-option *ngFor="let vendedor of vendedores" [value]="vendedor.clave">
+          {{ vendedor.nombre }} {{vendedor.apellidos}}
+        </mat-option>
+      </mat-select>
+      <!--<mat-error *ngIf="forma.get('idtemporada').hasError">{{getErrorMessages()}}</mat-error>-->
+    </mat-form-field>
+
+    <mat-form-field class="col-md-12">
+      <input type="text" placeholder="Escuela:" matInput
+             formControlName="escuela" [matAutocomplete]="auto">
+      <mat-autocomplete #auto="matAutocomplete" [displayWith]="displaySchoolFn">
+        <mat-option *ngFor="let school of filteredOptions | async" [value]="school">
+          {{school.clave + ' - ' + school.nombre}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+
+    <mat-form-field class="col-md-12">
+      <mat-select placeholder="Maestro" formControlName="maestro">
+        <mat-option *ngFor="let maestro of maestros" [value]="maestro.idprofesor">
+          {{ maestro.nombre }} {{maestro.apellidos}}
+        </mat-option>
+      </mat-select>
+      <!--<mat-error *ngIf="forma.get('idtemporada').hasError">{{getErrorMessages()}}</mat-error>-->
+    </mat-form-field>
+
+    <button mat-flat-button (click)="reporteCobranza()">
+      <mat-icon>print</mat-icon>
+      Generar reporte
+    </button>
+
+    <button mat-flat-button (click)="reset()" class="float-right ml-5">
+      <mat-icon>autorenew</mat-icon>
+      Reset
+    </button>
+  </form>
+</div>

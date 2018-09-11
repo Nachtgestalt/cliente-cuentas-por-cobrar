@@ -22,18 +22,23 @@
     <!-- Opciones Column -->
     <ng-container matColumnDef="edit">
       <mat-header-cell *matHeaderCellDef>
-        <button mat-icon-button color="primary" (click)="agregarZona()">
+        <button mat-flat-button color="primary" (click)="imprimirZonas()">
+          <mat-icon>printer</mat-icon>
+          Reporte de zonas
+        </button>
+        <button mat-icon-button mat-flat-button color="primary" (click)="agregarZona()" class="ml-3">
           <mat-icon aria-label="Example icon-button with a heart icon">add</mat-icon>
         </button>
       </mat-header-cell>
       <mat-cell *matCellDef="let row; let i=index;">
-        <!--<button (click)="deleteItem(i, row.idzona, row.vendedor)" mat-icon-button>-->
-          <!--<mat-icon>delete_forever</mat-icon>-->
-          <!--{{row.index}}-->
-        <!--</button>-->
         <button (click)="startEdit(i, row.idzona, row.vendedor)"
                 mat-icon-button class="ml-4">
           <mat-icon>mode_edit</mat-icon>
+        </button>
+        <button mat-mini-fab
+                color="primary" (click)="imprimirZonas(row.vendedor.clave)"
+                class="ml-4">
+          <mat-icon>printer</mat-icon>
         </button>
       </mat-cell>
     </ng-container>

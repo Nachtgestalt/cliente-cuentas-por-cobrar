@@ -9,6 +9,8 @@ import {HttpClient} from '@angular/common/http';
 import {ConfirmInventoryDialogComponent} from '../../dialogs/confirm-inventory/confirm-inventory.dialog.component';
 import {InventoryDialogComponent} from '../../dialogs/inventory/inventory.dialog.component';
 import {HistoryStockComponent} from '../../dialogs/history-stock/history-stock.component';
+import {ReportesService} from '../../services/reportes/reportes.service';
+import {DomSanitizer} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-inventario',
@@ -32,7 +34,9 @@ export class InventarioComponent implements OnInit {
 
   constructor(private httpClient: HttpClient,
               public dialog: MatDialog,
-              public snackBar: MatSnackBar) { }
+              public snackBar: MatSnackBar,
+              public _reportesService: ReportesService,
+              private domSanitizer: DomSanitizer) { }
 
   ngOnInit() {
     this.loadData();
@@ -95,6 +99,21 @@ export class InventarioComponent implements OnInit {
     this.snackBar.open(message, action, {
       duration: 2000,
     });
+  }
+
+  reporteInventario() {
+    let pdfResult;
+    this._reportesService.reporteInventario().subscribe(
+      (data: any) => {
+        console.log(data);
+        pdfResult = this.domSanitizer.bypassSecurityTrustResourceUrl(
+          URL.createObjectURL(data)
+        );
+        window.open(pdfResult.changingThisBreaksApplicationSecurity);
+        console.log(pdfResult);
+      }
+    );
+
   }
 }
 

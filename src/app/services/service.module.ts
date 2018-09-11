@@ -25,6 +25,7 @@ import {TokenInterceptorService} from './interceptors/token-interceptor.service'
 import {CuentasXcobrarService} from './cuentas-xcobrar/cuentas-xcobrar.service';
 import {ComisionesService} from './comisiones/comisiones.service';
 import {AdminGuard} from './guards/admin.guard';
+import {ReportesService} from './reportes/reportes.service';
 @NgModule({
   imports: [
     CommonModule,
@@ -51,6 +52,7 @@ import {AdminGuard} from './guards/admin.guard';
     DashboardService,
     CuentasXcobrarService,
     ComisionesService,
+    ReportesService,
     TokenInterceptorService,
     {
       provide: HTTP_INTERCEPTORS,

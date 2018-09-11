@@ -9,6 +9,8 @@ import {DeleteProductoDialogComponent} from '../../../dialogs/delete-producto/de
 import {DataSource} from '@angular/cdk/collections';
 import {AddZonaDialogComponent} from '../../../dialogs/add-zona/add-zona.dialog.component';
 import {Vendedor} from '../../../interfaces/vendedor.interface';
+import {ReportesService} from '../../../services/reportes/reportes.service';
+import {DomSanitizer} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-zonas',
@@ -30,7 +32,8 @@ export class ZonasComponent implements OnInit {
   constructor(private httpClient: HttpClient,
               public dialog: MatDialog,
               public snackBar: MatSnackBar,
-              public _zonaService: ZonaService) { }
+              public _reportesService: ReportesService,
+              private domSanitizer: DomSanitizer) { }
 
   ngOnInit() {
     this.loadData();
@@ -86,12 +89,6 @@ export class ZonasComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result === 1) {
         this.loadData();
-        // // When using an edit things are little different, firstly we find record inside DataService by id
-        // const foundIndex = this.exampleDatabase.dataChange.value.findIndex(x => x.idzona === this.id);
-        // // Then you update that record using data from dialogData (values you enetered)
-        // this.exampleDatabase.dataChange.value[foundIndex] = this._zonaService.getDialogData();
-        // // And lastly refresh table
-        // this.refreshTable();
       }
     });
   }
@@ -132,6 +129,20 @@ export class ZonasComponent implements OnInit {
         // this.refreshTable();
       }
     });
+  }
+
+  imprimirZonas(vendedor = '') {
+    let pdfResult;
+    this._reportesService.reporteZonas(vendedor).subscribe(
+        (data: any) => {
+          console.log(data);
+          pdfResult = this.domSanitizer.bypassSecurityTrustResourceUrl(
+            URL.createObjectURL(data)
+          );
+          window.open(pdfResult.changingThisBreaksApplicationSecurity);
+          console.log(pdfResult);
+      }
+    );
   }
 }
 

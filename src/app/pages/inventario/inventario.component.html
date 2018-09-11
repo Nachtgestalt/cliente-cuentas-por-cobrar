@@ -27,7 +27,12 @@
 
     <!-- Opciones Column -->
     <ng-container matColumnDef="edit">
-      <mat-header-cell *matHeaderCellDef> Acción </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef>
+        <button mat-flat-button color="primary" (click)="reporteInventario()">
+          <mat-icon>printer</mat-icon>
+          Reporte de inventario
+        </button>
+      </mat-header-cell>
       <mat-cell *matCellDef="let row; let i=index;">
         <button (click)="inventario(i, row.claveProducto, true)" mat-mini-fab color="primary"
                 matTooltip="Entrada"

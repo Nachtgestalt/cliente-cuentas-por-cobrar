@@ -39,6 +39,8 @@ import {AdminGuard} from '../services/guards/admin.guard';
 import {AbonoRapidoComponent} from './cuentas-por-cobrar/abono-rapido/abono-rapido.component';
 import {VentaDetailResolveService} from '../services/venta/venta-detail-resolve.service';
 import {ComisionesLiderComponent} from './comisiones/comisiones-lider/comisiones-lider.component';
+import {ReporteVentaComponent} from './ventas/reporte-venta/reporte-venta.component';
+import {ReporteCuentasPorCobrarComponent} from './cuentas-por-cobrar/reporte-cuentas-por-cobrar/reporte-cuentas-por-cobrar.component';
 
 
 const pagesRoutes: Routes = [
@@ -54,6 +56,7 @@ const pagesRoutes: Routes = [
         children: [
           {path: 'nueva', component: NuevaVentaComponent, data: {titulo: 'Nueva venta'}},
           {path: 'lista', component: ModificarVentaComponent, data: {titulo: 'Lista de ventas'}},
+          {path: 'reporte', component: ReporteVentaComponent, canActivate: [AdminGuard], data: {titulo: 'Reporte de ventas'}},
           {path: '**', redirectTo: 'nueva', pathMatch: 'full'}
         ],
         data: {titulo: 'Ventas'}},
@@ -109,6 +112,7 @@ const pagesRoutes: Routes = [
           {path: 'vendedores', component: CuentasVendedorComponent, data: {titulo: 'Cuentas por cobrar - Vendedores'}},
           {path: 'vendedor', component: CuentasEscuelaComponent, data: {titulo: 'Cuentas por cobrar - Escuela'}},
           {path: 'vendedor/escuela', component: CuentasMaestroComponent, data: {titulo: 'Cuentas por cobrar - Maestro'}},
+          {path: 'reporte', component: ReporteCuentasPorCobrarComponent, data: {titulo: 'Cuentas por cobrar - Reporte'}},
           {path: '', redirectTo: 'vendedores', pathMatch: 'full'}
         ],
         data: {titulo: 'Cuentas por cobrar'}

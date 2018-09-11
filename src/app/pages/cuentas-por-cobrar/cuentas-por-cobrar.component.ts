@@ -21,6 +21,11 @@ export class CuentasPorCobrarComponent implements OnInit {
         label: 'Abono rapido',
         link: './abono-rapido',
         index: 1
+      },
+      {
+        label: 'Reporte',
+        link: './reporte',
+        index: 2
       }
     ];
   }

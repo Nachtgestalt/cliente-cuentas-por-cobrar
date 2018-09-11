@@ -21,6 +21,11 @@ export class VentasComponent implements OnInit {
         label: 'Modificar venta',
         link: './lista',
         index: 1
+      },
+      {
+        label: 'Reporte venta',
+        link: './reporte',
+        index: 2
       }
     ];
   }
