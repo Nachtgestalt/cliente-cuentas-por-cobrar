@@ -9,6 +9,8 @@ import {ConfirmPaymentComponent} from '../../../dialogs/confirm-payment/confirm-
 import {HistoryStockComponent} from '../../../dialogs/history-stock/history-stock.component';
 import {HistoryLiderComponent} from '../../../dialogs/history-comisiones/history-lider/history-lider.component';
 import {HistoryVendedorComponent} from '../../../dialogs/history-comisiones/history-vendedor/history-vendedor.component';
+import {ReportesService} from '../../../services/reportes/reportes.service';
+import {DomSanitizer} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-comisiones-vendedor',
@@ -28,8 +30,10 @@ export class ComisionesVendedorComponent implements OnInit {
   @ViewChild('filter') filter: ElementRef;
 
   constructor(private httpClient: HttpClient,
+              public _reportesService: ReportesService,
               public dialog: MatDialog,
-              public snackBar: MatSnackBar) { }
+              public snackBar: MatSnackBar,
+              private domSanitizer: DomSanitizer) { }
 
   ngOnInit() {
     this.loadData();
@@ -106,6 +110,24 @@ export class ComisionesVendedorComponent implements OnInit {
 
   getPagadoTotal() {
     return this.dataSource.renderedData.map(t => t.pagado).reduce((acc, value) => acc + value, 0);
+  }
+
+  reporteComisiones(id?) {
+    let pdfResult;
+    const params = {
+      tipo: 1,
+      temporada: this.season.idtemporada,
+      id: id ? id : null
+    };
+    this._reportesService.reporteComisiones(params).subscribe(
+      (data: any) => {
+        console.log(data);
+        pdfResult = this.domSanitizer.bypassSecurityTrustResourceUrl(
+          URL.createObjectURL(data)
+        );
+        window.open(pdfResult.changingThisBreaksApplicationSecurity);
+        console.log(pdfResult);
+      });
   }
 
 }

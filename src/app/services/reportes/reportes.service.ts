@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {URL_SERVICIOS} from '../../config/config';
 import {map} from 'rxjs/operators';
-import {CuentasEscuelaComponent} from '../../pages/cuentas-por-cobrar/cuentas-escuela/cuentas-escuela.component';
 
 @Injectable()
 export class ReportesService {
@@ -34,8 +33,12 @@ export class ReportesService {
 
   reporteVenta(parametros) {
     let params = new HttpParams();
-    params = params.append('fechaInicial', parametros.fecha_inicio);
-    params = params.append('fechaFinal', parametros.fecha_fin);
+    if (parametros.fecha_inicio) {
+      params = params.append('fechaInicial', parametros.fecha_inicio);
+    }
+    if (parametros.fecha_fin) {
+      params = params.append('fechaFinal', parametros.fecha_fin);
+    }
     if (parametros.libro) {
       params = params.append('libro', parametros.libro);
     }
@@ -68,6 +71,48 @@ export class ReportesService {
       params = params.append('escuela', parametros.escuela);
     }
     return this.http.get(`${this.reportesURL}/Cobranza`, {responseType: 'blob', params})
+      .pipe(
+        map(res => {
+          return new Blob([res], { type: 'application/pdf' });
+        })
+      );
+  }
+
+  reporteComisiones(parametros) {
+    let params = new HttpParams();
+    params = params.append('tipo', parametros.tipo);
+    if (parametros.id) {
+      params = params.append('id', parametros.id);
+    }
+    if (parametros.temporada) {
+      params = params.append('temporada', parametros.temporada);
+    }
+    return this.http.get(`${this.reportesURL}/Comisiones`, {responseType: 'blob', params})
+      .pipe(
+        map(res => {
+          return new Blob([res], { type: 'application/pdf' });
+        })
+      );
+  }
+
+  reporteGanancia(parametros) {
+    let params = new HttpParams();
+    if (parametros.fecha_inicio) {
+      params = params.append('fechaInicial', parametros.fecha_inicio);
+    }
+    if (parametros.fecha_fin) {
+      params = params.append('fechaFinal', parametros.fecha_fin);
+    }
+    if (parametros.libro) {
+      params = params.append('libro', parametros.libro);
+    }
+    if (parametros.vendedor) {
+      params = params.append('vendedor', parametros.vendedor);
+    }
+    if (parametros.tipo_pedido) {
+      params = params.append('tipoPedido', parametros.tipo_pedido);
+    }
+    return this.http.get(`${this.reportesURL}/Ganancia`, {responseType: 'blob', params})
       .pipe(
         map(res => {
           return new Blob([res], { type: 'application/pdf' });

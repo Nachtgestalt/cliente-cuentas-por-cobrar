@@ -60,16 +60,7 @@ export class NuevaVentaComponent implements OnInit, OnDestroy {
     folio: '',
     idfolios: null,
     idprofesor: '',
-    pedidos: [
-      {
-        libro_clave: null,
-        idHistorial: null,
-        pedidos: null,
-        precioventa: null,
-        tipo_movimiento: '',
-        motivo: ''
-      }
-    ],
+    pedidos: [],
     lideres: []
       // {
       //   comision_lider: null,
@@ -311,7 +302,7 @@ export class NuevaVentaComponent implements OnInit, OnDestroy {
     const control = this.forma.controls['pedidos'].value;
     const fechaForm: Moment = this.forma.get('fecha').value;
     const fecha = fechaForm.format('YYYY[-]MM[-]DD');
-    this.venta.pedidos.pop();
+    // this.venta.pedidos.pop();
     for (const pedido of control) {
       console.log(pedido);
       this.venta.pedidos.push(
@@ -391,16 +382,7 @@ export class NuevaVentaComponent implements OnInit, OnDestroy {
                         folio: '',
                         idfolios: null,
                         idprofesor: '',
-                        pedidos: [
-                          {
-                            libro_clave: null,
-                            idHistorial: null,
-                            pedidos: null,
-                            precioventa: null,
-                            tipo_movimiento: '',
-                            motivo: ''
-                          }
-                        ],
+                        pedidos: [],
                         lideres: []
                           // {
                           //   comision_lider: null,

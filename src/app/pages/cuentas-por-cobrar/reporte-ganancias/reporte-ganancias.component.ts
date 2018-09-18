@@ -1,23 +1,23 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
-import {ReportesService} from '../../../services/reportes/reportes.service';
-import {DomSanitizer} from '@angular/platform-browser';
-import * as moment from 'moment';
-import {Observable} from 'rxjs/Observable';
-import {Escuela} from '../../../interfaces/escuela.interface';
 import {Producto} from '../../../interfaces/producto.interface';
-import {ProductosService} from '../../../services/producto/productos.service';
-import {map} from 'rxjs/operators/map';
-import {startWith} from 'rxjs/operators/startWith';
-import {VendedorService} from '../../../services/vendedor/vendedor.service';
 import {Vendedor} from '../../../interfaces/vendedor.interface';
+import {map} from 'rxjs/operators/map';
+import {Observable} from 'rxjs/Observable';
+import {startWith} from 'rxjs/operators/startWith';
+import {DomSanitizer} from '@angular/platform-browser';
+import {ReportesService} from '../../../services/reportes/reportes.service';
+import {ProductosService} from '../../../services/producto/productos.service';
+import {VendedorService} from '../../../services/vendedor/vendedor.service';
+import * as moment from 'moment';
 
 @Component({
-  selector: 'app-reporte-venta',
-  templateUrl: './reporte-venta.component.html',
-  styleUrls: ['./reporte-venta.component.css']
+  selector: 'app-reporte-ganancias',
+  templateUrl: './reporte-ganancias.component.html',
+  styleUrls: ['./reporte-ganancias.component.css']
 })
-export class ReporteVentaComponent implements OnInit {
+export class ReporteGananciasComponent implements OnInit {
+
   form: FormGroup;
   productos: Producto[] = [];
   vendedores: Vendedor[] = [];
@@ -97,7 +97,7 @@ export class ReporteVentaComponent implements OnInit {
       'vendedor': vendedor,
       'tipo_pedido': tipo_pedido
     };
-    this._reportesService.reporteVenta(params).subscribe(
+    this._reportesService.reporteGanancia(params).subscribe(
       (data: any) => {
         console.log(data);
         pdfResult = this.domSanitizer.bypassSecurityTrustResourceUrl(

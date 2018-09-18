@@ -23,8 +23,13 @@ export class CuentasPorCobrarComponent implements OnInit {
         index: 1
       },
       {
-        label: 'Reporte',
-        link: './reporte',
+        label: 'Reporte Cuentas por cobrar',
+        link: './reporte-cuentas',
+        index: 2
+      },
+      {
+        label: 'Reporte Ganancias',
+        link: './reporte-ganancias',
         index: 2
       }
     ];

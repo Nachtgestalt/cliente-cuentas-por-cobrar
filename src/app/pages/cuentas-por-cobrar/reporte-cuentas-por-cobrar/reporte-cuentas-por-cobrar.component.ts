@@ -68,8 +68,8 @@ export class ReporteCuentasPorCobrarComponent implements OnInit {
 
     this.filteredOptions = this.form.get('escuela').valueChanges
       .pipe(
-        startWith<string | Producto>(''),
-        map(value => typeof value === 'string' ? value : value.titulo),
+        startWith<string | Escuela>(''),
+        map(value => typeof value === 'string' ? value : value.nombre),
         map(nombre => nombre ? this.filterSchool(nombre) : this.escuelas.slice())
       );
 
@@ -98,15 +98,15 @@ export class ReporteCuentasPorCobrarComponent implements OnInit {
     let escuela;
     let fecha_inicio;
     let fecha_fin;
-    this.form.get('escuela').value ? escuela = this.form.get('escuela').value : escuela = null;
     this.form.get('fecha_inicio').value ? fecha_inicio = moment(this.form.get('fecha_inicio').value).format('YYYY-MM-D') :
       fecha_inicio = null;
     this.form.get('fecha_fin').value ? fecha_fin = moment(this.form.get('fecha_fin').value).format( 'YYYY-MM-D') :
     fecha_fin = null;
+    this.form.get('escuela').value ? escuela = this.form.get('escuela').value : escuela = null;
     const vendedor = this.form.get('vendedor').value;
     const params = {
       'fecha_inicio': fecha_inicio ? fecha_inicio : null,
-      'fecha_fin': fecha_fin ? fecha_inicio : null,
+      'fecha_fin': fecha_fin ? fecha_fin : null,
       'escuela': escuela ? escuela.clave : null,
       'vendedor': vendedor,
     };

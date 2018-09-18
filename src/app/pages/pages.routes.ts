@@ -41,6 +41,7 @@ import {VentaDetailResolveService} from '../services/venta/venta-detail-resolve.
 import {ComisionesLiderComponent} from './comisiones/comisiones-lider/comisiones-lider.component';
 import {ReporteVentaComponent} from './ventas/reporte-venta/reporte-venta.component';
 import {ReporteCuentasPorCobrarComponent} from './cuentas-por-cobrar/reporte-cuentas-por-cobrar/reporte-cuentas-por-cobrar.component';
+import {ReporteGananciasComponent} from './cuentas-por-cobrar/reporte-ganancias/reporte-ganancias.component';
 
 
 const pagesRoutes: Routes = [
@@ -112,7 +113,8 @@ const pagesRoutes: Routes = [
           {path: 'vendedores', component: CuentasVendedorComponent, data: {titulo: 'Cuentas por cobrar - Vendedores'}},
           {path: 'vendedor', component: CuentasEscuelaComponent, data: {titulo: 'Cuentas por cobrar - Escuela'}},
           {path: 'vendedor/escuela', component: CuentasMaestroComponent, data: {titulo: 'Cuentas por cobrar - Maestro'}},
-          {path: 'reporte', component: ReporteCuentasPorCobrarComponent, data: {titulo: 'Cuentas por cobrar - Reporte'}},
+          {path: 'reporte-cuentas', component: ReporteCuentasPorCobrarComponent, data: {titulo: 'Cuentas por cobrar - Reporte cuentas por cobrar'}},
+          {path: 'reporte-ganancias', component: ReporteGananciasComponent, data: {titulo: 'Cuentas por cobrar - Reporte ganancias'}},
           {path: '', redirectTo: 'vendedores', pathMatch: 'full'}
         ],
         data: {titulo: 'Cuentas por cobrar'}

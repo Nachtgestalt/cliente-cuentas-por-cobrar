@@ -25,7 +25,7 @@ export class ComisionesComponent implements OnInit {
         label: 'Lider',
         link: './lider',
         index: 2
-      },
+      }
     ];
   }
 

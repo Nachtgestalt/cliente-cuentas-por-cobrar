@@ -69,6 +69,7 @@ import {HistoryDirectorComponent} from '../dialogs/history-comisiones/history-di
 import {HistoryVendedorComponent} from '../dialogs/history-comisiones/history-vendedor/history-vendedor.component';
 import { ReporteVentaComponent } from './ventas/reporte-venta/reporte-venta.component';
 import { ReporteCuentasPorCobrarComponent } from './cuentas-por-cobrar/reporte-cuentas-por-cobrar/reporte-cuentas-por-cobrar.component';
+import { ReporteGananciasComponent } from './cuentas-por-cobrar/reporte-ganancias/reporte-ganancias.component';
 
 
 
@@ -117,7 +118,8 @@ import { ReporteCuentasPorCobrarComponent } from './cuentas-por-cobrar/reporte-c
     HistoryDirectorComponent,
     HistoryVendedorComponent,
     ReporteVentaComponent,
-    ReporteCuentasPorCobrarComponent
+    ReporteCuentasPorCobrarComponent,
+    ReporteGananciasComponent
     // Dialogs
   ],
   exports: [
