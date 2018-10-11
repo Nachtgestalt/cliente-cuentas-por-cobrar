@@ -13,7 +13,7 @@ export class AdminGuard implements CanActivate {
   canActivate() {
     const user = JSON.parse(localStorage.getItem('user'));
 
-    if (user.role === 'ADMIN_ROLE' || user.role === 'ALMACEN_ROLE') {
+    if (user.role === 'ADMIN_ROLE' || user.role === 'ALMACEN_ROLE' || user.role === 'HACIENDA_ROLE') {
       return true;
     } else {
       console.log('Bloqueado por el admin guard');

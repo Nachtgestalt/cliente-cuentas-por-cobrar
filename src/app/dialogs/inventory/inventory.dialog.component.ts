@@ -16,6 +16,7 @@ export class InventoryDialogComponent implements OnInit {
   mensajeDialog = '';
   motivo = '';
   tipoMovimiento = '';
+  user = JSON.parse(localStorage.getItem('user'));
 
   constructor(public _stockService: StockService,
               public dialogRef: MatDialogRef<AddTemporadaComponent>,
@@ -62,12 +63,21 @@ export class InventoryDialogComponent implements OnInit {
       tipomovimiento: this.tipoMovimiento
     };
 
-    this._stockService.postStock(stock)
-      .subscribe(
-        res => {
-          console.log(res);
-        }
-      );
+    if (this.user.role !== 'HACIENDA_ROLE') {
+      this._stockService.postStock(stock)
+        .subscribe(
+          res => {
+            console.log(res);
+          }
+        );
+    } else {
+      this._stockService.postHStock(stock)
+        .subscribe(
+          res => {
+            console.log(res);
+          }
+        );
+    }
   }
 
   onNoClick(): void {

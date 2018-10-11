@@ -161,6 +161,8 @@ export class AgregarProductoComponent implements OnInit {
                 console.log(data);
               }
             );
+            stock.cantidad = 0;
+            this._stockService.postHStock(stock).subscribe(() => console.log('Add hstock'));
             this.productoActualizar = true;
             this.forma.reset();
             this.active = false;

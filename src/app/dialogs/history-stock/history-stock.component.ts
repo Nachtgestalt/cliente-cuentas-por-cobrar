@@ -81,8 +81,8 @@ export class StocksDataSource extends DataSource<any> {
       this._filterChange,
       this._paginator.page
     ];
-
-    this._exampleDatabase.getStockByBook(this.id);
+    const user = JSON.parse(localStorage.getItem('user'));
+    user.role === 'HACIENDA_ROLE' ? this._exampleDatabase.getHStockByBook(this.id) : this._exampleDatabase.getStockByBook(this.id);
 
     return Observable.merge(...displayDataChanges).map(() => {
       // Filter data

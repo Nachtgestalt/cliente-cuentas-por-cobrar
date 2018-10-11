@@ -170,6 +170,11 @@ const pagesRoutes: Routes = [
         ],
         data: {titulo: 'Configuracion'}
       },
+      {
+        path: 'stock',
+        component: InventarioComponent,
+        data: {titulo: 'Inventario'}
+      },
       {path: '', redirectTo: '/home', pathMatch: 'full'}
     ]
   }

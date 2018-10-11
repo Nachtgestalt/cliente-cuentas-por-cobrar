@@ -18,6 +18,7 @@ import {DomSanitizer} from '@angular/platform-browser';
   styleUrls: ['./inventario.component.css']
 })
 export class InventarioComponent implements OnInit {
+  user = JSON.parse(localStorage.getItem('user'));
 
   displayedColumns = ['folio', 'titulo', 'cantidad', 'edit'];
   exampleDatabase: InventarioService | null;
@@ -148,8 +149,9 @@ export class InventarioDataSource extends DataSource<Inventario> {
       this._filterChange,
       this._paginator.page
     ];
-
-    this._exampleDatabase.obtenerStocks();
+    const user = JSON.parse(localStorage.getItem('user'));
+    user.role === 'HACIENDA_ROLE' ? this._exampleDatabase.obtenerHStocks() : this._exampleDatabase.obtenerStocks();
+    // this._exampleDatabase.obtenerStocks();
 
     return Observable.merge(...displayDataChanges).map(() => {
       // Filter data

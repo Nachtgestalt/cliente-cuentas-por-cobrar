@@ -57,6 +57,9 @@ export class AgregarMaestroComponent implements OnInit, OnDestroy {
           this.idProfesor = parseInt(this.clave);
           this._maestroService.obtenerMaestro(this.clave)
             .subscribe((maestro: Maestro) => {
+              for (let i = 0; i < maestro.escuelas.length; i++) {
+                this.agregarOtraEscuela();
+              }
               // this.crearFilteredOptions(maestro.escuelas.length);
               this.forma.setValue(maestro);
             });

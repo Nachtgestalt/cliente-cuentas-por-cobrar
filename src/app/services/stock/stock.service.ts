@@ -27,6 +27,15 @@ export class StockService {
     return this.http.post(url, body, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}});
   }
 
+  postHStock(stock) {
+    const url = `${URL_SERVICIOS}/hstock/nuevo`;
+    const body = JSON.stringify(stock);
+
+    console.log(body);
+
+    return this.http.post(url, body, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}});
+  }
+
   getStockByBook(id) {
     const url = `${this.stockURL}/libro=${id}`;
 
@@ -48,5 +57,27 @@ export class StockService {
       (error: HttpErrorResponse) => {
         console.log (error.name + ' ' + error.message);
       });
+  }
+  getHStockByBook(id) {
+    const url = `${URL_SERVICIOS}/hstock/libro=${id}`;
+
+    return this.http.get(url)
+      .pipe(
+        map(
+          (res: any) => {
+            for ( const venta of res) {
+              venta.fecha_entrada = moment(venta.fecha_entrada).locale('es').format('DD MMM YYYY'); //parse integer
+            }
+            return res;
+          }
+        )
+      )
+      .subscribe((data: any) => {
+          console.log(data);
+          this.dataChange.next(data);
+        },
+        (error: HttpErrorResponse) => {
+          console.log (error.name + ' ' + error.message);
+        });
   }
 }

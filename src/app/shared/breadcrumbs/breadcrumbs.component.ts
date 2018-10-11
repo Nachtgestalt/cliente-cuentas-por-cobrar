@@ -20,7 +20,7 @@ export class BreadcrumbsComponent implements OnInit {
         console.log('Breadcrumbs data: ', data);
         this.breadcrumbs = data;
         this.lbltitle = data.titulo;
-        this.lblSubtitle = data.subtitle
+        this.lblSubtitle = data.subtitle;
         this._title.setTitle(this.lbltitle);
       });
   }

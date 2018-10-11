@@ -28,7 +28,7 @@
     <!-- Opciones Column -->
     <ng-container matColumnDef="edit">
       <mat-header-cell *matHeaderCellDef>
-        <button mat-flat-button color="primary" (click)="reporteInventario()">
+        <button mat-flat-button color="primary" (click)="reporteInventario()" *ngIf="user.role !== 'HACIENDA_ROLE'">
           <mat-icon>printer</mat-icon>
           Reporte de inventario
         </button>
@@ -47,7 +47,7 @@
           {{row.index}}
         </button>
         <button (click)="historial(row.claveProducto)" mat-mini-fab color="accent"
-                matTooltip="Entrada"
+                matTooltip="Historial"
                 aria-label="Button that displays a tooltip when focused or hovered over">
           <mat-icon>history</mat-icon>
           {{row.index}}

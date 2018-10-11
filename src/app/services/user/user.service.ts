@@ -231,6 +231,32 @@ export class UserService {
               ];
               break;
             }
+            case 'HACIENDA_ROLE': {
+              res.menuDashboard = [
+                {
+                  titulo: 'Productos',
+                  icono: 'fas fa-barcode fa-4x',
+                  url: '/almacen'
+                },
+                {
+                  titulo: 'Inventario',
+                  icono: 'fas fa-box-open fa-4x',
+                  url: '/stock'
+                },
+              ];
+              res.menuSidebar = [
+                {
+                  titulo: 'Productos',
+                  icono: 'fas fa-barcode mr-3',
+                  url: '/almacen'
+                },
+                {
+                  titulo: 'Inventario',
+                  icono: 'fas fa-box-open mr-3',
+                  url: '/stock'
+                },
+              ];
+            }
           }
           console.log(res);
           return res;

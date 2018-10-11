@@ -6,6 +6,7 @@ import {Producto} from '../../interfaces/producto.interface';
 import {Inventario} from '../../interfaces/inventario.interface';
 import {ShowResurtidoInterface} from '../../interfaces/showResurtido.interface';
 import * as moment from 'moment';
+import {map} from 'rxjs/operators';
 
 @Injectable()
 export class InventarioService {
@@ -67,7 +68,7 @@ export class InventarioService {
               cantidad: pedido.pedidos - pedido.entregados,
               folio: pedido.venta.folio,
               titulo: pedido.libro.titulo,
-              fechaSolicitud: moment(pedido.fechaSolicitud).format('DD MMM YYYY') //parse integer
+              fechaSolicitud: moment(pedido.fechaSolicitud).format('DD MMM YYYY')
             };
             inventarios.push(inventario);
           }
@@ -83,9 +84,36 @@ export class InventarioService {
   }
 
   obtenerStocks() {
-    return this.http.get<any[]>(`${this.inventarioURL}/stocks`, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}})
+    return this.http.get<any[]>(`${this.inventarioURL}/stocks`,
+      {headers: {'authorization': this.token, 'Content-Type': 'application/json'}})
       .subscribe(data => {
         console.log(data);
+          this.dataChange.next(data);
+        },
+        (error: HttpErrorResponse) => {
+          console.log (error.name + ' ' + error.message);
+        });
+    // return this.http.get(this.inventarioURL, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}})
+  }
+
+  obtenerHStocks() {
+    return this.http.get<any[]>(`${URL_SERVICIOS}/hstock`, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}})
+      .pipe(
+        map(res => {
+          let dataReturn = [];
+          console.log(res);
+          res.forEach((x) => {
+            const dataEdit: any = {};
+            dataEdit.cantidad = x.cantidad;
+            dataEdit.claveProducto = x.libro.claveProducto;
+            dataEdit.titulo = x.libro.titulo;
+            dataReturn.push(dataEdit);
+          });
+          return dataReturn;
+        })
+      )
+      .subscribe(data => {
+          console.log(data);
           this.dataChange.next(data);
         },
         (error: HttpErrorResponse) => {
@@ -100,7 +128,7 @@ export class InventarioService {
       .map(
         res => {
           for (const resurtido of res) {
-            resurtido.fecha = moment(resurtido.fecha).format('DD MMM YYYY'); //parse integer
+            resurtido.fecha = moment(resurtido.fecha).format('DD MMM YYYY');
           }
           return res;
         }
