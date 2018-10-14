@@ -70,6 +70,7 @@ import {HistoryVendedorComponent} from '../dialogs/history-comisiones/history-ve
 import { ReporteVentaComponent } from './ventas/reporte-venta/reporte-venta.component';
 import { ReporteCuentasPorCobrarComponent } from './cuentas-por-cobrar/reporte-cuentas-por-cobrar/reporte-cuentas-por-cobrar.component';
 import { ReporteGananciasComponent } from './cuentas-por-cobrar/reporte-ganancias/reporte-ganancias.component';
+import {DebounceClickDirective} from '../directives/debounce-click.directive';
 
 
 
@@ -93,6 +94,7 @@ import { ReporteGananciasComponent } from './cuentas-por-cobrar/reporte-ganancia
     // Directivas
     UppercaseDirective,
     OnlyNumbersDirective,
+    DebounceClickDirective,
     MaestrosComponent,
     AgregarMaestroComponent,
     ModificarMaestroComponent,
@@ -140,7 +142,8 @@ import { ReporteGananciasComponent } from './cuentas-por-cobrar/reporte-ganancia
     AgregarMaestroComponent,
     ModificarMaestroComponent,
     UppercaseDirective,
-    OnlyNumbersDirective
+    OnlyNumbersDirective,
+    DebounceClickDirective
   ],
   imports: [
     SharedModule,

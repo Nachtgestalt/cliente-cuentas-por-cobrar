@@ -27,6 +27,7 @@ export class ReporteCuentasPorCobrarComponent implements OnInit {
   maestros: Maestro[] = [];
   filteredOptions: Observable<any>;
 
+  isLoadingResults = false;
 
   constructor(public _reportesService: ReportesService,
               public _escuelaService: EscuelaService,
@@ -93,6 +94,7 @@ export class ReporteCuentasPorCobrarComponent implements OnInit {
   }
 
   reporteCobranza() {
+    this.isLoadingResults = true;
     console.log(this.form.value);
     let pdfResult;
     let escuela;
@@ -112,12 +114,18 @@ export class ReporteCuentasPorCobrarComponent implements OnInit {
     };
     this._reportesService.reporteCobranza(params).subscribe(
       (data: any) => {
+        this.isLoadingResults = false;
         console.log(data);
         pdfResult = this.domSanitizer.bypassSecurityTrustResourceUrl(
           URL.createObjectURL(data)
         );
         window.open(pdfResult.changingThisBreaksApplicationSecurity);
         console.log(pdfResult);
+      },
+      (error) => {
+        swal('Error al cargar el reporte', 'Algo ha salido mal', 'error');
+        console.error(error);
+        this.isLoadingResults = false;
       }
     );
   }

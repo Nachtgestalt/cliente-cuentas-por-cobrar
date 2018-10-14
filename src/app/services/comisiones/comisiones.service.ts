@@ -48,12 +48,12 @@ export class ComisionesService {
     params = params.append('idtemporada', idTemporada);
 
     return this.http.get<any[]>(url, {params})
-      .subscribe(data => {
-          this.dataChangeVendedor.next(data);
-        },
-        (error: HttpErrorResponse) => {
-          console.log(error.name + ' ' + error.message);
-        });
+      // .subscribe(data => {
+      //     this.dataChangeVendedor.next(data);
+      //   },
+      //   (error: HttpErrorResponse) => {
+      //     console.log(error.name + ' ' + error.message);
+      //   });
   }
 
   getComisionesXDirector(idTemporada) {
@@ -62,13 +62,13 @@ export class ComisionesService {
     params = params.append('idtemporada', idTemporada);
 
     return this.http.get<any[]>(url, {params})
-      .subscribe(data => {
-          console.log(data);
-          this.dataChangeDirector.next(data);
-        },
-        (error: HttpErrorResponse) => {
-          console.log(error.name + ' ' + error.message);
-        });
+      // .subscribe(data => {
+      //     console.log(data);
+      //     this.dataChangeDirector.next(data);
+      //   },
+      //   (error: HttpErrorResponse) => {
+      //     console.log(error.name + ' ' + error.message);
+      //   });
   }
 
   getComisionesXLider(idTemporada) {
@@ -77,13 +77,13 @@ export class ComisionesService {
     params = params.append('idtemporada', idTemporada);
 
     return this.http.get<any[]>(url, {params})
-      .subscribe(data => {
-          console.log(data);
-          this.dataChangeLider.next(data);
-        },
-        (error: HttpErrorResponse) => {
-          console.log(error.name + ' ' + error.message);
-        });
+      // .subscribe(data => {
+      //     console.log(data);
+      //     this.dataChangeLider.next(data);
+      //   },
+      //   (error: HttpErrorResponse) => {
+      //     console.log(error.name + ' ' + error.message);
+      //   });
   }
 
   getComisionXVendedor(idTemporada, clave) {

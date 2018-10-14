@@ -11,6 +11,7 @@ import {InventoryDialogComponent} from '../../dialogs/inventory/inventory.dialog
 import {HistoryStockComponent} from '../../dialogs/history-stock/history-stock.component';
 import {ReportesService} from '../../services/reportes/reportes.service';
 import {DomSanitizer} from '@angular/platform-browser';
+import {map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-inventario',
@@ -19,6 +20,7 @@ import {DomSanitizer} from '@angular/platform-browser';
 })
 export class InventarioComponent implements OnInit {
   user = JSON.parse(localStorage.getItem('user'));
+  isLoadingResults = false;
 
   displayedColumns = ['folio', 'titulo', 'cantidad', 'edit'];
   exampleDatabase: InventarioService | null;
@@ -37,7 +39,8 @@ export class InventarioComponent implements OnInit {
               public dialog: MatDialog,
               public snackBar: MatSnackBar,
               public _reportesService: ReportesService,
-              private domSanitizer: DomSanitizer) { }
+              private domSanitizer: DomSanitizer) {
+  }
 
   ngOnInit() {
     this.loadData();
@@ -103,9 +106,13 @@ export class InventarioComponent implements OnInit {
   }
 
   reporteInventario() {
+    console.log('Se activo el reporte de inventario');
+    this.isLoadingResults = true;
     let pdfResult;
-    this._reportesService.reporteInventario().subscribe(
+    this._reportesService.reporteInventario()
+      .subscribe(
       (data: any) => {
+        this.isLoadingResults = false;
         console.log(data);
         pdfResult = this.domSanitizer.bypassSecurityTrustResourceUrl(
           URL.createObjectURL(data)
@@ -153,22 +160,25 @@ export class InventarioDataSource extends DataSource<Inventario> {
     user.role === 'HACIENDA_ROLE' ? this._exampleDatabase.obtenerHStocks() : this._exampleDatabase.obtenerStocks();
     // this._exampleDatabase.obtenerStocks();
 
-    return Observable.merge(...displayDataChanges).map(() => {
-      // Filter data
-      this.filteredData = this._exampleDatabase.data.slice().filter((inventario: Inventario) => {
-        const searchStr = (inventario.folio + inventario.titulo).toLowerCase();
-        return searchStr.indexOf(this.filter.toLowerCase()) !== -1;
-      });
+    return Observable.merge(...displayDataChanges)
+      .pipe(
+        map(() => {
+          // Filter data
+          this.filteredData = this._exampleDatabase.data.slice().filter((inventario: Inventario) => {
+            const searchStr = (inventario.folio + inventario.titulo).toLowerCase();
+            return searchStr.indexOf(this.filter.toLowerCase()) !== -1;
+          });
 
-      // Sort filtered data
-      const sortedData = this.sortData(this.filteredData.slice());
+          // Sort filtered data
+          const sortedData = this.sortData(this.filteredData.slice());
 
-      // Grab the page's slice of the filtered sorted data.
-      const startIndex = this._paginator.pageIndex * this._paginator.pageSize;
-      this.renderedData = sortedData.splice(startIndex, this._paginator.pageSize);
-      return this.renderedData;
-    });
+          // Grab the page's slice of the filtered sorted data.
+          const startIndex = this._paginator.pageIndex * this._paginator.pageSize;
+          this.renderedData = sortedData.splice(startIndex, this._paginator.pageSize);
+          return this.renderedData;
+        }));
   }
+
   disconnect() {
   }
 
@@ -183,9 +193,15 @@ export class InventarioDataSource extends DataSource<Inventario> {
       let propertyB: number | string = '';
 
       switch (this._sort.active) {
-        case 'folio': [propertyA, propertyB] = [a.folio, b.folio]; break;
-        case 'titulo': [propertyA, propertyB] = [a.titulo, b.titulo]; break;
-        case 'cantidad': [propertyA, propertyB] = [a.cantidad, b.cantidad]; break;
+        case 'folio':
+          [propertyA, propertyB] = [a.folio, b.folio];
+          break;
+        case 'titulo':
+          [propertyA, propertyB] = [a.titulo, b.titulo];
+          break;
+        case 'cantidad':
+          [propertyA, propertyB] = [a.cantidad, b.cantidad];
+          break;
       }
 
       const valueA = isNaN(+propertyA) ? propertyA : +propertyA;

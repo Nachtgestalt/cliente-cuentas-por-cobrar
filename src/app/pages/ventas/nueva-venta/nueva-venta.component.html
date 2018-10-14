@@ -209,7 +209,7 @@
     </div>
 
     <div class="row mt-3" mat-dialog-actions>
-      <button mat-raised-button color="primary" [disabled]="!forma.valid && isValidSell" (click)="confirmSell()">
+      <button mat-raised-button color="primary" [disabled]="!forma.valid && isValidSell" appDebounceClick (debounceClick)="confirmSell()">
         Guardar
       </button>
     </div>

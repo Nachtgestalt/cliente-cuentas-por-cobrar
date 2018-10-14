@@ -83,6 +83,28 @@ export class InventarioService {
         });
   }
 
+  getInventario() {
+    return this.http.get<Inventario[]>(this.inventarioURL, {headers: {'Content-Type': 'application/json'}})
+      .pipe(
+        map((res: any) => {
+          console.log(res);
+          const inventarios: Inventario[] = [];
+          for (const pedido of res) {
+            const inventario: any = {
+              escuela: `${pedido.venta.escuela.clave} - ${pedido.venta.escuela.nombre}`,
+              idHistorial: pedido.idHistorial,
+              cantidad: pedido.pedidos - pedido.entregados,
+              folio: pedido.venta.folio,
+              titulo: pedido.libro.titulo,
+              fechaSolicitud: moment(pedido.fechaSolicitud).format('DD MMM YYYY')
+            };
+            inventarios.push(inventario);
+          }
+          return inventarios;
+        })
+      );
+  }
+
   obtenerStocks() {
     return this.http.get<any[]>(`${this.inventarioURL}/stocks`,
       {headers: {'authorization': this.token, 'Content-Type': 'application/json'}})

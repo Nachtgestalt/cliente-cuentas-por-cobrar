@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {Router} from '@angular/router';
+import {NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router, RouterEvent} from '@angular/router';
 
 @Component({
   selector: 'app-cuentas-por-cobrar',
@@ -10,6 +10,7 @@ export class CuentasPorCobrarComponent implements OnInit {
 
   routeLinks: any[];
   activeLinkIndex = -1;
+  isLoadingResults = false;
   constructor(private router: Router) {
     this.routeLinks = [
       {
@@ -36,9 +37,21 @@ export class CuentasPorCobrarComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.router.events.subscribe((res) => {
+    this.router.events.subscribe((res: RouterEvent) => {
       this.activeLinkIndex = this.routeLinks.indexOf(this.routeLinks.find(tab => tab.link === '.' + this.router.url));
+      this.checkRouterEvent(res);
     });
   }
 
+  checkRouterEvent(routerEvent: RouterEvent): void {
+    if (routerEvent instanceof NavigationStart) {
+      this.isLoadingResults = true;
+    }
+
+    if (routerEvent instanceof NavigationEnd ||
+      routerEvent instanceof NavigationCancel ||
+      routerEvent instanceof NavigationError) {
+      this.isLoadingResults = false;
+    }
+  }
 }

@@ -21,6 +21,19 @@ tr.mat-footer-row {
   background: rgb(96,125,139);
 }
 
+.example-loading-shade {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.15);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 /*Reglas para las ventanas de agregar-producto*/
 .main-container {
   display: flex;

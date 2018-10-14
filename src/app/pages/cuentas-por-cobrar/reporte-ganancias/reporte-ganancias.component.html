@@ -1,4 +1,8 @@
 <div class="main-container mt-2 animated fadeIn fast">
+  <div class="example-loading-shade"
+       *ngIf="isLoadingResults">
+    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+  </div>
   <form [formGroup]="form">
     <mat-form-field class="col-md-6">
       <input matInput [matDatepicker]="picker1" placeholder="Fecha inicio"
@@ -49,7 +53,7 @@
       <!--<mat-error *ngIf="forma.get('idtemporada').hasError">{{getErrorMessages()}}</mat-error>-->
     </mat-form-field>
 
-    <button mat-flat-button (click)="reporteVenta()">
+    <button mat-flat-button appDebounceClick (debounceClick)="reporteVenta()">
       <mat-icon>print</mat-icon>
       Generar reporte
     </button>

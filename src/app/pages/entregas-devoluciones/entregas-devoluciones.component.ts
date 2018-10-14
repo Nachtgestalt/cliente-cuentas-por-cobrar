@@ -7,6 +7,9 @@ import {Observable} from 'rxjs/Observable';
 import {DataSource} from '@angular/cdk/collections';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {ConfirmInventoryDialogComponent} from '../../dialogs/confirm-inventory/confirm-inventory.dialog.component';
+import {catchError, delay, finalize, map} from 'rxjs/operators';
+import {of} from 'rxjs/internal/observable/of';
+import {Venta} from '../../interfaces/venta.interface';
 
 @Component({
   selector: 'app-entregas-devoluciones',
@@ -88,6 +91,9 @@ export class EntregasDevolucionesComponent implements OnInit {
 }
 
 export class InventarioDataSource extends DataSource<Inventario> {
+  private inventarioSubject = new BehaviorSubject<Inventario[]>([]);
+  private loadingSubject = new BehaviorSubject<boolean>(false);
+  public loading$ = this.loadingSubject.asObservable();
   _filterChange = new BehaviorSubject('');
 
   get filter(): string {
@@ -107,37 +113,56 @@ export class InventarioDataSource extends DataSource<Inventario> {
     super();
     // Reset to the first page when the user changes the filter.
     this._filterChange.subscribe(() => this._paginator.pageIndex = 0);
+    this.loadInventario();
   }
 
   /** Connect function called by the table to retrieve one stream containing the data to render. */
   connect(): Observable<Inventario[]> {
     // Listen for any changes in the base data, sorting, filtering, or pagination
     const displayDataChanges = [
-      this._exampleDatabase.dataChange,
+      // this._exampleDatabase.dataChange,
       this._sort.sortChange,
       this._filterChange,
       this._paginator.page
     ];
 
-    this._exampleDatabase.obtenerInventario();
+    const inventarios = this.inventarioSubject.asObservable();
 
-    return Observable.merge(...displayDataChanges).map(() => {
-      // Filter data
-      this.filteredData = this._exampleDatabase.data.slice().filter((inventario: Inventario) => {
-        const searchStr = (inventario.folio + inventario.titulo).toLowerCase();
-        return searchStr.indexOf(this.filter.toLowerCase()) !== -1;
-      });
+    return Observable.merge(inventarios, ...displayDataChanges)
+      .pipe(
+        delay(0),
+        map(() => {
+          // Filter data
+          this.filteredData = this.inventarioSubject.value.slice().filter((inventario: Inventario) => {
+            const searchStr = (inventario.folio + inventario.titulo).toLowerCase();
+            return searchStr.indexOf(this.filter.toLowerCase()) !== -1;
+          });
 
-      // Sort filtered data
-      const sortedData = this.sortData(this.filteredData.slice());
+          // Sort filtered data
+          const sortedData = this.sortData(this.filteredData.slice());
 
-      // Grab the page's slice of the filtered sorted data.
-      const startIndex = this._paginator.pageIndex * this._paginator.pageSize;
-      this.renderedData = sortedData.splice(startIndex, this._paginator.pageSize);
-      return this.renderedData;
-    });
+          // Grab the page's slice of the filtered sorted data.
+          const startIndex = this._paginator.pageIndex * this._paginator.pageSize;
+          this.renderedData = sortedData.splice(startIndex, this._paginator.pageSize);
+          return this.renderedData;
+        })
+      );
   }
   disconnect() {
+    this.loadingSubject.complete();
+    this.inventarioSubject.complete();
+  }
+
+  loadInventario() {
+    this.loadingSubject.next(true);
+    this._exampleDatabase.getInventario()
+      .pipe(
+        catchError(() => of([])),
+        finalize(() => this.loadingSubject.next(false))
+      ).subscribe(inventario => {
+      console.log(inventario);
+      this.inventarioSubject.next(inventario);
+    });
   }
 
   /** Returns a sorted copy of the database data. */

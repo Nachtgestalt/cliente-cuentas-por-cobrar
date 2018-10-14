@@ -16,5 +16,21 @@
 
 .mat-table {
   overflow: auto;
-  max-height: 700px;
+  max-height: 720px;
 }
+
+.mat-cell:nth-child(1),
+.mat-header-cell:nth-child(1) {
+  flex: 0 0 8%;
+}
+
+.mat-cell:nth-child(2),
+.mat-header-cell:nth-child(2) {
+  flex: 0 0 25%;
+}
+
+.mat-cell:nth-child(3),
+.mat-header-cell:nth-child(3) {
+  flex: 0 0 25%;
+}
+

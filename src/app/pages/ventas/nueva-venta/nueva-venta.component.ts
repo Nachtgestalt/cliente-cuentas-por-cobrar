@@ -62,10 +62,10 @@ export class NuevaVentaComponent implements OnInit, OnDestroy {
     idprofesor: '',
     pedidos: [],
     lideres: []
-      // {
-      //   comision_lider: null,
-      //   lider: null
-      // }
+    // {
+    //   comision_lider: null,
+    //   lider: null
+    // }
     // ]
   };
 
@@ -384,11 +384,6 @@ export class NuevaVentaComponent implements OnInit, OnDestroy {
                         idprofesor: '',
                         pedidos: [],
                         lideres: []
-                          // {
-                          //   comision_lider: null,
-                          //   lider: null
-                          // }
-                        // ]
                       };
                     }, 250);
                   }

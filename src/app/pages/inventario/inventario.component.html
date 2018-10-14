@@ -1,3 +1,7 @@
+<div class="example-loading-shade"
+     *ngIf="isLoadingResults">
+  <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+</div>
 <div class="example-header fadeIn fast">
   <mat-form-field>
     <input matInput #filter placeholder="¿Que estas buscando?">
@@ -28,7 +32,7 @@
     <!-- Opciones Column -->
     <ng-container matColumnDef="edit">
       <mat-header-cell *matHeaderCellDef>
-        <button mat-flat-button color="primary" (click)="reporteInventario()" *ngIf="user.role !== 'HACIENDA_ROLE'">
+        <button mat-flat-button color="primary" appDebounceClick (debounceClick)="reporteInventario()" *ngIf="user.role !== 'HACIENDA_ROLE'">
           <mat-icon>printer</mat-icon>
           Reporte de inventario
         </button>

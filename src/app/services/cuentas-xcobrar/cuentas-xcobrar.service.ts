@@ -36,13 +36,13 @@ export class CuentasXcobrarService {
     params = params.append('idtemporada', idTemporada);
 
     return this.http.get<any[]>(url, {params})
-      .subscribe(data => {
-          console.log(data);
-          this.dataChange.next(data);
-        },
-        (error: HttpErrorResponse) => {
-          console.log (error.name + ' ' + error.message);
-        });
+      // .subscribe(data => {
+      //     console.log(data);
+      //     this.dataChange.next(data);
+      //   },
+      //   (error: HttpErrorResponse) => {
+      //     console.log (error.name + ' ' + error.message);
+      //   });
   }
 
   getCuentasXVendedorEscuela(idTemporada, claveVendedor: string) {
@@ -53,16 +53,16 @@ export class CuentasXcobrarService {
     console.log('Clave del vendedor', claveVendedor);
 
     return this.http.get<any[]>(url, {params})
-      .subscribe(data => {
-          console.log(data);
-          this.dataChangeEscuela.next(data);
-        },
-        (error: HttpErrorResponse) => {
-          console.log (error.name + ' ' + error.message);
-        },
-      () => {
-        this.loadingSubject.next(false);
-    });
+    //   .subscribe(data => {
+    //       console.log(data);
+    //       this.dataChangeEscuela.next(data);
+    //     },
+    //     (error: HttpErrorResponse) => {
+    //       console.log (error.name + ' ' + error.message);
+    //     },
+    //   () => {
+    //     this.loadingSubject.next(false);
+    // });
   }
 
   getCuentasXVendedorEscuelaMaestro(idTemporada, claveVendedor, claveEscuela) {
@@ -72,14 +72,14 @@ export class CuentasXcobrarService {
     params = params.append('claveV', claveVendedor);
     params = params.append('claveE', claveEscuela);
 
-    return this.http.get<any[]>(url, {params})
-      .subscribe(data => {
-          console.log(data);
-          this.dataChangeMaestro.next(data);
-        },
-        (error: HttpErrorResponse) => {
-          console.log (error.name + ' ' + error.message);
-        });
+    return this.http.get<any[]>(url, {params});
+      // .subscribe(data => {
+      //     console.log(data);
+      //     this.dataChangeMaestro.next(data);
+      //   },
+      //   (error: HttpErrorResponse) => {
+      //     console.log (error.name + ' ' + error.message);
+      //   });
   }
 
   abonar(idProfesor, idTemporada, value: string, parametros) {
