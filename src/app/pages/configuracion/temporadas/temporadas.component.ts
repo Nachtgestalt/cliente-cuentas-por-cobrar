@@ -8,7 +8,9 @@ import {HttpClient} from '@angular/common/http';
 import {Temporada} from '../../../interfaces/temporada.interface';
 import {DeleteProductoDialogComponent} from '../../../dialogs/delete-producto/delete-producto.dialog.component';
 import {AddTemporadaComponent} from '../../../dialogs/add-temporada/add-temporada.dialog.component';
-import {AddZonaDialogComponent} from '../../../dialogs/add-zona/add-zona.dialog.component';
+
+import {fromEvent, merge} from 'rxjs';
+import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-temporadas',
@@ -30,7 +32,8 @@ export class TemporadasComponent implements OnInit {
   constructor(private httpClient: HttpClient,
               public dialog: MatDialog,
               public snackBar: MatSnackBar,
-              public _temporadaService: TemporadaService) { }
+              public _temporadaService: TemporadaService) {
+  }
 
   ngOnInit() {
     this.loadData();
@@ -40,9 +43,11 @@ export class TemporadasComponent implements OnInit {
   public loadData() {
     this.exampleDatabase = new TemporadaService(this.httpClient);
     this.dataSource = new TemporadaDataSource(this.exampleDatabase, this.paginator, this.sort);
-    Observable.fromEvent(this.filter.nativeElement, 'keyup')
-      .debounceTime(150)
-      .distinctUntilChanged()
+    fromEvent(this.filter.nativeElement, 'keyup')
+      .pipe(
+        debounceTime(150),
+        distinctUntilChanged()
+      )
       .subscribe(() => {
         if (!this.dataSource) {
           return;
@@ -109,7 +114,7 @@ export class TemporadasComponent implements OnInit {
 
   agregarTemporada(temporada: Temporada) {
     const dialogRef = this.dialog.open(AddTemporadaComponent, {
-      data: {temporada: temporada }
+      data: {temporada: temporada}
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -158,22 +163,26 @@ export class TemporadaDataSource extends DataSource<Temporada> {
 
     this._exampleDatabase.obtenerTemporadas();
 
-    return Observable.merge(...displayDataChanges).map(() => {
-      // Filter data
-      this.filteredData = this._exampleDatabase.data.slice().filter((temporada: Temporada) => {
-        const searchStr = (temporada.nombre).toLowerCase();
-        return searchStr.indexOf(this.filter.toLowerCase()) !== -1;
-      });
+    return merge(...displayDataChanges)
+      .pipe(
+        map(() => {
+          // Filter data
+          this.filteredData = this._exampleDatabase.data.slice().filter((temporada: Temporada) => {
+            const searchStr = (temporada.nombre).toLowerCase();
+            return searchStr.indexOf(this.filter.toLowerCase()) !== -1;
+          });
 
-      // Sort filtered data
-      const sortedData = this.sortData(this.filteredData.slice());
+          // Sort filtered data
+          const sortedData = this.sortData(this.filteredData.slice());
 
-      // Grab the page's slice of the filtered sorted data.
-      const startIndex = this._paginator.pageIndex * this._paginator.pageSize;
-      this.renderedData = sortedData.splice(startIndex, this._paginator.pageSize);
-      return this.renderedData;
-    });
+          // Grab the page's slice of the filtered sorted data.
+          const startIndex = this._paginator.pageIndex * this._paginator.pageSize;
+          this.renderedData = sortedData.splice(startIndex, this._paginator.pageSize);
+          return this.renderedData;
+        })
+      );
   }
+
   disconnect() {
   }
 
@@ -188,9 +197,15 @@ export class TemporadaDataSource extends DataSource<Temporada> {
       let propertyB: number | string = '';
 
       switch (this._sort.active) {
-        case 'nombre': [propertyA, propertyB] = [a.nombre, b.nombre]; break;
-        case 'fecha_inicio': [propertyA, propertyB] = [a.fecha_inicio, b.fecha_inicio]; break;
-        case 'fecha_termino': [propertyA, propertyB] = [a.fecha_termino, b.fecha_termino]; break;
+        case 'nombre':
+          [propertyA, propertyB] = [a.nombre, b.nombre];
+          break;
+        case 'fecha_inicio':
+          [propertyA, propertyB] = [a.fecha_inicio, b.fecha_inicio];
+          break;
+        case 'fecha_termino':
+          [propertyA, propertyB] = [a.fecha_termino, b.fecha_termino];
+          break;
       }
 
       const valueA = isNaN(+propertyA) ? propertyA : +propertyA;

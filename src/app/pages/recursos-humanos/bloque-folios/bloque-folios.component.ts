@@ -1,13 +1,12 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {BloqueFoliosService} from '../../../services/bloque-folios/bloque-folios.service';
-import {InventarioService} from '../../../services/inventario/inventario.service';
-import {InventarioDataSource} from '../../inventario/inventario.component';
 import {DataSource} from '@angular/cdk/collections';
 import {Observable} from 'rxjs/Observable';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {MatDialog, MatPaginator, MatSnackBar, MatSort} from '@angular/material';
-import {Inventario} from '../../../interfaces/inventario.interface';
 import {HttpClient} from '@angular/common/http';
+import {fromEvent, merge} from 'rxjs';
+import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-bloque-folios',
@@ -23,9 +22,10 @@ export class BloqueFoliosComponent implements OnInit {
   exampleDatabase: BloqueFoliosService | null;
   dataSource: BloqueFolioDataSource | null;
 
-  constructor( private httpClient: HttpClient,
-               public dialog: MatDialog,
-               public snackBar: MatSnackBar) { }
+  constructor(private httpClient: HttpClient,
+              public dialog: MatDialog,
+              public snackBar: MatSnackBar) {
+  }
 
   ngOnInit() {
     this.loadData();
@@ -34,9 +34,11 @@ export class BloqueFoliosComponent implements OnInit {
   public loadData() {
     this.exampleDatabase = new BloqueFoliosService(this.httpClient);
     this.dataSource = new BloqueFolioDataSource(this.exampleDatabase, this.paginator, this.sort);
-    Observable.fromEvent(this.filter.nativeElement, 'keyup')
-      .debounceTime(150)
-      .distinctUntilChanged()
+    fromEvent(this.filter.nativeElement, 'keyup')
+      .pipe(
+        debounceTime(150),
+        distinctUntilChanged()
+      )
       .subscribe(() => {
         if (!this.dataSource) {
           return;
@@ -82,23 +84,27 @@ export class BloqueFolioDataSource extends DataSource<any> {
 
     this._exampleDatabase.obtenerBloqueFolios();
 
-    return Observable.merge(...displayDataChanges).map(() => {
-      // Filter data
-      this.filteredData = this._exampleDatabase.data.slice().filter((bloqueFolio: any) => {
-        const searchStr = (bloqueFolio.folio.tipo + bloqueFolio.vendedor.nombre +
-          bloqueFolio.vendedor.clave + bloqueFolio.vendedor.apellidos).toLowerCase();
-        return searchStr.indexOf(this.filter.toLowerCase()) !== -1;
-      });
+    return merge(...displayDataChanges)
+      .pipe(
+        map(() => {
+          // Filter data
+          this.filteredData = this._exampleDatabase.data.slice().filter((bloqueFolio: any) => {
+            const searchStr = (bloqueFolio.folio.tipo + bloqueFolio.vendedor.nombre +
+              bloqueFolio.vendedor.clave + bloqueFolio.vendedor.apellidos).toLowerCase();
+            return searchStr.indexOf(this.filter.toLowerCase()) !== -1;
+          });
 
-      // Sort filtered data
-      const sortedData = this.sortData(this.filteredData.slice());
+          // Sort filtered data
+          const sortedData = this.sortData(this.filteredData.slice());
 
-      // Grab the page's slice of the filtered sorted data.
-      const startIndex = this._paginator.pageIndex * this._paginator.pageSize;
-      this.renderedData = sortedData.splice(startIndex, this._paginator.pageSize);
-      return this.renderedData;
-    });
+          // Grab the page's slice of the filtered sorted data.
+          const startIndex = this._paginator.pageIndex * this._paginator.pageSize;
+          this.renderedData = sortedData.splice(startIndex, this._paginator.pageSize);
+          return this.renderedData;
+        })
+      );
   }
+
   disconnect() {
   }
 
@@ -113,12 +119,24 @@ export class BloqueFolioDataSource extends DataSource<any> {
       let propertyB: number | string = '';
 
       switch (this._sort.active) {
-        case 'clave': [propertyA, propertyB] = [a.vendedor.clave, b.vendedor.clave]; break;
-        case 'tipo': [propertyA, propertyB] = [a.folio, b.folio]; break;
-        case 'inicio': [propertyA, propertyB] = [a.inicio, b.inicio]; break;
-        case 'fin': [propertyA, propertyB] = [a.fin, b.fin]; break;
-        case 'vendedor': [propertyA, propertyB] = [(a.vendedor.nombre + a.vendedor.apellidos), (b.vendedor.nombre + b.vendedor.apellidos)]; break;
-        case 'temporada': [propertyA, propertyB] = [a.folio.idtemporada.nombre, a.folio.idtemporada.nombre]; break;
+        case 'clave':
+          [propertyA, propertyB] = [a.vendedor.clave, b.vendedor.clave];
+          break;
+        case 'tipo':
+          [propertyA, propertyB] = [a.folio, b.folio];
+          break;
+        case 'inicio':
+          [propertyA, propertyB] = [a.inicio, b.inicio];
+          break;
+        case 'fin':
+          [propertyA, propertyB] = [a.fin, b.fin];
+          break;
+        case 'vendedor':
+          [propertyA, propertyB] = [(a.vendedor.nombre + a.vendedor.apellidos), (b.vendedor.nombre + b.vendedor.apellidos)];
+          break;
+        case 'temporada':
+          [propertyA, propertyB] = [a.folio.idtemporada.nombre, a.folio.idtemporada.nombre];
+          break;
       }
 
       const valueA = isNaN(+propertyA) ? propertyA : +propertyA;

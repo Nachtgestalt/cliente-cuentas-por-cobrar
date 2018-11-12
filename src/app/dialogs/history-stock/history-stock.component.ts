@@ -1,14 +1,13 @@
 import {Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
 import {MAT_DIALOG_DATA, MatDialogRef, MatPaginator, MatSort} from '@angular/material';
 import {Observable} from 'rxjs/Observable';
 import {DataSource} from '@angular/cdk/collections';
-import {InventarioService} from '../../services/inventario/inventario.service';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import {ShowResurtidoInterface} from '../../interfaces/showResurtido.interface';
 import {StockService} from '../../services/stock/stock.service';
-import {ShowResurtidoInterfaceDataSource} from '../show-resurtidos/show-resurtidos.dialog.component';
-import {HttpClient} from '@angular/common/http';
-import {AddTemporadaComponent} from '../add-temporada/add-temporada.dialog.component';
+
+import {merge, fromEvent} from 'rxjs';
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 
 @Component({
   selector: 'app-history-stock',
@@ -27,7 +26,8 @@ export class HistoryStockComponent implements OnInit {
 
   constructor(private httpClient: HttpClient,
               public dialogRef: MatDialogRef<HistoryStockComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: any) { }
+              @Inject(MAT_DIALOG_DATA) public data: any) {
+  }
 
   ngOnInit() {
     this.loadData();
@@ -36,9 +36,11 @@ export class HistoryStockComponent implements OnInit {
   public loadData() {
     this.exampleDatabase = new StockService(this.httpClient);
     this.dataSource = new StocksDataSource(this.exampleDatabase, this.paginator, this.sort, this.data.id);
-    Observable.fromEvent(this.filter.nativeElement, 'keyup')
-      .debounceTime(150)
-      .distinctUntilChanged()
+    fromEvent(this.filter.nativeElement, 'keyup')
+      .pipe(
+        debounceTime(150),
+        distinctUntilChanged()
+      )
       .subscribe(() => {
         if (!this.dataSource) {
           return;
@@ -84,7 +86,7 @@ export class StocksDataSource extends DataSource<any> {
     const user = JSON.parse(localStorage.getItem('user'));
     user.role === 'HACIENDA_ROLE' ? this._exampleDatabase.getHStockByBook(this.id) : this._exampleDatabase.getStockByBook(this.id);
 
-    return Observable.merge(...displayDataChanges).map(() => {
+    return merge(...displayDataChanges).map(() => {
       // Filter data
       this.filteredData = this._exampleDatabase.data.slice().filter((resurtido: any) => {
         const searchStr = (resurtido.libro.titulo).toLowerCase();
@@ -100,6 +102,7 @@ export class StocksDataSource extends DataSource<any> {
       return this.renderedData;
     });
   }
+
   disconnect() {
   }
 
@@ -114,8 +117,12 @@ export class StocksDataSource extends DataSource<any> {
       let propertyB: number | string = '';
 
       switch (this._sort.active) {
-        case 'numresurtido': [propertyA, propertyB] = [a.numresurtido, b.numresurtido]; break;
-        case 'fecha': [propertyA, propertyB] = [a.fecha, b.fecha]; break;
+        case 'numresurtido':
+          [propertyA, propertyB] = [a.numresurtido, b.numresurtido];
+          break;
+        case 'fecha':
+          [propertyA, propertyB] = [a.fecha, b.fecha];
+          break;
       }
 
       const valueA = isNaN(+propertyA) ? propertyA : +propertyA;

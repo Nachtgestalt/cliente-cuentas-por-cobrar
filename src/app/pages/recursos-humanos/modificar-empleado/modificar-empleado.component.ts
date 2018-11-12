@@ -2,7 +2,6 @@ import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/
 import {MatDialog, MatPaginator, MatSnackBar, MatSort, MatTableDataSource} from '@angular/material';
 import {VendedorService} from '../../../services/vendedor/vendedor.service';
 import {Vendedor} from '../../../interfaces/vendedor.interface';
-import {Router} from '@angular/router';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/observable/fromEvent';
@@ -14,6 +13,8 @@ import {DataSource} from '@angular/cdk/collections';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {DeleteVendedorDialogComponent} from '../../../dialogs/delete-vendedor/delete-vendedor.dialog.component';
 
+import {merge, fromEvent} from 'rxjs';
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 
 
 @Component({
@@ -87,9 +88,11 @@ export class ModificarEmpleadoComponent implements OnInit, AfterViewInit {
   public loadData() {
     this.exampleDatabase = new VendedorService(this.httpClient);
     this.dataSource = new VendedorDataSource(this.exampleDatabase, this.paginator, this.sort);
-    Observable.fromEvent(this.filter.nativeElement, 'keyup')
-      .debounceTime(150)
-      .distinctUntilChanged()
+    fromEvent(this.filter.nativeElement, 'keyup')
+      .pipe(
+        debounceTime(150),
+        distinctUntilChanged()
+      )
       .subscribe(() => {
         if (!this.dataSource) {
           return;
@@ -108,6 +111,7 @@ export class ModificarEmpleadoComponent implements OnInit, AfterViewInit {
     this.loadData();
   }
 }
+
 export interface VendedorApi {
   items: VendedorData[];
   total_count: number;
@@ -154,7 +158,7 @@ export class VendedorDataSource extends DataSource<Vendedor> {
 
     this._exampleDatabase.obtenerVendedores();
 
-    return Observable.merge(...displayDataChanges).map(() => {
+    return merge(...displayDataChanges).map(() => {
       // Filter data
       this.filteredData = this._exampleDatabase.data.slice().filter((vendedor: Vendedor) => {
         const searchStr = (vendedor.clave + vendedor.nombre + vendedor.apellidos).toLowerCase();
@@ -170,6 +174,7 @@ export class VendedorDataSource extends DataSource<Vendedor> {
       return this.renderedData;
     });
   }
+
   disconnect() {
   }
 
@@ -184,9 +189,15 @@ export class VendedorDataSource extends DataSource<Vendedor> {
       let propertyB: number | string = '';
 
       switch (this._sort.active) {
-        case 'clave': [propertyA, propertyB] = [a.clave, b.clave]; break;
-        case 'nombre': [propertyA, propertyB] = [a.nombre, b.nombre]; break;
-        case 'apellidos': [propertyA, propertyB] = [a.apellidos, b.apellidos]; break;
+        case 'clave':
+          [propertyA, propertyB] = [a.clave, b.clave];
+          break;
+        case 'nombre':
+          [propertyA, propertyB] = [a.nombre, b.nombre];
+          break;
+        case 'apellidos':
+          [propertyA, propertyB] = [a.apellidos, b.apellidos];
+          break;
       }
 
       const valueA = isNaN(+propertyA) ? propertyA : +propertyA;

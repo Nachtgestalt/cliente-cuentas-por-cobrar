@@ -2,7 +2,6 @@ import {ChangeDetectorRef, Component, OnDestroy, OnInit, Renderer2} from '@angul
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
 import {MY_FORMATS} from '../../../dialogs/add-temporada/add-temporada.dialog.component';
 import {MomentDateAdapter} from '@angular/material-moment-adapter';
-import {Venta} from '../../../interfaces/venta.interface';
 import {Escuela} from '../../../interfaces/escuela.interface';
 import {startWith} from 'rxjs/operators/startWith';
 import {ZonaService} from '../../../services/zona/zona.service';
@@ -62,11 +61,6 @@ export class NuevaVentaComponent implements OnInit, OnDestroy {
     idprofesor: '',
     pedidos: [],
     lideres: []
-    // {
-    //   comision_lider: null,
-    //   lider: null
-    // }
-    // ]
   };
 
   vendedorFlag = false;

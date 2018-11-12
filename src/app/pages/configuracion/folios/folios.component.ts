@@ -7,8 +7,10 @@ import {DataSource} from '@angular/cdk/collections';
 import {Folio} from '../../../interfaces/folio.interface';
 import {FolioService} from '../../../services/folio/folio.service';
 import {DeleteFolioDialogComponent} from '../../../dialogs/delete-folio/delete-folio.dialog..component';
-import {AddTemporadaComponent} from '../../../dialogs/add-temporada/add-temporada.dialog.component';
 import {AddFolioDialogComponent} from '../../../dialogs/add-folio/add-folio.dialog.component';
+
+import {fromEvent, merge} from 'rxjs';
+import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-folios',
@@ -29,7 +31,8 @@ export class FoliosComponent implements OnInit {
 
   constructor(private httpClient: HttpClient,
               public dialog: MatDialog,
-              public snackBar: MatSnackBar) {}
+              public snackBar: MatSnackBar) {
+  }
 
   ngOnInit() {
     this.loadData();
@@ -54,9 +57,11 @@ export class FoliosComponent implements OnInit {
   public loadData() {
     this.exampleDatabase = new FolioService(this.httpClient);
     this.dataSource = new FolioDataSource(this.exampleDatabase, this.paginator, this.sort);
-    Observable.fromEvent(this.filter.nativeElement, 'keyup')
-      .debounceTime(150)
-      .distinctUntilChanged()
+    fromEvent(this.filter.nativeElement, 'keyup')
+      .pipe(
+        debounceTime(150),
+        distinctUntilChanged()
+      )
       .subscribe(() => {
         if (!this.dataSource) {
           return;
@@ -162,22 +167,26 @@ export class FolioDataSource extends DataSource<Folio> {
 
     this._exampleDatabase.obtenerFolios();
 
-    return Observable.merge(...displayDataChanges).map(() => {
-      // Filter data
-      this.filteredData = this._exampleDatabase.data.slice().filter((folio: Folio) => {
-        const searchStr = (folio.idtemporada.nombre + folio.tipo + folio.inicio + folio.fin).toLowerCase();
-        return searchStr.indexOf(this.filter.toLowerCase()) !== -1;
-      });
+    return merge(...displayDataChanges)
+      .pipe(
+        map(() => {
+          // Filter data
+          this.filteredData = this._exampleDatabase.data.slice().filter((folio: Folio) => {
+            const searchStr = (folio.idtemporada.nombre + folio.tipo + folio.inicio + folio.fin).toLowerCase();
+            return searchStr.indexOf(this.filter.toLowerCase()) !== -1;
+          });
 
-      // Sort filtered data
-      const sortedData = this.sortData(this.filteredData.slice());
+          // Sort filtered data
+          const sortedData = this.sortData(this.filteredData.slice());
 
-      // Grab the page's slice of the filtered sorted data.
-      const startIndex = this._paginator.pageIndex * this._paginator.pageSize;
-      this.renderedData = sortedData.splice(startIndex, this._paginator.pageSize);
-      return this.renderedData;
-    });
+          // Grab the page's slice of the filtered sorted data.
+          const startIndex = this._paginator.pageIndex * this._paginator.pageSize;
+          this.renderedData = sortedData.splice(startIndex, this._paginator.pageSize);
+          return this.renderedData;
+        })
+      );
   }
+
   disconnect() {
   }
 
@@ -192,10 +201,18 @@ export class FolioDataSource extends DataSource<Folio> {
       let propertyB: number | string = '';
 
       switch (this._sort.active) {
-        case 'temporada': [propertyA, propertyB] = [a.idtemporada.nombre, b.idtemporada.nombre]; break;
-        case 'tipo': [propertyA, propertyB] = [a.tipo, b.tipo]; break;
-        case 'inicio': [propertyA, propertyB] = [a.inicio, b.inicio]; break;
-        case 'fin': [propertyA, propertyB] = [a.fin, b.fin]; break;
+        case 'temporada':
+          [propertyA, propertyB] = [a.idtemporada.nombre, b.idtemporada.nombre];
+          break;
+        case 'tipo':
+          [propertyA, propertyB] = [a.tipo, b.tipo];
+          break;
+        case 'inicio':
+          [propertyA, propertyB] = [a.inicio, b.inicio];
+          break;
+        case 'fin':
+          [propertyA, propertyB] = [a.fin, b.fin];
+          break;
       }
 
       const valueA = isNaN(+propertyA) ? propertyA : +propertyA;

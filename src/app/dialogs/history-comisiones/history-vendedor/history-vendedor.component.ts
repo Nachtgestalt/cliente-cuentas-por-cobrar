@@ -7,6 +7,9 @@ import {HttpClient} from '@angular/common/http';
 import {DataSource} from '@angular/cdk/collections';
 import {MAT_DIALOG_DATA, MatDialog, MatPaginator, MatSnackBar, MatSort} from '@angular/material';
 
+import {fromEvent, merge} from 'rxjs';
+import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
+
 @Component({
   selector: 'app-history-vendedor',
   templateUrl: './history-vendedor.component.html',
@@ -26,7 +29,8 @@ export class HistoryVendedorComponent implements OnInit {
   constructor(private httpClient: HttpClient,
               public dialog: MatDialog,
               public snackBar: MatSnackBar,
-              @Inject(MAT_DIALOG_DATA) public data: any) { }
+              @Inject(MAT_DIALOG_DATA) public data: any) {
+  }
 
   ngOnInit() {
     this.loadData();
@@ -35,9 +39,11 @@ export class HistoryVendedorComponent implements OnInit {
   public loadData() {
     this.exampleDatabase = new ComisionesService(this.httpClient);
     this.dataSource = new ComisionVendedorDataSource(this.exampleDatabase, this.paginator, this.sort, this.data.id);
-    Observable.fromEvent(this.filter.nativeElement, 'keyup')
-      .debounceTime(150)
-      .distinctUntilChanged()
+    fromEvent(this.filter.nativeElement, 'keyup')
+      .pipe(
+        debounceTime(150),
+        distinctUntilChanged()
+      )
       .subscribe(() => {
         if (!this.dataSource) {
           return;
@@ -124,22 +130,26 @@ export class ComisionVendedorDataSource extends DataSource<any> {
 
     this._exampleDatabase.getComisionXVendedor(this.season.idtemporada, this.id);
 
-    return Observable.merge(...displayDataChanges).map(() => {
-      // Filter data
-      this.filteredData = this._exampleDatabase.dataComisionVendedor.slice().filter((cuentaVendedor: any) => {
-        const searchStr = (cuentaVendedor.fecha).toLowerCase();
-        return searchStr.indexOf(this.filter.toLowerCase()) !== -1;
-      });
+    return merge(...displayDataChanges)
+      .pipe(
+        map(() => {
+          // Filter data
+          this.filteredData = this._exampleDatabase.dataComisionVendedor.slice().filter((cuentaVendedor: any) => {
+            const searchStr = (cuentaVendedor.fecha).toLowerCase();
+            return searchStr.indexOf(this.filter.toLowerCase()) !== -1;
+          });
 
-      // Sort filtered data
-      const sortedData = this.sortData(this.filteredData.slice());
+          // Sort filtered data
+          const sortedData = this.sortData(this.filteredData.slice());
 
-      // Grab the page's slice of the filtered sorted data.
-      const startIndex = this._paginator.pageIndex * this._paginator.pageSize;
-      this.renderedData = sortedData.splice(startIndex, this._paginator.pageSize);
-      return this.renderedData;
-    });
+          // Grab the page's slice of the filtered sorted data.
+          const startIndex = this._paginator.pageIndex * this._paginator.pageSize;
+          this.renderedData = sortedData.splice(startIndex, this._paginator.pageSize);
+          return this.renderedData;
+        })
+      );
   }
+
   disconnect() {
   }
 
@@ -154,7 +164,9 @@ export class ComisionVendedorDataSource extends DataSource<any> {
       let propertyB: number | string = '';
 
       switch (this._sort.active) {
-        case 'fecha': [propertyA, propertyB] = [a.fecha, b.fecha]; break;
+        case 'fecha':
+          [propertyA, propertyB] = [a.fecha, b.fecha];
+          break;
       }
 
       const valueA = isNaN(+propertyA) ? propertyA : +propertyA;

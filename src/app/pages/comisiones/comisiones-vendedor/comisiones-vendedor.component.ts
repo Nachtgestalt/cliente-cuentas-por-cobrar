@@ -1,6 +1,5 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {MatDialog, MatPaginator, MatSnackBar, MatSort} from '@angular/material';
-import {Observable} from 'rxjs/Observable';
 import {HttpClient} from '@angular/common/http';
 import {ComisionesService} from '../../../services/comisiones/comisiones.service';
 import {ConfirmPaymentComponent} from '../../../dialogs/confirm-payment/confirm-payment.component';
@@ -8,6 +7,9 @@ import {HistoryVendedorComponent} from '../../../dialogs/history-comisiones/hist
 import {ReportesService} from '../../../services/reportes/reportes.service';
 import {DomSanitizer} from '@angular/platform-browser';
 import {ComisionesVendedorDataSource} from '../../../datasources/comisionesVendedor.datasource';
+
+import {fromEvent} from 'rxjs';
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 
 @Component({
   selector: 'app-comisiones-vendedor',
@@ -41,9 +43,11 @@ export class ComisionesVendedorComponent implements OnInit {
   public loadData() {
     this.exampleDatabase = new ComisionesService(this.httpClient);
     this.dataSource = new ComisionesVendedorDataSource(this.exampleDatabase, this.paginator, this.sort);
-    Observable.fromEvent(this.filter.nativeElement, 'keyup')
-      .debounceTime(150)
-      .distinctUntilChanged()
+    fromEvent(this.filter.nativeElement, 'keyup')
+      .pipe(
+        debounceTime(150),
+        distinctUntilChanged()
+      )
       .subscribe(() => {
         if (!this.dataSource) {
           return;

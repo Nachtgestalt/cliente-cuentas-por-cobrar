@@ -8,6 +8,8 @@ import {HistoryDirectorComponent} from '../../../dialogs/history-comisiones/hist
 import {DomSanitizer} from '@angular/platform-browser';
 import {ReportesService} from '../../../services/reportes/reportes.service';
 import {ComisionesDirectorDataSource} from '../../../datasources/comisionesDirector.datasource';
+import {fromEvent} from 'rxjs';
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 
 @Component({
   selector: 'app-comisiones-director',
@@ -32,7 +34,8 @@ export class ComisionesDirectorComponent implements OnInit {
               public _reportesService: ReportesService,
               public dialog: MatDialog,
               public snackBar: MatSnackBar,
-              private domSanitizer: DomSanitizer) { }
+              private domSanitizer: DomSanitizer) {
+  }
 
   ngOnInit() {
     this.loadData();
@@ -41,9 +44,11 @@ export class ComisionesDirectorComponent implements OnInit {
   public loadData() {
     this.exampleDatabase = new ComisionesService(this.httpClient);
     this.dataSource = new ComisionesDirectorDataSource(this.exampleDatabase, this.paginator, this.sort);
-    Observable.fromEvent(this.filter.nativeElement, 'keyup')
-      .debounceTime(150)
-      .distinctUntilChanged()
+    fromEvent(this.filter.nativeElement, 'keyup')
+      .pipe(
+        debounceTime(150),
+        distinctUntilChanged()
+      )
       .subscribe(() => {
         if (!this.dataSource) {
           return;

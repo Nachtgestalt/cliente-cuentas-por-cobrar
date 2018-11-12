@@ -6,6 +6,8 @@ import {Observable} from 'rxjs/Observable';
 import {catchError, delay, finalize, map} from 'rxjs/operators';
 import {of} from 'rxjs/internal/observable/of';
 
+import {merge} from 'rxjs';
+
 export class ComisionesVendedorDataSource extends DataSource<any> {
   private comisionesVendedorSubject = new BehaviorSubject<any[]>([]);
   private loadingSubject = new BehaviorSubject<boolean>(false);
@@ -46,7 +48,7 @@ export class ComisionesVendedorDataSource extends DataSource<any> {
     const comisionesVendedor = this.comisionesVendedorSubject.asObservable();
     // this._exampleDatabase.getComisionesXVendedor(this.season.idtemporada);
 
-    return Observable.merge(comisionesVendedor, ...displayDataChanges)
+    return merge(comisionesVendedor, ...displayDataChanges)
       .pipe(
         delay(0),
         map(() => {

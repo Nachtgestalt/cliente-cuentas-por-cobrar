@@ -9,6 +9,9 @@ import {ReportesService} from '../../../services/reportes/reportes.service';
 import {DomSanitizer} from '@angular/platform-browser';
 import {ComisionensLiderDataSource} from '../../../datasources/comisionesLider.datasource';
 
+import {fromEvent, merge} from 'rxjs';
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
+
 @Component({
   selector: 'app-comisiones-lider',
   templateUrl: './comisiones-lider.component.html',
@@ -41,9 +44,11 @@ export class ComisionesLiderComponent implements OnInit {
   public loadData() {
     this.exampleDatabase = new ComisionesService(this.httpClient);
     this.dataSource = new ComisionensLiderDataSource(this.exampleDatabase, this.paginator, this.sort);
-    Observable.fromEvent(this.filter.nativeElement, 'keyup')
-      .debounceTime(150)
-      .distinctUntilChanged()
+    fromEvent(this.filter.nativeElement, 'keyup')
+      .pipe(
+        debounceTime(150),
+        distinctUntilChanged()
+      )
       .subscribe(() => {
         if (!this.dataSource) {
           return;

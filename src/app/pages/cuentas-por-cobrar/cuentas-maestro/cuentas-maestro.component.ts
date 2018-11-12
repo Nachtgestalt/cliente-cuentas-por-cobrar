@@ -1,11 +1,16 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {HttpClient} from '@angular/common/http';
 import {MatDialog, MatPaginator, MatSnackBar, MatSort} from '@angular/material';
 import {CuentasXcobrarService} from '../../../services/cuentas-xcobrar/cuentas-xcobrar.service';
-import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs/Observable';
-import {ActivatedRoute, Router} from '@angular/router';
 import {ConfirmPaymentComponent} from '../../../dialogs/confirm-payment/confirm-payment.component';
 import {CuentasMaestroDataSource} from '../../../datasources/cuentasMaestro.datasource';
+
+import {fromEvent} from 'rxjs';
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
+
+import * as jspdf from 'jspdf';
+import html2canvas from 'html2canvas';
 
 @Component({
   selector: 'app-cuentas-maestro',
@@ -44,9 +49,11 @@ export class CuentasMaestroComponent implements OnInit {
   public loadData() {
     this.exampleDatabase = new CuentasXcobrarService(this.httpClient);
     this.dataSource = new CuentasMaestroDataSource(this.exampleDatabase, this.paginator, this.sort, this.parametros);
-    Observable.fromEvent(this.filter.nativeElement, 'keyup')
-      .debounceTime(150)
-      .distinctUntilChanged()
+    fromEvent(this.filter.nativeElement, 'keyup')
+      .pipe(
+        debounceTime(150),
+        distinctUntilChanged()
+      )
       .subscribe(() => {
         if (!this.dataSource) {
           return;
@@ -94,5 +101,23 @@ export class CuentasMaestroComponent implements OnInit {
 
   getPagadoTotal() {
     return this.dataSource.renderedData.map(t => t.pagado).reduce((acc, value) => acc + value, 0);
+  }
+
+  convertToPdf() {
+    const data = document.getElementById('tableToConvert');
+    html2canvas(data).then(canvas => {
+      // Few necessary setting options
+      const imgWidth = 295;
+      const pageHeight = 208;
+      const imgHeight = canvas.height * imgWidth / canvas.width;
+      const heightLeft = imgHeight;
+
+      const contentDataURL = canvas.toDataURL('image/png');
+      const pdf = new jspdf('l', 'mm', 'a4'); // A4 size page of PDF
+      const position = 10;
+      pdf.addImage(contentDataURL, 'PNG', 10, position, imgWidth, imgHeight);
+      const titlePDF = `CuentasXcobrar_Maestro.pdf`;
+      pdf.save(titlePDF); // Generated PDF
+    });
   }
 }

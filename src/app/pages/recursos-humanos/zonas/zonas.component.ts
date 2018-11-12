@@ -11,6 +11,8 @@ import {AddZonaDialogComponent} from '../../../dialogs/add-zona/add-zona.dialog.
 import {Vendedor} from '../../../interfaces/vendedor.interface';
 import {ReportesService} from '../../../services/reportes/reportes.service';
 import {DomSanitizer} from '@angular/platform-browser';
+import {fromEvent, merge} from 'rxjs';
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 
 @Component({
   selector: 'app-zonas',
@@ -33,7 +35,8 @@ export class ZonasComponent implements OnInit {
               public dialog: MatDialog,
               public snackBar: MatSnackBar,
               public _reportesService: ReportesService,
-              private domSanitizer: DomSanitizer) { }
+              private domSanitizer: DomSanitizer) {
+  }
 
   ngOnInit() {
     this.loadData();
@@ -43,9 +46,11 @@ export class ZonasComponent implements OnInit {
   public loadData() {
     this.exampleDatabase = new ZonaService(this.httpClient);
     this.dataSource = new ZonaDataSource(this.exampleDatabase, this.paginator, this.sort);
-    Observable.fromEvent(this.filter.nativeElement, 'keyup')
-      .debounceTime(150)
-      .distinctUntilChanged()
+    fromEvent(this.filter.nativeElement, 'keyup')
+      .pipe(
+        debounceTime(150),
+        distinctUntilChanged()
+      )
       .subscribe(() => {
         if (!this.dataSource) {
           return;
@@ -117,7 +122,7 @@ export class ZonasComponent implements OnInit {
 
   agregarZona(zona: Zona) {
     const dialogRef = this.dialog.open(AddZonaDialogComponent, {
-      data: {zona: zona }
+      data: {zona: zona}
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -134,13 +139,13 @@ export class ZonasComponent implements OnInit {
   imprimirZonas(vendedor = '') {
     let pdfResult;
     this._reportesService.reporteZonas(vendedor).subscribe(
-        (data: any) => {
-          console.log(data);
-          pdfResult = this.domSanitizer.bypassSecurityTrustResourceUrl(
-            URL.createObjectURL(data)
-          );
-          window.open(pdfResult.changingThisBreaksApplicationSecurity);
-          console.log(pdfResult);
+      (data: any) => {
+        console.log(data);
+        pdfResult = this.domSanitizer.bypassSecurityTrustResourceUrl(
+          URL.createObjectURL(data)
+        );
+        window.open(pdfResult.changingThisBreaksApplicationSecurity);
+        console.log(pdfResult);
       }
     );
   }
@@ -180,7 +185,7 @@ export class ZonaDataSource extends DataSource<Zona> {
 
     this._exampleDatabase.obtenerZonas();
 
-    return Observable.merge(...displayDataChanges).map(() => {
+    return merge(...displayDataChanges).map(() => {
       // Filter data
       this.filteredData = this._exampleDatabase.data.slice().filter((zona: Zona) => {
         const searchStr = (zona.idzona).toLowerCase();
@@ -196,6 +201,7 @@ export class ZonaDataSource extends DataSource<Zona> {
       return this.renderedData;
     });
   }
+
   disconnect() {
   }
 
@@ -210,7 +216,9 @@ export class ZonaDataSource extends DataSource<Zona> {
       let propertyB: number | string = '';
 
       switch (this._sort.active) {
-        case 'nombre': [propertyA, propertyB] = [a.idzona, b.idzona]; break;
+        case 'nombre':
+          [propertyA, propertyB] = [a.idzona, b.idzona];
+          break;
       }
 
       const valueA = isNaN(+propertyA) ? propertyA : +propertyA;

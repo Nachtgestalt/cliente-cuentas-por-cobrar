@@ -12,6 +12,7 @@ import {HistoryStockComponent} from '../../dialogs/history-stock/history-stock.c
 import {ReportesService} from '../../services/reportes/reportes.service';
 import {DomSanitizer} from '@angular/platform-browser';
 import {map} from 'rxjs/operators';
+import { merge, fromEvent  } from 'rxjs';
 
 @Component({
   selector: 'app-inventario',
@@ -49,7 +50,7 @@ export class InventarioComponent implements OnInit {
   public loadData() {
     this.exampleDatabase = new InventarioService(this.httpClient);
     this.dataSource = new InventarioDataSource(this.exampleDatabase, this.paginator, this.sort);
-    Observable.fromEvent(this.filter.nativeElement, 'keyup')
+    fromEvent(this.filter.nativeElement, 'keyup')
       .debounceTime(150)
       .distinctUntilChanged()
       .subscribe(() => {
@@ -160,7 +161,7 @@ export class InventarioDataSource extends DataSource<Inventario> {
     user.role === 'HACIENDA_ROLE' ? this._exampleDatabase.obtenerHStocks() : this._exampleDatabase.obtenerStocks();
     // this._exampleDatabase.obtenerStocks();
 
-    return Observable.merge(...displayDataChanges)
+    return merge(...displayDataChanges)
       .pipe(
         map(() => {
           // Filter data

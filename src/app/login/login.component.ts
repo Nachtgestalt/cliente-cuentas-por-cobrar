@@ -5,9 +5,7 @@ import {User} from '../interfaces/user.interfaces';
 import {UserService} from '../services/service.index';
 import {Title} from '@angular/platform-browser';
 import {TemporadaService} from '../services/temporada/temporada.service';
-import {HttpResponse} from '@angular/common/http';
-import {Observable} from 'rxjs/Observable';
-import 'rxjs/add/observable/forkJoin';
+import {forkJoin} from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -48,7 +46,7 @@ export class LoginComponent implements OnInit {
     this._userService.autenticar(this.formulario.value)
       .subscribe((resp: any) => {
           this._userService.setTokenInStorage(resp);
-          Observable.forkJoin(
+          forkJoin(
             this._userService.obtenerUsuario(this.formulario.value)
               .map((res: any) => {
                 console.log(res);

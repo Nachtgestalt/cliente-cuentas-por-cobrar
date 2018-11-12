@@ -1,22 +1,17 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {MatDialog, MatPaginator, MatSnackBar, MatSort} from '@angular/material';
-import {Inventario} from '../../../interfaces/inventario.interface';
-import {CollectionViewer, DataSource} from '@angular/cdk/collections';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import {Observable} from 'rxjs/Observable';
-import {InventarioService} from '../../../services/inventario/inventario.service';
 import {ConfirmInventoryDialogComponent} from '../../../dialogs/confirm-inventory/confirm-inventory.dialog.component';
 import {HttpClient} from '@angular/common/http';
-import {Venta} from '../../../interfaces/venta.interface';
 import {VentaService} from '../../../services/venta/venta.service';
 import {EditPedidoDialogComponent} from '../../../dialogs/edit-pedido/edit-pedido.dialog.component';
 import {VentaResurtidoComponent} from '../../../dialogs/venta-resurtido/venta-resurtido.component';
 import {DeleteVentaComponent} from '../../../dialogs/delete-venta/delete-venta.component';
 import {DomSanitizer} from '@angular/platform-browser';
 import {ShowResurtidosDialogComponent} from '../../../dialogs/show-resurtidos/show-resurtidos.dialog.component';
-import {catchError, delay, finalize, map, tap} from 'rxjs/operators';
-import {of} from 'rxjs/internal/observable/of';
 import {VentaDataSource} from '../../../datasources/venta.datasource';
+
+import {fromEvent} from 'rxjs';
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 
 @Component({
   selector: 'app-modificar-venta',
@@ -61,9 +56,11 @@ export class ModificarVentaComponent implements OnInit {
   public loadData() {
     this.exampleDatabase = new VentaService(this.httpClient);
     this.dataSource = new VentaDataSource(this.exampleDatabase, this.paginator, this.sort);
-    Observable.fromEvent(this.filter.nativeElement, 'keyup')
-      .debounceTime(150)
-      .distinctUntilChanged()
+    fromEvent(this.filter.nativeElement, 'keyup')
+      .pipe(
+        debounceTime(150),
+        distinctUntilChanged()
+      )
       .subscribe(() => {
         if (!this.dataSource) {
           return;

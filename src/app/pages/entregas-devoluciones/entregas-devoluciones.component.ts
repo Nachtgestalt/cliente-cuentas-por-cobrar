@@ -7,9 +7,9 @@ import {Observable} from 'rxjs/Observable';
 import {DataSource} from '@angular/cdk/collections';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {ConfirmInventoryDialogComponent} from '../../dialogs/confirm-inventory/confirm-inventory.dialog.component';
-import {catchError, delay, finalize, map} from 'rxjs/operators';
+import {catchError, debounceTime, delay, distinctUntilChanged, finalize, map} from 'rxjs/operators';
 import {of} from 'rxjs/internal/observable/of';
-import {Venta} from '../../interfaces/venta.interface';
+import {fromEvent, merge} from 'rxjs';
 
 @Component({
   selector: 'app-entregas-devoluciones',
@@ -32,7 +32,8 @@ export class EntregasDevolucionesComponent implements OnInit {
 
   constructor(private httpClient: HttpClient,
               public dialog: MatDialog,
-              public snackBar: MatSnackBar) { }
+              public snackBar: MatSnackBar) {
+  }
 
   ngOnInit() {
     this.loadData();
@@ -41,9 +42,11 @@ export class EntregasDevolucionesComponent implements OnInit {
   public loadData() {
     this.exampleDatabase = new InventarioService(this.httpClient);
     this.dataSource = new InventarioDataSource(this.exampleDatabase, this.paginator, this.sort);
-    Observable.fromEvent(this.filter.nativeElement, 'keyup')
-      .debounceTime(150)
-      .distinctUntilChanged()
+    fromEvent(this.filter.nativeElement, 'keyup')
+      .pipe(
+        debounceTime(150),
+        distinctUntilChanged()
+      )
       .subscribe(() => {
         if (!this.dataSource) {
           return;
@@ -55,7 +58,7 @@ export class EntregasDevolucionesComponent implements OnInit {
   confirm(i: number, idHistorial: number, folio: string, titulo: string, cantidad: number) {
     this.index = i;
     this.id = idHistorial;
-    if (cantidad < 0 ) {
+    if (cantidad < 0) {
       this.entrega = false;
     } else {
       this.entrega = true;
@@ -128,7 +131,7 @@ export class InventarioDataSource extends DataSource<Inventario> {
 
     const inventarios = this.inventarioSubject.asObservable();
 
-    return Observable.merge(inventarios, ...displayDataChanges)
+    return merge(inventarios, ...displayDataChanges)
       .pipe(
         delay(0),
         map(() => {
@@ -148,6 +151,7 @@ export class InventarioDataSource extends DataSource<Inventario> {
         })
       );
   }
+
   disconnect() {
     this.loadingSubject.complete();
     this.inventarioSubject.complete();
@@ -176,11 +180,19 @@ export class InventarioDataSource extends DataSource<Inventario> {
       let propertyB: number | string = '';
 
       switch (this._sort.active) {
-        case 'folio': [propertyA, propertyB] = [a.folio, b.folio]; break;
+        case 'folio':
+          [propertyA, propertyB] = [a.folio, b.folio];
+          break;
         // case 'escuela': [propertyA, propertyB] = [`${a.escuela.clave}`, b.folio]; break;
-        case 'titulo': [propertyA, propertyB] = [a.titulo, b.titulo]; break;
-        case 'cantidad': [propertyA, propertyB] = [a.cantidad, b.cantidad]; break;
-        case 'fecha': [propertyA, propertyB] = [a.fechaSolicitud, b.fechaSolicitud]; break;
+        case 'titulo':
+          [propertyA, propertyB] = [a.titulo, b.titulo];
+          break;
+        case 'cantidad':
+          [propertyA, propertyB] = [a.cantidad, b.cantidad];
+          break;
+        case 'fecha':
+          [propertyA, propertyB] = [a.fechaSolicitud, b.fechaSolicitud];
+          break;
       }
 
       const valueA = isNaN(+propertyA) ? propertyA : +propertyA;

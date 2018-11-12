@@ -7,6 +7,7 @@ import {CollectionViewer} from '@angular/cdk/collections';
 import {Observable} from 'rxjs/Observable';
 import {catchError, delay, finalize, map} from 'rxjs/operators';
 import {of} from 'rxjs/internal/observable/of';
+import {merge} from 'rxjs';
 
 export class VentaDataSource implements DataSource<Venta> {
   private lessonsSubject = new BehaviorSubject<Venta[]>([]);
@@ -46,7 +47,7 @@ export class VentaDataSource implements DataSource<Venta> {
 
     const ventas = this.lessonsSubject.asObservable();
 
-    return Observable.merge(ventas, ...displayDataChanges)
+    return merge(ventas, ...displayDataChanges)
       .pipe(
         delay(0),
         map(() => {

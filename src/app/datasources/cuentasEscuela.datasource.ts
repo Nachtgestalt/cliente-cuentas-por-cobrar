@@ -3,8 +3,8 @@ import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {CuentasXcobrarService} from '../services/cuentas-xcobrar/cuentas-xcobrar.service';
 import {MatPaginator, MatSort} from '@angular/material';
 import {Observable} from 'rxjs/Observable';
-import {Venta} from '../interfaces/venta.interface';
 import {catchError, delay, finalize, map} from 'rxjs/operators';
+import {merge} from 'rxjs';
 import {of} from 'rxjs/internal/observable/of';
 
 export class CuentasEscuelaDataSource extends DataSource<any> {
@@ -50,7 +50,7 @@ export class CuentasEscuelaDataSource extends DataSource<any> {
     // this._exampleDatabase.getCuentasXVendedorEscuela(this.season.idtemporada, this._claveVendedor);
 
 
-    return Observable.merge(cuentasEscuela, ...displayDataChanges)
+    return merge(cuentasEscuela, ...displayDataChanges)
       .pipe(
         delay(0),
         map(() => {

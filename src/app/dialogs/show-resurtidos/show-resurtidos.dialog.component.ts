@@ -2,18 +2,17 @@ import {Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
 import {InventarioService} from '../../services/inventario/inventario.service';
 import {AddTemporadaComponent} from '../add-temporada/add-temporada.dialog.component';
 import {MAT_DIALOG_DATA, MatDialogRef, MatPaginator, MatSort} from '@angular/material';
-import {VentaService} from '../../services/venta/venta.service';
 import {DataSource} from '@angular/cdk/collections';
-import {Venta} from '../../interfaces/venta.interface';
 import {Observable} from 'rxjs/Observable';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {ShowResurtidoInterface} from '../../interfaces/showResurtido.interface';
-import {VendedorDataSource} from '../../pages/recursos-humanos/modificar-empleado/modificar-empleado.component';
-import {VendedorService} from '../../services/vendedor/vendedor.service';
 import {HttpClient} from '@angular/common/http';
 import {DomSanitizer} from '@angular/platform-browser';
 import * as moment from 'moment';
 import {HistorialVentaService} from '../../services/historial-venta/historial-venta.service';
+
+import {merge, fromEvent} from 'rxjs';
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 
 @Component({
   selector: 'app-show-resurtidos',
@@ -35,12 +34,13 @@ export class ShowResurtidosDialogComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('filter') filter: ElementRef;
 
-  constructor( private httpClient: HttpClient,
-               private _historialVentaService: HistorialVentaService,
-               public _inventarioService: InventarioService,
-               public dialogRef: MatDialogRef<AddTemporadaComponent>,
-               @Inject(MAT_DIALOG_DATA) public data: any,
-               private domSanitizer: DomSanitizer) { }
+  constructor(private httpClient: HttpClient,
+              private _historialVentaService: HistorialVentaService,
+              public _inventarioService: InventarioService,
+              public dialogRef: MatDialogRef<AddTemporadaComponent>,
+              @Inject(MAT_DIALOG_DATA) public data: any,
+              private domSanitizer: DomSanitizer) {
+  }
 
   ngOnInit() {
     this.loadData();
@@ -49,9 +49,11 @@ export class ShowResurtidosDialogComponent implements OnInit {
   public loadData() {
     this.exampleDatabase = new InventarioService(this.httpClient);
     this.dataSource = new ShowResurtidoInterfaceDataSource(this.exampleDatabase, this.paginator, this.sort, this.data.folio);
-    Observable.fromEvent(this.filter.nativeElement, 'keyup')
-      .debounceTime(150)
-      .distinctUntilChanged()
+    fromEvent(this.filter.nativeElement, 'keyup')
+      .pipe(
+        debounceTime(150),
+        distinctUntilChanged()
+      )
       .subscribe(() => {
         if (!this.dataSource) {
           return;
@@ -147,7 +149,7 @@ export class ShowResurtidoInterfaceDataSource extends DataSource<ShowResurtidoIn
 
     this._exampleDatabase.obtenerResurtidos(this.folio);
 
-    return Observable.merge(...displayDataChanges).map(() => {
+    return merge(...displayDataChanges).map(() => {
       // Filter data
       this.filteredData = this._exampleDatabase.dataResurtido.slice().filter((resurtido: ShowResurtidoInterface) => {
         const searchStr = (resurtido.numresurtido + moment(resurtido.fecha).format('DD MMM YYYY')).toLowerCase();
@@ -163,6 +165,7 @@ export class ShowResurtidoInterfaceDataSource extends DataSource<ShowResurtidoIn
       return this.renderedData;
     });
   }
+
   disconnect() {
   }
 
@@ -173,13 +176,17 @@ export class ShowResurtidoInterfaceDataSource extends DataSource<ShowResurtidoIn
     }
 
     return data.sort((a, b) => {
-      console.log('No se ontoy!')
+      console.log('No se ontoy!');
       let propertyA: number | string = '';
       let propertyB: number | string = '';
 
       switch (this._sort.active) {
-        case 'numresurtido': [propertyA, propertyB] = [a.numresurtido, b.numresurtido]; break;
-        case 'fecha': [propertyA, propertyB] = [a.fecha, b.fecha]; break;
+        case 'numresurtido':
+          [propertyA, propertyB] = [a.numresurtido, b.numresurtido];
+          break;
+        case 'fecha':
+          [propertyA, propertyB] = [a.fecha, b.fecha];
+          break;
       }
 
       const valueA = isNaN(+propertyA) ? propertyA : +propertyA;

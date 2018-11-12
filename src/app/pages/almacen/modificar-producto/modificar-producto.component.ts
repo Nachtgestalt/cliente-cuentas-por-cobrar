@@ -1,5 +1,5 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {MatDialog, MatPaginator, MatSnackBar, MatSort, MatTableDataSource} from '@angular/material';
+import {MatDialog, MatPaginator, MatSnackBar, MatSort} from '@angular/material';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {DataSource} from '@angular/cdk/collections';
 import {Observable} from 'rxjs/Observable';
@@ -7,6 +7,9 @@ import {Producto} from '../../../interfaces/producto.interface';
 import {ProductosService} from '../../../services/producto/productos.service';
 import {HttpClient} from '@angular/common/http';
 import {DeleteProductoDialogComponent} from '../../../dialogs/delete-producto/delete-producto.dialog.component';
+
+import {merge, fromEvent} from 'rxjs';
+import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-modificar',
@@ -27,7 +30,8 @@ export class ModificarProductoComponent implements OnInit {
 
   constructor(private httpClient: HttpClient,
               public dialog: MatDialog,
-              public snackBar: MatSnackBar) {}
+              public snackBar: MatSnackBar) {
+  }
 
   ngOnInit() {
     this.loadData();
@@ -52,9 +56,11 @@ export class ModificarProductoComponent implements OnInit {
   public loadData() {
     this.exampleDatabase = new ProductosService(this.httpClient);
     this.dataSource = new ProductoDataSource(this.exampleDatabase, this.paginator, this.sort);
-    Observable.fromEvent(this.filter.nativeElement, 'keyup')
-      .debounceTime(150)
-      .distinctUntilChanged()
+    fromEvent(this.filter.nativeElement, 'keyup')
+      .pipe(
+        debounceTime(150),
+        distinctUntilChanged()
+      )
       .subscribe(() => {
         if (!this.dataSource) {
           return;
@@ -123,22 +129,26 @@ export class ProductoDataSource extends DataSource<Producto> {
 
     this._exampleDatabase.obtenerProductos();
 
-    return Observable.merge(...displayDataChanges).map(() => {
-      // Filter data
-      this.filteredData = this._exampleDatabase.data.slice().filter((producto: Producto) => {
-        const searchStr = (producto.clave_producto + producto.titulo + producto.autor).toLowerCase();
-        return searchStr.indexOf(this.filter.toLowerCase()) !== -1;
-      });
+    return merge(...displayDataChanges)
+      .pipe(
+        map(() => {
+          // Filter data
+          this.filteredData = this._exampleDatabase.data.slice().filter((producto: Producto) => {
+            const searchStr = (producto.clave_producto + producto.titulo + producto.autor).toLowerCase();
+            return searchStr.indexOf(this.filter.toLowerCase()) !== -1;
+          });
 
-      // Sort filtered data
-      const sortedData = this.sortData(this.filteredData.slice());
+          // Sort filtered data
+          const sortedData = this.sortData(this.filteredData.slice());
 
-      // Grab the page's slice of the filtered sorted data.
-      const startIndex = this._paginator.pageIndex * this._paginator.pageSize;
-      this.renderedData = sortedData.splice(startIndex, this._paginator.pageSize);
-      return this.renderedData;
-    });
+          // Grab the page's slice of the filtered sorted data.
+          const startIndex = this._paginator.pageIndex * this._paginator.pageSize;
+          this.renderedData = sortedData.splice(startIndex, this._paginator.pageSize);
+          return this.renderedData;
+        })
+      );
   }
+
   disconnect() {
   }
 
@@ -153,9 +163,15 @@ export class ProductoDataSource extends DataSource<Producto> {
       let propertyB: number | string = '';
 
       switch (this._sort.active) {
-        case 'clave_producto': [propertyA, propertyB] = [a.clave_producto, b.clave_producto]; break;
-        case 'titulo': [propertyA, propertyB] = [a.titulo, b.titulo]; break;
-        case 'autor': [propertyA, propertyB] = [a.autor, b.autor]; break;
+        case 'clave_producto':
+          [propertyA, propertyB] = [a.clave_producto, b.clave_producto];
+          break;
+        case 'titulo':
+          [propertyA, propertyB] = [a.titulo, b.titulo];
+          break;
+        case 'autor':
+          [propertyA, propertyB] = [a.autor, b.autor];
+          break;
       }
 
       const valueA = isNaN(+propertyA) ? propertyA : +propertyA;

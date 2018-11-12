@@ -5,6 +5,7 @@ import {MatPaginator, MatSort} from '@angular/material';
 import {Observable} from 'rxjs/Observable';
 import {catchError, delay, finalize, map} from 'rxjs/operators';
 import {of} from 'rxjs/internal/observable/of';
+import {merge} from 'rxjs';
 
 export class ComisionesDirectorDataSource extends DataSource<any> {
   private comisionesDirectorSubject = new BehaviorSubject<any[]>([]);
@@ -47,7 +48,7 @@ export class ComisionesDirectorDataSource extends DataSource<any> {
 
     // this._exampleDatabase.getComisionesXDirector(this.season.idtemporada);
 
-    return Observable.merge(comisionesDirector, ...displayDataChanges)
+    return merge(comisionesDirector, ...displayDataChanges)
       .pipe(
         delay(0),
         map(() => {

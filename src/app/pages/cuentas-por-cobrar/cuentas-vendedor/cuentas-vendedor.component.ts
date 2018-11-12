@@ -1,11 +1,13 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {CuentasXcobrarService} from '../../../services/cuentas-xcobrar/cuentas-xcobrar.service';
 import {HttpClient} from '@angular/common/http';
 import {MatPaginator, MatSort} from '@angular/material';
-import {Observable} from 'rxjs/Observable';
-import {DataSource} from '@angular/cdk/collections';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {CuentasVendedorDataSource} from '../../../datasources/cuentaVendedor.datasource';
+import {CuentasXcobrarService} from '../../../services/cuentas-xcobrar/cuentas-xcobrar.service';
+import {fromEvent} from 'rxjs';
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
+// Convert to pdf
+import * as jspdf from 'jspdf';
+import html2canvas from 'html2canvas';
 
 @Component({
   selector: 'app-cuentas-vendedor',
@@ -13,6 +15,7 @@ import {CuentasVendedorDataSource} from '../../../datasources/cuentaVendedor.dat
   styleUrls: ['./cuentas-vendedor.component.css']
 })
 export class CuentasVendedorComponent implements OnInit {
+  @ViewChild('table') tableToConvert: ElementRef;
   season = JSON.parse(localStorage.getItem('season'));
 
   displayedColumns = ['clave', 'nombre', 'deuda', 'pagado', 'restante'];
@@ -23,7 +26,8 @@ export class CuentasVendedorComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('filter') filter: ElementRef;
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient) {
+  }
 
   ngOnInit() {
     this.loadData();
@@ -32,9 +36,11 @@ export class CuentasVendedorComponent implements OnInit {
   public loadData() {
     this.exampleDatabase = new CuentasXcobrarService(this.httpClient);
     this.dataSource = new CuentasVendedorDataSource(this.exampleDatabase, this.paginator, this.sort);
-    Observable.fromEvent(this.filter.nativeElement, 'keyup')
-      .debounceTime(150)
-      .distinctUntilChanged()
+    fromEvent(this.filter.nativeElement, 'keyup')
+      .pipe(
+        debounceTime(150),
+        distinctUntilChanged()
+      )
       .subscribe(() => {
         if (!this.dataSource) {
           return;
@@ -53,6 +59,23 @@ export class CuentasVendedorComponent implements OnInit {
 
   getPagadoTotal() {
     return this.dataSource.renderedData.map(t => t.pagado).reduce((acc, value) => acc + value, 0);
+  }
+
+  convertToPdf() {
+    const data = document.getElementById('tableToConvert');
+    html2canvas(data).then(canvas => {
+      // Few necessary setting options
+      const imgWidth = 295;
+      const pageHeight = 208;
+      const imgHeight = canvas.height * imgWidth / canvas.width;
+      const heightLeft = imgHeight;
+
+      const contentDataURL = canvas.toDataURL('image/png');
+      const pdf = new jspdf('l', 'mm', 'a4'); // A4 size page of PDF
+      const position = 10;
+      pdf.addImage(contentDataURL, 'PNG', 10, position, imgWidth, imgHeight);
+      pdf.save('CuentasXcobrar_Vendedores.pdf'); // Generated PDF
+    });
   }
 }
 
