@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpErrorResponse, HttpParams} from '@angular/common/http';
-import {Producto} from '../../interfaces/producto.interface';
+import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {URL_SERVICIOS} from '../../config/config';
 import {Folio} from '../../interfaces/folio.interface';
@@ -18,7 +17,8 @@ export class FolioService {
   }
 
   obtenerFolios() {
-    return this.http.get<Folio[]>(this.foliosURL, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}})
+    const headers = new HttpHeaders().append('Content-Type', 'application/json' );
+    return this.http.get<Folio[]>(this.foliosURL, {headers})
       .subscribe(data => {
         console.log(data);
           this.dataChange.next(data);
@@ -34,7 +34,7 @@ export class FolioService {
     return this.http.post(this.foliosURL, body, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}});
   }
 
-  actualizarFolio(folio){
+  actualizarFolio(folio) {
     const body = JSON.stringify(folio);
     console.log(folio);
     return this.http.put(this.foliosURL, body, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}});

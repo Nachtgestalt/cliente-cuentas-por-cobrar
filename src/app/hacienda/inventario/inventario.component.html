@@ -1,0 +1,68 @@
+<mat-card class="example-card">
+  <mat-form-field>
+    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+  </mat-form-field>
+
+
+  <div class="table-container">
+    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+      <!-- Folio Column -->
+      <ng-container matColumnDef="folio">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Clave producto</th>
+        <td mat-cell *matCellDef="let row"> {{row.claveProducto}} </td>
+      </ng-container>
+
+      <!-- Titulo Column -->
+      <ng-container matColumnDef="titulo">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre</th>
+        <td mat-cell *matCellDef="let row"> {{row.titulo}} </td>
+      </ng-container>
+
+      <!-- Cantidad Column -->
+      <ng-container matColumnDef="cantidad">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Cantidad</th>
+        <td mat-cell *matCellDef="let row"> {{row.cantidad}} </td>
+      </ng-container>
+
+      <!-- Opciones Column -->
+      <ng-container matColumnDef="edit">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          <button mat-flat-button color="primary" appDebounceClick (debounceClick)="reporteInventario()"
+                  *ngIf="user.role !== 'HACIENDA_ROLE'">
+            <mat-icon>printer</mat-icon>
+            Reporte de inventario
+          </button>
+        </th>
+        <td mat-cell *matCellDef="let row; let i = index">
+          <button (click)="inventario(i, row.claveProducto, true)" mat-mini-fab color="primary"
+                  matTooltip="Entrada"
+                  aria-label="Button that displays a tooltip when focused or hovered over">
+            <mat-icon>add</mat-icon>
+            {{row.index}}
+          </button>
+          <button (click)="inventario(i, row.claveProducto, false)" mat-mini-fab color="primary"
+                  matTooltip="Salida"
+                  aria-label="Button that displays a tooltip when focused or hovered over">
+            <mat-icon>remove</mat-icon>
+            {{row.index}}
+          </button>
+          <button (click)="historial(row.claveProducto)" mat-mini-fab color="accent"
+                  matTooltip="Historial"
+                  aria-label="Button that displays a tooltip when focused or hovered over">
+            <mat-icon>history</mat-icon>
+            {{row.index}}
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+      </tr>
+    </table>
+  </div>
+  <div class="no-results" [style.display]="dataSource.data.length == 0 ? '' : 'none'">
+    Sin resultados
+  </div>
+  <mat-paginator [pageSizeOptions]="[10, 25, 100]"></mat-paginator>
+</mat-card>

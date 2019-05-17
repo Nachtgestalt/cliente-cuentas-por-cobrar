@@ -28,7 +28,6 @@ import { SidebarComponent } from './sidebar/sidebar.component';
   imports: [
     MaterialModule,
     RouterModule,
-    BrowserModule,
     CommonModule
   ]
 }) export class SharedModule {}

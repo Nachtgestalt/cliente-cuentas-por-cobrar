@@ -41,6 +41,7 @@ import {HistoryStockComponent} from './dialogs/history-stock/history-stock.compo
 import {HistoryLiderComponent} from './dialogs/history-comisiones/history-lider/history-lider.component';
 import {HistoryDirectorComponent} from './dialogs/history-comisiones/history-director/history-director.component';
 import {HistoryVendedorComponent} from './dialogs/history-comisiones/history-vendedor/history-vendedor.component';
+import {HaciendaModule} from './hacienda/hacienda.module';
 
 
 @NgModule({
@@ -66,13 +67,12 @@ import {HistoryVendedorComponent} from './dialogs/history-comisiones/history-ven
     HistoryStockComponent
   ],
   imports: [
-    BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
     MaterialModule,
     PagesModule,
-    LayoutModule,
+    HaciendaModule,
     ServiceModule,
     APP_ROUTING
   ],

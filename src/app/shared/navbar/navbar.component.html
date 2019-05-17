@@ -11,6 +11,12 @@
       <i class="fa fa-search" aria-hidden="true"></i>
     </a>
   </div>
+  <button mat-button [matMenuTriggerFor]="temporada">
+    Temporada
+    <mat-icon>arrow_drop_down</mat-icon></button>
+  <mat-menu #temporada="matMenu">
+    <button mat-menu-item (click)="cambiarTempoada(temporada)" *ngFor="let temporada of temporadas">{{temporada.nombre}}</button>
+  </mat-menu>
   <button mat-icon-button [matMenuTriggerFor]="menu"  class="menu-button">
     <mat-icon>more_vert</mat-icon>
   </button>

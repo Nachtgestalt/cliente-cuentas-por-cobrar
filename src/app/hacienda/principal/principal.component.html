@@ -1,0 +1,4 @@
+<div class="example-container" [class.example-is-mobile]="mobileQuery.matches">
+  <app-navbar (openSideBar)="isOpen = $event"></app-navbar>
+  <app-sidebar [opened]="isOpen"></app-sidebar>
+</div>

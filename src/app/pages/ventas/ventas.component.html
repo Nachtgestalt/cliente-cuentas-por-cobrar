@@ -1,4 +1,4 @@
-<div class="fadeIn fast">
+<div class="fadeIn fast" *ngIf="isVisible" >
   <nav mat-tab-nav-bar>
     <a mat-tab-link
        *ngFor="let routeLink of routeLinks"

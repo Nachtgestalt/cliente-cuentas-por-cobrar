@@ -52,8 +52,8 @@ export class VentaService {
         (res: any) => {
           const venta = {
             zona: res.escuela.zona.idzona,
-            vendedor_clave: res.escuela.zona.vendedor.clave,
-            vendedor: `${res.escuela.zona.vendedor.nombre} ${res.escuela.zona.vendedor.apellidos}`,
+            vendedor_clave: res.bloqueFolio.vendedor.clave,
+            vendedor: `${res.bloqueFolio.vendedor.nombre} ${res.bloqueFolio.vendedor.apellidos}`,
             folio: res.folio,
             fecha: res.fecha,
             escuela: res.escuela,

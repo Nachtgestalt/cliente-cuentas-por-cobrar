@@ -28,9 +28,7 @@ import {
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import {
-  MatDialogModule,
-} from '@angular/material/dialog';
+import {MatDialogModule} from '@angular/material/dialog';
 import {MatMomentDateModule} from '@angular/material-moment-adapter';
 
 @NgModule({
@@ -54,7 +52,6 @@ import {MatMomentDateModule} from '@angular/material-moment-adapter';
     MatSortModule,
     MatAutocompleteModule,
     MatSnackBarModule,
-    BrowserAnimationsModule,
     MatDatepickerModule,
     MatNativeDateModule,
     MatMomentDateModule,
@@ -82,7 +79,6 @@ import {MatMomentDateModule} from '@angular/material-moment-adapter';
     MatSortModule,
     MatAutocompleteModule,
     MatSnackBarModule,
-    BrowserAnimationsModule,
     MatDatepickerModule,
     MatNativeDateModule,
     MatMomentDateModule,

@@ -121,7 +121,7 @@ import {DebounceClickDirective} from '../directives/debounce-click.directive';
     HistoryVendedorComponent,
     ReporteVentaComponent,
     ReporteCuentasPorCobrarComponent,
-    ReporteGananciasComponent
+    ReporteGananciasComponent,
     // Dialogs
   ],
   exports: [

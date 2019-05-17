@@ -12,7 +12,7 @@
     </mat-sidenav>
     <mat-sidenav-content class="pt-3 px-5">
       <app-breadcrumbs></app-breadcrumbs>
-      <router-outlet></router-outlet>
+      <router-outlet (activate)="setRoutedComponent($event)"></router-outlet>
     </mat-sidenav-content>
   </mat-sidenav-container>
 </div>

@@ -6,6 +6,7 @@ import {UserService} from '../services/service.index';
 import {Title} from '@angular/platform-browser';
 import {TemporadaService} from '../services/temporada/temporada.service';
 import {forkJoin} from 'rxjs';
+import {flatMap, map, mergeMap, switchMap, tap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
@@ -44,33 +45,69 @@ export class LoginComponent implements OnInit {
 
   login() {
     this._userService.autenticar(this.formulario.value)
-      .subscribe((resp: any) => {
-          this._userService.setTokenInStorage(resp);
+      .pipe(
+        map(token => {
+          console.log(token);
+          this._userService.setTokenInStorage(token);
+          return token;
+        }),
+        mergeMap(tokenRes =>
           forkJoin(
             this._userService.obtenerUsuario(this.formulario.value)
-              .map((res: any) => {
-                console.log(res);
-                return res;
-              }),
+              .pipe(
+                map((res: any) => {
+                  console.log(res);
+                  return res;
+                })
+              ),
             this._temporadaService.getCurrentSeason()
-              .map((res: any) => {
-                return res;
-              })
-          ).subscribe(
-            res => {
-              console.log(res);
-              this._userService.setInStorage(res[0]);
-              this._userService.setSeasonInStorage(res[1]);
-            },
-            error => console.log(error),
-            () => {
-              this.router.navigate(['/home']);
-            }
-          );
+              .pipe(
+                map((res: any) => {
+                  return res;
+                })
+              )
+          )
+        ))
+      .subscribe((res: any) => {
+          console.log(res);
+          this._userService.setInStorage(res[0]);
+          this._userService.setSeasonInStorage(res[1]);
+          if (res[0].role === 'HACIENDA_ROLE') {
+            this.router.navigate(['/administracion', 'dashboard']);
+          } else {
+            this.router.navigate(['/home']);
+          }
         },
         error => {
           swal('Error al iniciar sesión', 'Usuario y/o contraseña invalidos', 'error');
-          console.log(error);
-        });
+        }
+      );
+    // this._userService.setTokenInStorage(resp);
+    // forkJoin(
+    //   this._userService.obtenerUsuario(this.formulario.value)
+    //     .map((res: any) => {
+    //       console.log(res);
+    //       return res;
+    //     }),
+    //   this._temporadaService.getCurrentSeason()
+    //     .map((res: any) => {
+    //       return res;
+    //     })
+    // ).subscribe(
+    //   res => {
+    //     console.log(res);
+    //     this._userService.setInStorage(res[0]);
+    //     this._userService.setSeasonInStorage(res[1]);
+    //   },
+    //   error => console.log(error),
+    //   () => {
+    //     this.router.navigate(['/home']);
+    //   }
+    // );
+    // },
+    // error => {
+    //   swal('Error al iniciar sesión', 'Usuario y/o contraseña invalidos', 'error');
+    //   console.log(error);
+    // });
   }
 }

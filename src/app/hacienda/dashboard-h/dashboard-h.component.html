@@ -1,0 +1,16 @@
+<div class="main-container animated fadeIn fast mt-2">
+  <div class="alert alert-info">
+    <strong>Bienvenido {{userName}} </strong>
+  </div>
+
+  <div class="row text-center pad-top">
+    <div class="col-md-3" *ngFor="let menu of _dashboardService.menu">
+      <div class="div-square">
+        <a [routerLink]="[menu.url]"><i [class]="[menu.icono]"></i>
+          <h4 class="mt-2">{{menu.titulo}}</h4>
+        </a>
+      </div>
+    </div>
+  </div>
+
+</div>

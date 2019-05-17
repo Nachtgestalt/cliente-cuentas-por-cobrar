@@ -5,11 +5,9 @@ import {Observable} from 'rxjs/Observable';
 @Injectable()
 export class TokenInterceptorService {
 
-  private token: string = '';
+  private token = '';
 
-  constructor() {
-    this.token = localStorage.getItem('token')
-  }
+  constructor() {}
 
   public intercept( req: HttpRequest<any>,
                     next: HttpHandler ): Observable<HttpEvent<any>> {
@@ -19,7 +17,8 @@ export class TokenInterceptorService {
   }
 
   private setAuthHeader(req: HttpRequest<any>): HttpRequest<any> {
-    const authorization = `${this.token}`;
+    const token = localStorage.getItem('token');
+    const authorization = `${token}`;
     const headers = req.headers.set('Authorization', authorization);
     const authorizationReq = req.clone({ headers });
     return authorizationReq;

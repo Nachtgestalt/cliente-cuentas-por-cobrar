@@ -53,7 +53,6 @@ import {ReportesService} from './reportes/reportes.service';
     CuentasXcobrarService,
     ComisionesService,
     ReportesService,
-    TokenInterceptorService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptorService,

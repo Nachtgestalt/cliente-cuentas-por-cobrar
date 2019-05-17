@@ -25,7 +25,7 @@ import {Maestro} from '../../interfaces/maestro.interface';
     {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS}
   ],
 })
-export class EditPedidoDialogComponent implements OnInit, OnDestroy{
+export class EditPedidoDialogComponent implements OnInit, OnDestroy {
   forma: FormGroup;
   filteredOptions: Observable<Escuela[]>;
   escuelas: Escuela[];
@@ -76,7 +76,7 @@ export class EditPedidoDialogComponent implements OnInit, OnDestroy{
   }
 
   ngOnDestroy() {
-    console.log('Estoy en el OnDestroy!')
+    console.log('Estoy en el OnDestroy!');
     this.isAlive = false;
   }
 
@@ -112,7 +112,7 @@ export class EditPedidoDialogComponent implements OnInit, OnDestroy{
     for (let i = 0; i < data.lideres.length; i++) {
       this.addNewLider();
     }
-
+    console.log(data);
     this.forma.setValue(data);
 
   }
@@ -140,9 +140,9 @@ export class EditPedidoDialogComponent implements OnInit, OnDestroy{
   }
 
   confirmAdd() {
-    let maestro = this.forma.get('maestro').value;
-    let escuela = this.forma.get('escuela').value;
-    let lideres: any[] = (this.forma.get('lideres').value as Array<any>).map(
+    const maestro = this.forma.get('maestro').value;
+    const escuela = this.forma.get('escuela').value;
+    const lideres: any[] = (this.forma.get('lideres').value as Array<any>).map(
       (x) => {
         return {
           lider: x.lider.idprofesor,
@@ -158,7 +158,7 @@ export class EditPedidoDialogComponent implements OnInit, OnDestroy{
     //     };
     //   }
     // );
-    let venta: any = this.forma.value;
+    const venta: any = this.forma.value;
     delete venta.maestro;
     delete venta.escuela;
     venta.lideres = lideres;
@@ -181,7 +181,7 @@ export class EditPedidoDialogComponent implements OnInit, OnDestroy{
   }
 
   compareFn(x: any, y: any): boolean {
-    console.log('x: ', x, 'y: ', y)
+    console.log('x: ', x, 'y: ', y);
     return x && y ? x.idprofesor === y.idprofesor : x === y;
   }
 
