@@ -61,7 +61,7 @@ export class UserService {
     this.token = null;
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-    localStorage.removeItem('season')
+    localStorage.removeItem('season');
     this.router.navigate(['/login']);
   }
 

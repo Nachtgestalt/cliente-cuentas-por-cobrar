@@ -73,10 +73,6 @@ export class InventarioComponent implements OnInit {
       console.log(result);
       if (result) {
         this.loadData();
-        // const foundIndex = this.exampleDatabase.dataChange.value.findIndex(x => x.idHistorial === this.id);
-        // // for delete we use splice in order to remove single object from DataService
-        // this.exampleDatabase.dataChange.value.splice(foundIndex, 1);
-        // this.refreshTable();
       }
     });
   }

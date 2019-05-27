@@ -11,13 +11,16 @@ import {InventarioComponent} from './inventario/inventario.component';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
 import {TokenInterceptorService} from '../services/interceptors/token-interceptor.service';
 import {CatchInterceptorService} from '../services/interceptors/catch-interceptor.service';
+import {AgregarStockComponent} from './inventario/agregar-stock/agregar-stock.component';
+import {UppercaseDirective} from '../directives/changeUppercase.directive';
+import {DirectivesModule} from '../directives/directives.module';
 
 const routes: Routes = [
   {
     path: '',
     component: PrincipalComponent,
     children: [
-      {path: '', redirectTo: 'inicio',  pathMatch: 'full'},
+      {path: '', redirectTo: 'inicio', pathMatch: 'full'},
       {path: 'inicio', component: DashboardHComponent},
       {path: 'inventario', component: InventarioComponent, data: {titulo: 'Inventario'}},
       // {path: 'lineup', loadChildren: '../lineup/lineup.module#LineupPageModule'},
@@ -34,10 +37,19 @@ const routes: Routes = [
     MaterialModule,
     RouterModule,
     FormsModule,
+    DirectivesModule,
     ReactiveFormsModule,
     RouterModule.forChild(routes),
   ],
-  declarations: [PrincipalComponent, DashboardHComponent, InventarioComponent],
+  entryComponents: [
+    AgregarStockComponent
+  ],
+  declarations: [
+    PrincipalComponent,
+    DashboardHComponent,
+    InventarioComponent,
+    AgregarStockComponent,
+  ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,

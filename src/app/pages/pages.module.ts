@@ -71,6 +71,7 @@ import { ReporteVentaComponent } from './ventas/reporte-venta/reporte-venta.comp
 import { ReporteCuentasPorCobrarComponent } from './cuentas-por-cobrar/reporte-cuentas-por-cobrar/reporte-cuentas-por-cobrar.component';
 import { ReporteGananciasComponent } from './cuentas-por-cobrar/reporte-ganancias/reporte-ganancias.component';
 import {DebounceClickDirective} from '../directives/debounce-click.directive';
+import {DirectivesModule} from '../directives/directives.module';
 
 
 
@@ -91,10 +92,6 @@ import {DebounceClickDirective} from '../directives/debounce-click.directive';
     CuentasVendedorComponent,
     AsignarFoliosEmpleadoComponent,
     UsuariosComponent,
-    // Directivas
-    UppercaseDirective,
-    OnlyNumbersDirective,
-    DebounceClickDirective,
     MaestrosComponent,
     AgregarMaestroComponent,
     ModificarMaestroComponent,
@@ -140,10 +137,7 @@ import {DebounceClickDirective} from '../directives/debounce-click.directive';
     AsignarFoliosEmpleadoComponent,
     UsuariosComponent,
     AgregarMaestroComponent,
-    ModificarMaestroComponent,
-    UppercaseDirective,
-    OnlyNumbersDirective,
-    DebounceClickDirective
+    ModificarMaestroComponent
   ],
   imports: [
     SharedModule,
@@ -152,6 +146,7 @@ import {DebounceClickDirective} from '../directives/debounce-click.directive';
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
+    DirectivesModule,
     PAGES_ROUTES
   ],
   entryComponents: [

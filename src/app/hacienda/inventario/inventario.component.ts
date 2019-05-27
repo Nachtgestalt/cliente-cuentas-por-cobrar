@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
-import {Inventario} from '../../interfaces/inventario.interface';
+import {MatDialog, MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
 import {StockHService} from '../services/stock-h.service';
+import {AgregarStockComponent} from './agregar-stock/agregar-stock.component';
 
 @Component({
   selector: 'app-inventario',
@@ -18,10 +18,16 @@ export class InventarioComponent implements OnInit {
   user = JSON.parse(localStorage.getItem('user'));
   isLoadingResults = false;
 
-  constructor(private _stockHService: StockHService) {
+  constructor(private _stockHService: StockHService,
+              public dialog: MatDialog) {}
+
+  ngOnInit() {
+    this.loadData();
+  }
+
+  loadData() {
     this._stockHService.listStock().subscribe(
       (res: any) => {
-        // console.log(res);
         this.dataSource = new MatTableDataSource(res);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
@@ -33,7 +39,20 @@ export class InventarioComponent implements OnInit {
     );
   }
 
-  ngOnInit() {
+  inventario(i: number, claveProducto: number, tipoEntrada: boolean) {
+    const dialogRef = this.dialog.open(AgregarStockComponent, {
+      data: {
+        claveProducto: claveProducto,
+        tipoEntrada: tipoEntrada
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+      if (result) {
+        this.loadData();
+      }
+    });
   }
 
   applyFilter(filterValue: string) {
