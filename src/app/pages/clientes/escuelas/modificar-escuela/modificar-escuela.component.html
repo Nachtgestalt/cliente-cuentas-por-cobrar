@@ -8,49 +8,56 @@
   <mat-table #table [dataSource]="dataSource" matSort>
 
     <!-- Clave Column -->
-    <ng-container matColumnDef="idprofesor">
+    <ng-container matColumnDef="clave">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Clave </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.idprofesor}} </mat-cell>
+      <mat-cell *matCellDef="let row"> {{row.clave}} </mat-cell>
     </ng-container>
+
+    <ng-container matColumnDef="zona">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Zona </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.zona === null ?  'Sin zona asignada' : row.zona.idzona}} </mat-cell>
+    </ng-container>
+
 
     <!-- Nombre Column -->
     <ng-container matColumnDef="nombre">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.nombre + ' ' + row.apellidos}} </mat-cell>
+      <mat-cell *matCellDef="let row"> {{row.nombre}} </mat-cell>
+    </ng-container>
+
+    <!-- Apellidos Column -->
+    <ng-container matColumnDef="direccion">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Dirección </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.direccion}} </mat-cell>
+    </ng-container>
+
+    <!-- Telefono Column -->
+    <ng-container matColumnDef="colonia">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Colonia </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.colonia}} </mat-cell>
     </ng-container>
 
     <!-- Telefono Column -->
     <ng-container matColumnDef="telefono">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Telefono </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{ row.telefono }} </mat-cell>
+      <mat-cell *matCellDef="let row"> {{row.telefono}} </mat-cell>
     </ng-container>
 
-    <!--Escuela Colum-->
-    <ng-container matColumnDef="escuela">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Escuela </mat-header-cell>
-      <mat-cell *matCellDef="let row">
-        <ul *ngFor="let escuela of row.escuelas" style="padding-left: 15px;">
-          <li>{{escuela?.nombre}}</li>
-        </ul>
-        <!--{{ row.escuelas[0].nombre}} -->
-      </mat-cell>
-    </ng-container>
-
-    <!--Escuela Colum-->
-    <ng-container matColumnDef="municipio">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Municipio </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.escuelas[0]?.municipio}} </mat-cell>
+    <!-- Telefono Column -->
+    <ng-container matColumnDef="director">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Director </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.director.nombre + ' ' + row.director.apellidos}} </mat-cell>
     </ng-container>
 
     <!-- Opciones Column -->
     <ng-container matColumnDef="edit">
       <mat-header-cell *matHeaderCellDef> Opciones </mat-header-cell>
       <mat-cell *matCellDef="let row; let i=index;">
-        <button (click)="deleteItem(i, row.idprofesor, row.nombre + ' ' + row.apellidos)" mat-icon-button>
+        <button (click)="deleteItem(i, row.clave, row.nombre, row.director.nombre + ' ' + row.director.apellidos)" mat-icon-button>
           <mat-icon>delete_forever</mat-icon>
           {{row.index}}
         </button>
-        <button [routerLink]="['/clientes/maestros/maestro', row.idprofesor]"
+        <button [routerLink]="['../escuela', row.clave]"
                 mat-icon-button class="ml-4">
           <mat-icon>mode_edit</mat-icon>
         </button>

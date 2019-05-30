@@ -1,15 +1,16 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {MaestroService} from '../../../services/maestro/maestro.service';
+import {MaestroService} from '../../../../services/maestro/maestro.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import {EscuelaService} from '../../../services/escuela/escuela.service';
-import {Escuela} from '../../../interfaces/escuela.interface';
-import {Maestro} from '../../../interfaces/maestro.interface';
+import {EscuelaService} from '../../../../services/escuela/escuela.service';
+import {Escuela} from '../../../../interfaces/escuela.interface';
+import {Maestro} from '../../../../interfaces/maestro.interface';
 import {Observable} from 'rxjs/Observable';
 import {startWith} from 'rxjs/operators/startWith';
 import {map} from 'rxjs/operators/map';
 import * as _swal from 'sweetalert';
-import { SweetAlert } from 'sweetalert/typings/core';
+import {SweetAlert} from 'sweetalert/typings/core';
+
 const swal: SweetAlert = _swal as any;
 
 @Component({
@@ -54,7 +55,7 @@ export class AgregarMaestroComponent implements OnInit, OnDestroy {
         this.clave = parametros['clave'];
         if (this.clave !== 'nuevo') {
           this.maestroActualizar = false;
-          this.idProfesor = parseInt(this.clave);
+          this.idProfesor = +this.clave;
           this._maestroService.obtenerMaestro(this.clave)
             .subscribe((maestro: Maestro) => {
               for (let i = 0; i < maestro.escuelas.length; i++) {

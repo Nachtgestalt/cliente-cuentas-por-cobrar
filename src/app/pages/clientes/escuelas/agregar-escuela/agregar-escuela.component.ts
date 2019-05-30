@@ -1,12 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
-import {Escuela} from '../../../interfaces/escuela.interface';
-import {Director} from '../../../interfaces/director.interface';
+import {Escuela} from '../../../../interfaces/escuela.interface';
 import {ActivatedRoute, Router} from '@angular/router';
-import {EscuelaService} from '../../../services/escuela/escuela.service';
-import {ZonaService} from '../../../services/zona/zona.service';
-import {Vendedor} from '../../../interfaces/vendedor.interface';
-import {Zona} from '../../../interfaces/zona.interface';
+import {EscuelaService} from '../../../../services/escuela/escuela.service';
+import {ZonaService} from '../../../../services/zona/zona.service';
+import {Zona} from '../../../../interfaces/zona.interface';
 
 
 @Component({

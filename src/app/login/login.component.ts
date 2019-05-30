@@ -1,12 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {Router, ActivatedRoute} from '@angular/router';
+import {Router} from '@angular/router';
 import {User} from '../interfaces/user.interfaces';
 import {UserService} from '../services/service.index';
 import {Title} from '@angular/platform-browser';
 import {TemporadaService} from '../services/temporada/temporada.service';
 import {forkJoin} from 'rxjs';
-import {flatMap, map, mergeMap, switchMap, tap} from 'rxjs/operators';
+import {map, mergeMap} from 'rxjs/operators';
+import swal from 'sweetalert';
 
 @Component({
   selector: 'app-login',
@@ -73,41 +74,14 @@ export class LoginComponent implements OnInit {
           this._userService.setInStorage(res[0]);
           this._userService.setSeasonInStorage(res[1]);
           if (res[0].role === 'HACIENDA_ROLE') {
-            this.router.navigate(['/administracion', 'dashboard']);
+            this.router.navigate(['/administracion']);
           } else {
-            this.router.navigate(['/home']);
+            this.router.navigate(['/produccion']);
           }
         },
         error => {
           swal('Error al iniciar sesión', 'Usuario y/o contraseña invalidos', 'error');
         }
       );
-    // this._userService.setTokenInStorage(resp);
-    // forkJoin(
-    //   this._userService.obtenerUsuario(this.formulario.value)
-    //     .map((res: any) => {
-    //       console.log(res);
-    //       return res;
-    //     }),
-    //   this._temporadaService.getCurrentSeason()
-    //     .map((res: any) => {
-    //       return res;
-    //     })
-    // ).subscribe(
-    //   res => {
-    //     console.log(res);
-    //     this._userService.setInStorage(res[0]);
-    //     this._userService.setSeasonInStorage(res[1]);
-    //   },
-    //   error => console.log(error),
-    //   () => {
-    //     this.router.navigate(['/home']);
-    //   }
-    // );
-    // },
-    // error => {
-    //   swal('Error al iniciar sesión', 'Usuario y/o contraseña invalidos', 'error');
-    //   console.log(error);
-    // });
   }
 }

@@ -6,13 +6,12 @@ import {Observable} from 'rxjs/Observable';
 import {Inventario} from '../../interfaces/inventario.interface';
 import {InventarioService} from '../../services/inventario/inventario.service';
 import {HttpClient} from '@angular/common/http';
-import {ConfirmInventoryDialogComponent} from '../../dialogs/confirm-inventory/confirm-inventory.dialog.component';
 import {InventoryDialogComponent} from '../../dialogs/inventory/inventory.dialog.component';
 import {HistoryStockComponent} from '../../dialogs/history-stock/history-stock.component';
 import {ReportesService} from '../../services/reportes/reportes.service';
 import {DomSanitizer} from '@angular/platform-browser';
-import {map} from 'rxjs/operators';
-import { merge, fromEvent  } from 'rxjs';
+import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
+import {fromEvent, merge} from 'rxjs';
 
 @Component({
   selector: 'app-inventario',
@@ -50,15 +49,15 @@ export class InventarioComponent implements OnInit {
   public loadData() {
     this.exampleDatabase = new InventarioService(this.httpClient);
     this.dataSource = new InventarioDataSource(this.exampleDatabase, this.paginator, this.sort);
-    fromEvent(this.filter.nativeElement, 'keyup')
-      .debounceTime(150)
-      .distinctUntilChanged()
-      .subscribe(() => {
-        if (!this.dataSource) {
-          return;
-        }
-        this.dataSource.filter = this.filter.nativeElement.value;
-      });
+    fromEvent(this.filter.nativeElement, 'keyup').pipe(
+      debounceTime(150),
+      distinctUntilChanged()
+    ).subscribe(() => {
+      if (!this.dataSource) {
+        return;
+      }
+      this.dataSource.filter = this.filter.nativeElement.value;
+    });
   }
 
   inventario(i: number, claveProducto: number, tipoEntrada: boolean) {
@@ -108,16 +107,16 @@ export class InventarioComponent implements OnInit {
     let pdfResult;
     this._reportesService.reporteInventario()
       .subscribe(
-      (data: any) => {
-        this.isLoadingResults = false;
-        console.log(data);
-        pdfResult = this.domSanitizer.bypassSecurityTrustResourceUrl(
-          URL.createObjectURL(data)
-        );
-        window.open(pdfResult.changingThisBreaksApplicationSecurity);
-        console.log(pdfResult);
-      }
-    );
+        (data: any) => {
+          this.isLoadingResults = false;
+          console.log(data);
+          pdfResult = this.domSanitizer.bypassSecurityTrustResourceUrl(
+            URL.createObjectURL(data)
+          );
+          window.open(pdfResult.changingThisBreaksApplicationSecurity);
+          console.log(pdfResult);
+        }
+      );
 
   }
 }

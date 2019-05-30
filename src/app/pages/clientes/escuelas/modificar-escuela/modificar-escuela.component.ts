@@ -1,28 +1,27 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {MatDialog, MatPaginator, MatSnackBar, MatSort} from '@angular/material';
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {DataSource} from '@angular/cdk/collections';
-import {Maestro} from '../../../interfaces/maestro.interface';
-import {MaestroService} from '../../../services/maestro/maestro.service';
+import {Observable} from 'rxjs/Observable';
+import {EscuelaService} from '../../../../services/escuela/escuela.service';
+import {Escuela} from '../../../../interfaces/escuela.interface';
 import {HttpClient} from '@angular/common/http';
-import {DeleteProfesorDialogComponent} from '../../../dialogs/delete-profesor/delete-profesor.dialog.component';
-
+import {DeleteEscuelaDialogComponent} from '../../../../dialogs/delete-escuela/delete-escuela.dialog.component';
 import {fromEvent, merge} from 'rxjs';
 import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
 
 @Component({
-  selector: 'app-modificar-maestro',
-  templateUrl: './modificar-maestro.component.html',
-  styleUrls: ['./modificar-maestro.component.css']
+  selector: 'app-modificar-escuela',
+  templateUrl: './modificar-escuela.component.html',
+  styleUrls: ['./modificar-escuela.component.css']
 })
-export class ModificarMaestroComponent implements OnInit {
-  displayedColumns = ['idprofesor', 'nombre', 'telefono', 'escuela', 'municipio', 'edit'];
-  exampleDatabase: MaestroService | null;
-  dataSource: MaestroDataSource | null;
+export class ModificarEscuelaComponent implements OnInit {
+  displayedColumns = ['clave', 'nombre', 'zona', 'direccion', 'colonia', 'telefono', 'director', 'edit'];
+  exampleDatabase: EscuelaService | null;
+  dataSource: EscuelaDataSource | null;
 
   index: number;
-  id: number;
+  id: string;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -38,8 +37,8 @@ export class ModificarMaestroComponent implements OnInit {
   }
 
   public loadData() {
-    this.exampleDatabase = new MaestroService(this.httpClient);
-    this.dataSource = new MaestroDataSource(this.exampleDatabase, this.paginator, this.sort);
+    this.exampleDatabase = new EscuelaService(this.httpClient);
+    this.dataSource = new EscuelaDataSource(this.exampleDatabase, this.paginator, this.sort);
     fromEvent(this.filter.nativeElement, 'keyup')
       .pipe(
         debounceTime(150),
@@ -47,7 +46,6 @@ export class ModificarMaestroComponent implements OnInit {
       )
       .subscribe(() => {
         if (!this.dataSource) {
-          console.log('Aqui viene la data: ' + this.dataSource);
           return;
         }
         this.dataSource.filter = this.filter.nativeElement.value;
@@ -70,17 +68,17 @@ export class ModificarMaestroComponent implements OnInit {
     }
   }
 
-  deleteItem(i: number, idprofesor: number, nombre: string) {
+  deleteItem(i: number, clave: string, nombre: string, director: string) {
     this.index = i;
-    this.id = idprofesor;
-    const dialogRef = this.dialog.open(DeleteProfesorDialogComponent, {
-      data: {clave: idprofesor, nombre: nombre}
+    this.id = clave;
+    const dialogRef = this.dialog.open(DeleteEscuelaDialogComponent, {
+      data: {clave: clave, nombre: nombre, director: director}
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result === 1) {
-        this.openSnackBar('Maestro eliminado', 'Aceptar');
-        const foundIndex = this.exampleDatabase.dataChange.value.findIndex(x => x.idprofesor === this.id);
+        this.openSnackBar('Escuela eliminado', 'Aceptar');
+        const foundIndex = this.exampleDatabase.dataChange.value.findIndex(x => x.clave === this.id);
         // for delete we use splice in order to remove single object from DataService
         this.exampleDatabase.dataChange.value.splice(foundIndex, 1);
         this.refreshTable();
@@ -96,7 +94,7 @@ export class ModificarMaestroComponent implements OnInit {
 
 }
 
-export class MaestroDataSource extends DataSource<Maestro> {
+export class EscuelaDataSource extends DataSource<Escuela> {
   _filterChange = new BehaviorSubject('');
 
   get filter(): string {
@@ -107,10 +105,10 @@ export class MaestroDataSource extends DataSource<Maestro> {
     this._filterChange.next(filter);
   }
 
-  filteredData: Maestro[] = [];
-  renderedData: Maestro[] = [];
+  filteredData: Escuela[] = [];
+  renderedData: Escuela[] = [];
 
-  constructor(public _exampleDatabase: MaestroService,
+  constructor(public _exampleDatabase: EscuelaService,
               public _paginator: MatPaginator,
               public _sort: MatSort) {
     super();
@@ -119,7 +117,7 @@ export class MaestroDataSource extends DataSource<Maestro> {
   }
 
   /** Connect function called by the table to retrieve one stream containing the data to render. */
-  connect(): Observable<Maestro[]> {
+  connect(): Observable<Escuela[]> {
     // Listen for any changes in the base data, sorting, filtering, or pagination
     const displayDataChanges = [
       this._exampleDatabase.dataChange,
@@ -128,14 +126,14 @@ export class MaestroDataSource extends DataSource<Maestro> {
       this._paginator.page
     ];
 
-    this._exampleDatabase.obtenerMaestros();
+    this._exampleDatabase.obtenerEscuelas();
 
     return merge(...displayDataChanges)
       .pipe(
         map(() => {
           // Filter data
-          this.filteredData = this._exampleDatabase.data.slice().filter((maestro: Maestro) => {
-            const searchStr = (maestro.idprofesor + maestro.nombre + maestro.apellidos).toLowerCase();
+          this.filteredData = this._exampleDatabase.data.slice().filter((escuela: Escuela) => {
+            const searchStr = (escuela.clave + escuela.nombre + escuela.director.nombre + escuela.zona.idzona).toLowerCase();
             return searchStr.indexOf(this.filter.toLowerCase()) !== -1;
           });
 
@@ -154,7 +152,7 @@ export class MaestroDataSource extends DataSource<Maestro> {
   }
 
   /** Returns a sorted copy of the database data. */
-  sortData(data: Maestro[]): Maestro[] {
+  sortData(data: Escuela[]): Escuela[] {
     if (!this._sort.active || this._sort.direction === '') {
       return data;
     }
@@ -165,13 +163,16 @@ export class MaestroDataSource extends DataSource<Maestro> {
 
       switch (this._sort.active) {
         case 'clave':
-          [propertyA, propertyB] = [a.idprofesor, b.idprofesor];
+          [propertyA, propertyB] = [a.clave, b.clave];
           break;
         case 'nombre':
           [propertyA, propertyB] = [a.nombre, b.nombre];
           break;
         case 'director':
-          [propertyA, propertyB] = [a.apellidos, b.apellidos];
+          [propertyA, propertyB] = [a.director.nombre, b.director.nombre];
+          break;
+        case 'zona':
+          [propertyA, propertyB] = [a.zona.idzona, b.zona.idzona];
           break;
       }
 
@@ -183,5 +184,4 @@ export class MaestroDataSource extends DataSource<Maestro> {
   }
 
 }
-
 

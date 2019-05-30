@@ -1,11 +1,9 @@
-import { Injectable } from '@angular/core';
-import { Http, Headers } from '@angular/http';
-import { Router, ActivatedRoute } from '@angular/router';
+import {Injectable} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 import 'rxjs/operators';
 import {User} from '../../interfaces/user.interfaces';
 import {HttpClient, HttpResponse} from '@angular/common/http';
 import {URL_SERVICIOS} from '../../config/config';
-import {Observable} from 'rxjs/Observable';
 import {map} from 'rxjs/internal/operators';
 
 @Injectable()
@@ -77,98 +75,98 @@ export class UserService {
                 {
                   titulo: 'Ventas',
                   icono: 'fas fa-shopping-cart fa-4x',
-                  url: '/ventas/nueva'
+                  url: '../ventas'
                 },
                 {
                   titulo: 'Confirmar pedidos',
                   icono: 'fas fa-clipboard-check fa-4x',
-                  url: '/entregas'
+                  url: '../entregas'
                 },
                 {
                   titulo: 'Inventario',
                   icono: 'fas fa-box-open fa-4x',
-                  url: '/inventario'
+                  url: '../inventario'
                 },
                 {
                   titulo: 'Recursos humanos',
                   icono: 'fas fa-user fa-4x',
-                  url: '/nomina'
+                  url: '../nomina'
                 },
                 {
                   titulo: 'Productos',
                   icono: 'fas fa-barcode fa-4x',
-                  url: '/almacen'
+                  url: '../almacen'
                 },
                 {
                   titulo: 'Clientes',
                   icono: 'fas fa-graduation-cap fa-4x',
-                  url: '/clientes'
+                  url: '../clientes'
                 },
                 {
                   titulo: 'Cuentas por cobrar',
                   icono: 'fas fa-dollar-sign fa-4x',
-                  url: '/cuentas'
+                  url: '../cuentas'
                 },
                 {
                   titulo: 'Comisiones',
                   icono: 'fas fa-hand-holding-usd fa-4x',
-                  url: '/comisiones'
+                  url: '../comisiones'
                 },
                 {
                   titulo: 'Configuración',
                   icono: 'fa fa-cog fa-4x',
-                  url: '/configuracion'
+                  url: '../configuracion'
                 }
               ];
               res.menuSidebar = [
                 {
                   titulo: 'Inicio',
-                  url: '/home'
+                  url: '../produccion'
                 },
                 {
                   titulo: 'Ventas',
                   icono: 'fas fa-shopping-cart mr-3',
-                  url: '/ventas/nueva'
+                  url: './ventas'
                 },
                 {
                   titulo: 'Confirmar pedidos',
                   icono: 'fas fa-clipboard-check mr-3',
-                  url: '/entregas'
+                  url: './entregas'
                 },
                 {
                   titulo: 'Inventario',
                   icono: 'fas fa-box-open mr-3',
-                  url: '/inventario'
+                  url: './inventario'
                 },
                 {
                   titulo: 'Recursos humanos',
                   icono: 'fas fa-user mr-3',
-                  url: '/nomina'
+                  url: './nomina'
                 },
                 {
                   titulo: 'Productos',
                   icono: 'fas fa-barcode mr-3',
-                  url: '/almacen'
+                  url: './almacen'
                 },
                 {
                   titulo: 'Clientes',
                   icono: 'fas fa-graduation-cap mr-3',
-                  url: '/clientes'
+                  url: './clientes'
                 },
                 {
                   titulo: 'Cuentas por cobrar',
                   icono: 'fas fa-dollar-sign mr-3',
-                  url: '/cuentas'
+                  url: './cuentas'
                 },
                 {
                   titulo: 'Comisiones',
                   icono: 'fas fa-hand-holding-usd mr-3',
-                  url: '/comisiones'
+                  url: './comisiones'
                 },
                 {
                   titulo: 'Configuración',
                   icono: 'fa fa-cog mr-3',
-                  url: '/configuracion'
+                  url: './configuracion'
                 },
               ];
               break;
@@ -178,14 +176,14 @@ export class UserService {
                 {
                   titulo: 'Confirmar pedidos',
                   icono: 'fas fa-clipboard-check fa-4x',
-                  url: '/entregas'
+                  url: '../entregas'
                 }
                 ];
               res.menuSidebar = [
                 {
                   titulo: 'Confirmar pedidos',
                   icono: 'fas fa-clipboard-check mr-3',
-                  url: '/entregas'
+                  url: './entregas'
                 }
                 ];
               break;
@@ -195,38 +193,38 @@ export class UserService {
                 {
                   titulo: 'Ventas',
                   icono: 'fas fa-shopping-cart fa-4x',
-                  url: '/ventas/nueva'
+                  url: '../ventas'
                 },
                 {
                   titulo: 'Productos',
                   icono: 'fas fa-barcode fa-4x',
-                  url: '/almacen'
+                  url: '../almacen'
                 },
                 {
                   titulo: 'Clientes',
                   icono: 'fas fa-graduation-cap fa-4x',
-                  url: '/clientes'
+                  url: '../clientes'
                 }
               ];
               res.menuSidebar = [
                 {
                   titulo: 'Inicio',
-                  url: '/home'
+                  url: '../produccion'
                 },
                 {
                   titulo: 'Ventas',
                   icono: 'fas fa-shopping-cart mr-3',
-                  url: '/ventas/nueva'
+                  url: './ventas'
                 },
                 {
                   titulo: 'Productos',
                   icono: 'fas fa-barcode mr-3',
-                  url: '/almacen'
+                  url: './almacen'
                 },
                 {
                   titulo: 'Clientes',
                   icono: 'fas fa-graduation-cap mr-3',
-                  url: '/clientes'
+                  url: './clientes'
                 }
               ];
               break;
@@ -236,24 +234,24 @@ export class UserService {
                 {
                   titulo: 'Productos',
                   icono: 'fas fa-barcode fa-4x',
-                  url: '/almacen'
+                  url: '../almacen'
                 },
                 {
                   titulo: 'Inventario',
                   icono: 'fas fa-box-open fa-4x',
-                  url: '/stock'
+                  url: '../inventario'
                 },
               ];
               res.menuSidebar = [
                 {
                   titulo: 'Productos',
                   icono: 'fas fa-barcode mr-3',
-                  url: '/almacen'
+                  url: '../almacen'
                 },
                 {
                   titulo: 'Inventario',
                   icono: 'fas fa-box-open mr-3',
-                  url: '/stock'
+                  url: '../inventario'
                 },
               ];
             }

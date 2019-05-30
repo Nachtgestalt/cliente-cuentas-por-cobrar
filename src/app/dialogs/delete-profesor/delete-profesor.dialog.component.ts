@@ -1,10 +1,7 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef, MatSnackBar} from '@angular/material';
-import {VendedorService} from '../../services/vendedor/vendedor.service';
+import {Component, Inject} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {DeleteVendedorDialogComponent} from '../delete-vendedor/delete-vendedor.dialog.component';
 import {MaestroService} from '../../services/maestro/maestro.service';
-import swal from 'sweetalert';
-import {ModificarMaestroComponent} from "../../pages/maestros/modificar-maestro/modificar-maestro.component";
 
 @Component({
   selector: 'app-delete-profesor',
