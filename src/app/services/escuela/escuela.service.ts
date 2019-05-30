@@ -1,10 +1,8 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {URL_SERVICIOS} from '../../config/config';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {BehaviorSubject} from 'rxjs';
 import {Escuela} from '../../interfaces/escuela.interface';
-import {HttpClient, HttpErrorResponse} from "@angular/common/http";
-import {Vendedor} from "../../interfaces/vendedor.interface";
-import {Producto} from "../../interfaces/producto.interface";
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {Director} from '../../interfaces/director.interface';
 import {Zona} from '../../interfaces/zona.interface';
 
@@ -15,7 +13,8 @@ export class EscuelaService {
 
   dataChange: BehaviorSubject<Escuela[]> = new BehaviorSubject<Escuela[]>([]);
 
-  constructor(public http: HttpClient) { }
+  constructor(public http: HttpClient) {
+  }
 
   get data(): Escuela[] {
     return this.dataChange.value;
@@ -41,7 +40,7 @@ export class EscuelaService {
   }
 
   obtenerEscuelas() {
-    let director: Director = {
+    const director: Director = {
       iddirector: null,
       nombre: '',
       apellidos: '',
@@ -49,34 +48,34 @@ export class EscuelaService {
       telefono: ''
     };
 
-    let zona: Zona = {
+    const zona: Zona = {
       idzona: '',
       vendedor: null
-    }
+    };
 
     return this.http.get<Escuela[]>(this.escuelaURL, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}})
       .subscribe((data: Escuela[]) => {
-        for (let escuela of data) {
-          if (escuela.director === null) {
-            escuela.director = director;
-            escuela.director.nombre = '';
-            escuela.director.apellidos = '';
+          for (const escuela of data) {
+            if (escuela.director === null) {
+              escuela.director = director;
+              escuela.director.nombre = '';
+              escuela.director.apellidos = '';
+            }
+            if (escuela.zona === null) {
+              escuela.zona = zona;
+              escuela.zona.idzona = 'Sin asignar';
+            }
           }
-          if(escuela.zona === null) {
-            escuela.zona = zona;
-            escuela.zona.idzona = 'Sin asignar'
-          }
-        }
           console.log(data);
           this.dataChange.next(data);
         },
         (error: HttpErrorResponse) => {
-          console.log (error.name + ' ' + error.message);
+          console.log(error.name + ' ' + error.message);
         });
   }
 
   getEscuelas() {
-    return this.http.get<Escuela[]>(this.escuelaURL, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}})
+    return this.http.get<Escuela[]>(this.escuelaURL, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}});
   }
 
   borrarEscuela(clave: string) {
@@ -90,7 +89,7 @@ export class EscuelaService {
   }
 
   existeClave(clave) {
-    const url = `${this.escuelaURL}/search/clave=${clave}`
+    const url = `${this.escuelaURL}/search/clave=${clave}`;
     return this.http.get(url, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}});
   }
 }

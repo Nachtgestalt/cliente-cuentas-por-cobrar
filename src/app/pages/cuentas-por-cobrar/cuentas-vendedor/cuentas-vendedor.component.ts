@@ -1,6 +1,7 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {MatPaginator, MatSort} from '@angular/material';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatSort} from '@angular/material/sort';
 import {CuentasVendedorDataSource} from '../../../datasources/cuentaVendedor.datasource';
 import {CuentasXcobrarService} from '../../../services/cuentas-xcobrar/cuentas-xcobrar.service';
 import {fromEvent} from 'rxjs';
@@ -15,16 +16,16 @@ import html2canvas from 'html2canvas';
   styleUrls: ['./cuentas-vendedor.component.css']
 })
 export class CuentasVendedorComponent implements OnInit {
-  @ViewChild('table') tableToConvert: ElementRef;
+  @ViewChild('table', {static: true}) tableToConvert: ElementRef;
   season = JSON.parse(localStorage.getItem('season'));
 
   displayedColumns = ['clave', 'nombre', 'deuda', 'pagado', 'restante'];
   exampleDatabase: CuentasXcobrarService | null;
   dataSource: CuentasVendedorDataSource | null;
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild('filter') filter: ElementRef;
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
+  @ViewChild('filter', {static: true}) filter: ElementRef;
 
   constructor(private httpClient: HttpClient) {
   }

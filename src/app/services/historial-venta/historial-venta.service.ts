@@ -1,7 +1,8 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {URL_SERVICIOS} from '../../config/config';
 import {Producto} from '../../interfaces/producto.interface';
+import {map} from 'rxjs/operators';
 
 @Injectable()
 export class HistorialVentaService {
@@ -13,25 +14,26 @@ export class HistorialVentaService {
   getHistorialXFolio(folio) {
     const url = `${this.urlHistorialVenta}/venta=${folio}`;
     return this.http.get(url, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}})
-      .map(
+      .pipe(
+        map(
         (res: any)  => {
-          let libro: Producto[] = [];
-          for (let historial of res) {
+          const libro: Producto[] = [];
+          for (const historial of res) {
             libro.push(historial.libro);
           }
           console.log(libro);
           console.log(res);
           return libro;
         }
-      );
+      ));
   }
 
   deleteResurtido(folio, numResurtido) {
     const url = `${this.urlHistorialVenta}/deleteResurtido`;
-    let params = new HttpParams()
+    let params = new HttpParams();
     params = params.append('folio', folio);
     params = params.append('numresurtido', numResurtido);
-    return this.http.delete(url,{params});
+    return this.http.delete(url, {params});
   }
 
 }

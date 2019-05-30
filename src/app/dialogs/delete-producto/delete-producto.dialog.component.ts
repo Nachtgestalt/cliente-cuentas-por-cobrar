@@ -1,6 +1,6 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
-import {ProductosService} from "../../services/producto/productos.service";
+import {Component, Inject} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {ProductosService} from '../../services/producto/productos.service';
 
 @Component({
   selector: 'app-delete-producto',
@@ -20,9 +20,9 @@ export class DeleteProductoDialogComponent {
   }
 
   confirmDelete(): void {
-    console.log('Entre al delete')
+    console.log('Entre al delete');
     this._productoService.borrarProducto(this.data.clave)
-      .subscribe(res => {
+      .subscribe(() => {
         console.log('esta madre se borro!');
       });
   }

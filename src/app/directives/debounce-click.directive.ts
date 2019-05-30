@@ -1,7 +1,6 @@
 import {Directive, EventEmitter, HostListener, OnDestroy, OnInit, Output} from '@angular/core';
-import {Subject} from 'rxjs/Subject';
+import {Subject, Subscription} from 'rxjs';
 import {debounceTime} from 'rxjs/operators';
-import {Subscription} from 'rxjs/Subscription';
 
 @Directive({
   selector: '[appDebounceClick]'

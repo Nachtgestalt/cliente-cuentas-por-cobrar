@@ -1,9 +1,10 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {URL_SERVICIOS} from '../../config/config';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {BehaviorSubject} from 'rxjs';
 import {map} from 'rxjs/operators';
 import * as moment from 'moment';
+
 @Injectable()
 export class StockService {
   token = localStorage.getItem('token');
@@ -16,7 +17,8 @@ export class StockService {
     return this.dataChange.value;
   }
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+  }
 
   postStock(stock) {
     const url = `${this.stockURL}/nuevo`;
@@ -43,30 +45,8 @@ export class StockService {
       .pipe(
         map(
           (res: any) => {
-            for ( const venta of res) {
-              venta.fecha_entrada = moment(venta.fecha_entrada).locale('es').format('DD MMM YYYY'); //parse integer
-            }
-            return res;
-          }
-        )
-      )
-      .subscribe((data: any) => {
-        console.log(data);
-        this.dataChange.next(data);
-      },
-      (error: HttpErrorResponse) => {
-        console.log (error.name + ' ' + error.message);
-      });
-  }
-  getHStockByBook(id) {
-    const url = `${URL_SERVICIOS}/hstock/libro=${id}`;
-
-    return this.http.get(url)
-      .pipe(
-        map(
-          (res: any) => {
-            for ( const venta of res) {
-              venta.fecha_entrada = moment(venta.fecha_entrada).locale('es').format('DD MMM YYYY'); //parse integer
+            for (const venta of res) {
+              venta.fecha_entrada = moment(venta.fecha_entrada).locale('es').format('DD MMM YYYY');
             }
             return res;
           }
@@ -77,7 +57,30 @@ export class StockService {
           this.dataChange.next(data);
         },
         (error: HttpErrorResponse) => {
-          console.log (error.name + ' ' + error.message);
+          console.log(error.name + ' ' + error.message);
+        });
+  }
+
+  getHStockByBook(id) {
+    const url = `${URL_SERVICIOS}/hstock/libro=${id}`;
+
+    return this.http.get(url)
+      .pipe(
+        map(
+          (res: any) => {
+            for (const venta of res) {
+              venta.fecha_entrada = moment(venta.fecha_entrada).locale('es').format('DD MMM YYYY');
+            }
+            return res;
+          }
+        )
+      )
+      .subscribe((data: any) => {
+          console.log(data);
+          this.dataChange.next(data);
+        },
+        (error: HttpErrorResponse) => {
+          console.log(error.name + ' ' + error.message);
         });
   }
 }

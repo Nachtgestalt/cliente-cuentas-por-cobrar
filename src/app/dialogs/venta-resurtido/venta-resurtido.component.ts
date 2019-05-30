@@ -2,10 +2,9 @@ import {ChangeDetectorRef, Component, Inject, OnInit} from '@angular/core';
 import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Producto} from '../../interfaces/producto.interface';
 import {ProductosService} from '../../services/producto/productos.service';
-import {Observable} from 'rxjs/Observable';
-import {startWith} from 'rxjs/operators/startWith';
-import {map} from 'rxjs/operators/map';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import {Observable} from 'rxjs';
+import {map, startWith} from 'rxjs/operators';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {AddTemporadaComponent} from '../add-temporada/add-temporada.dialog.component';
 import {Venta} from '../../interfaces/venta.interface';
 import {VentaService} from '../../services/venta/venta.service';
@@ -41,7 +40,6 @@ export class VentaResurtidoComponent implements OnInit {
     this.data.resurtido ? this.mensajeDialog = 'RESURTIDO' : this.mensajeDialog = 'DEVOLUCION';
 
     this._productoService.getAll()
-      .takeWhile(() => this.isAlive)
       .subscribe(
         (res: Producto[]) => {
           this.productos = res;
@@ -50,7 +48,6 @@ export class VentaResurtidoComponent implements OnInit {
       );
 
     this._ventaService.getVenta(this.data.folio)
-      .takeWhile(() => this.isAlive)
       .subscribe(
         (res: any) => {
           console.log(res);
@@ -84,7 +81,6 @@ export class VentaResurtidoComponent implements OnInit {
       );
 
     this.forma.get('pedidos.0').get('title').valueChanges
-      .takeWhile(() => this.isAlive)
       .subscribe(
         res => {
           console.log(res);
@@ -93,7 +89,6 @@ export class VentaResurtidoComponent implements OnInit {
       );
 
     this.forma.get('pedidos.0').get('amount').valueChanges
-      .takeWhile(() => this.isAlive)
       .subscribe(
         (res: any) => {
           const precio: any = Number(this.forma.get('pedidos.0').get('price').value);
@@ -102,7 +97,6 @@ export class VentaResurtidoComponent implements OnInit {
       );
 
     this.forma.get('pedidos.0').get('price').valueChanges
-      .takeWhile(() => this.isAlive)
       .subscribe(
         (res: any) => {
           const precio: any = Number(this.forma.get('pedidos.0').get('amount').value);
@@ -142,7 +136,6 @@ export class VentaResurtidoComponent implements OnInit {
       );
 
     this.forma.get(`pedidos.${control.length - 1}`).get('title').valueChanges
-      .takeWhile(() => this.isAlive)
       .subscribe(
         res => {
           console.log(res);
@@ -151,7 +144,6 @@ export class VentaResurtidoComponent implements OnInit {
       );
 
     this.forma.get(`pedidos.${control.length - 1}`).get('amount').valueChanges
-      .takeWhile(() => this.isAlive)
       .subscribe(
         (res: any) => {
           const precio: any = Number(this.forma.get(`pedidos.${control.length - 1}`).get('price').value);
@@ -160,7 +152,6 @@ export class VentaResurtidoComponent implements OnInit {
       );
 
     this.forma.get(`pedidos.${control.length - 1}`).get('price').valueChanges
-      .takeWhile(() => this.isAlive)
       .subscribe(
         (res: any) => {
           const precio: any = Number(this.forma.get(`pedidos.${control.length - 1}`).get('amount').value);
@@ -180,8 +171,8 @@ export class VentaResurtidoComponent implements OnInit {
 
   confirmAdd() {
     console.log(this.forma.value);
-    let control = this.forma.controls['pedidos'].value;
-    for (let pedido of control) {
+    const control = this.forma.controls['pedidos'].value;
+    for (const pedido of control) {
       console.log(pedido);
       if (!this.data.resurtido) {
         pedido.amount = pedido.amount * -1;

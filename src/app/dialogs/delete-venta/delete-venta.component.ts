@@ -1,7 +1,8 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {DeleteProductoDialogComponent} from '../delete-producto/delete-producto.dialog.component';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {VentaService} from '../../services/venta/venta.service';
+import swal from 'sweetalert';
 
 @Component({
   selector: 'app-delete-venta',
@@ -27,7 +28,7 @@ export class DeleteVentaComponent implements OnInit {
         console.log(res);
         this.dialogRef.close(true);
       },
-        error => {
+        () => {
           swal('Algo ha salido mal', 'La venta que intentas borrar tiene al menos un pedido confirmado.', 'error');
           this.dialogRef.close(false);
         }

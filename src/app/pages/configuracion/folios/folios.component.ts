@@ -1,15 +1,15 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {MatDialog, MatPaginator, MatSnackBar, MatSort} from '@angular/material';
-import {Observable} from 'rxjs/Observable';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {MatDialog} from '@angular/material/dialog';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {MatSort} from '@angular/material/sort';
+import {BehaviorSubject, fromEvent, merge, Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {DataSource} from '@angular/cdk/collections';
 import {Folio} from '../../../interfaces/folio.interface';
 import {FolioService} from '../../../services/folio/folio.service';
 import {DeleteFolioDialogComponent} from '../../../dialogs/delete-folio/delete-folio.dialog..component';
 import {AddFolioDialogComponent} from '../../../dialogs/add-folio/add-folio.dialog.component';
-
-import {fromEvent, merge} from 'rxjs';
 import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
 
 @Component({
@@ -25,9 +25,9 @@ export class FoliosComponent implements OnInit {
   index: number;
   id: number;
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild('filter') filter: ElementRef;
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
+  @ViewChild('filter', {static: true}) filter: ElementRef;
 
   constructor(private httpClient: HttpClient,
               public dialog: MatDialog,

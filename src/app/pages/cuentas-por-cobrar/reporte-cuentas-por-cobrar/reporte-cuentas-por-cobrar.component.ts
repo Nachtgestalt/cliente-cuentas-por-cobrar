@@ -1,18 +1,16 @@
-import { Component, OnInit } from '@angular/core';
-import {map} from 'rxjs/operators/map';
+import {Component, OnInit} from '@angular/core';
+import {map, startWith} from 'rxjs/operators';
 import {VendedorService} from '../../../services/vendedor/vendedor.service';
-import {Observable} from 'rxjs/Observable';
-import {ProductosService} from '../../../services/producto/productos.service';
+import {Observable} from 'rxjs';
 import {Vendedor} from '../../../interfaces/vendedor.interface';
 import {FormControl, FormGroup} from '@angular/forms';
-import {Producto} from '../../../interfaces/producto.interface';
-import {startWith} from 'rxjs/operators/startWith';
 import {DomSanitizer} from '@angular/platform-browser';
 import {ReportesService} from '../../../services/reportes/reportes.service';
 import * as moment from 'moment';
 import {EscuelaService} from '../../../services/escuela/escuela.service';
 import {Escuela} from '../../../interfaces/escuela.interface';
 import {Maestro} from '../../../interfaces/maestro.interface';
+import swal from 'sweetalert';
 
 @Component({
   selector: 'app-reporte-cuentas-por-cobrar',

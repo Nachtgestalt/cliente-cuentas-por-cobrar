@@ -1,8 +1,6 @@
-import {Component, OnInit, ChangeDetectorRef, Input, ViewChild, AfterViewInit, OnDestroy} from '@angular/core';
+import {ChangeDetectorRef, Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {MediaMatcher} from '@angular/cdk/layout';
-import { SidebarService } from '../../services/service.index';
-import {Subscription} from 'rxjs/Subscription';
-import {MatSidenav} from '@angular/material';
+import {SidebarService} from '../../services/service.index';
 import {Refreshable} from '../../interfaces/refreshable.interface';
 import {ActivatedRoute} from '@angular/router';
 

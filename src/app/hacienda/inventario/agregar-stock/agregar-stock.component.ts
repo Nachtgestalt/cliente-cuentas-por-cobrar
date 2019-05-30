@@ -1,7 +1,6 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
-import {StockService} from '../../../services/stock/stock.service';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {AddTemporadaComponent} from '../../../dialogs/add-temporada/add-temporada.dialog.component';
 import {Stock} from '../../../interfaces/stock.interface';
 import {StockHService} from '../../services/stock-h.service';

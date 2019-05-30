@@ -13,13 +13,12 @@ export class UserService {
   user: any;
 
   constructor(public http: HttpClient,
-              private router: Router,
-              private activatedRoute: ActivatedRoute) {
+              private router: Router) {
     this.loadStorage();
   }
 
   estaLogueado() {
-    return (this.token.length > 5) ? true : false;
+    return (this.token.length > 5);
   }
 
   setTokenInStorage(token: string) {
@@ -34,8 +33,8 @@ export class UserService {
     localStorage.setItem('season', JSON.stringify(season));
   }
 
-  loadStorage () {
-    if ( localStorage.getItem('token') ) {
+  loadStorage() {
+    if (localStorage.getItem('token')) {
       this.token = localStorage.getItem('token');
       this.user = JSON.parse(localStorage.getItem('user'));
     } else {
@@ -49,10 +48,11 @@ export class UserService {
     const body = JSON.stringify(user);
 
     return this.http.post(url, body, {observe: 'response'})
-      .map((resp: HttpResponse<any>) => {
-        this.token = resp.headers.get('authorization');
-        return this.token;
-      });
+      .pipe(
+        map((resp: HttpResponse<any>) => {
+          this.token = resp.headers.get('authorization');
+          return this.token;
+        }));
   }
 
   logout() {
@@ -68,7 +68,7 @@ export class UserService {
     const body = JSON.stringify(user);
     return this.http.post(url, body, {headers: {'Content-Type': 'application/json'}})
       .pipe(
-        map( (res: any) => {
+        map((res: any) => {
           switch (res.role) {
             case 'ADMIN_ROLE': {
               res.menuDashboard = [
@@ -178,14 +178,14 @@ export class UserService {
                   icono: 'fas fa-clipboard-check fa-4x',
                   url: '../entregas'
                 }
-                ];
+              ];
               res.menuSidebar = [
                 {
                   titulo: 'Confirmar pedidos',
                   icono: 'fas fa-clipboard-check mr-3',
                   url: './entregas'
                 }
-                ];
+              ];
               break;
             }
             case 'VENDOR_ROLE': {

@@ -1,20 +1,17 @@
 import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {MatDialog, MatPaginator, MatSnackBar, MatSort, MatTableDataSource} from '@angular/material';
+import {MatDialog} from '@angular/material/dialog';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {MatSort} from '@angular/material/sort';
 import {VendedorService} from '../../../services/vendedor/vendedor.service';
 import {Vendedor} from '../../../interfaces/vendedor.interface';
-import {Observable} from 'rxjs/Observable';
-import 'rxjs/add/observable/merge';
-import 'rxjs/add/observable/fromEvent';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/distinctUntilChanged';
+import {BehaviorSubject, fromEvent, merge, Observable} from 'rxjs';
+
+
 import {HttpClient} from '@angular/common/http';
 import {DataSource} from '@angular/cdk/collections';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {DeleteVendedorDialogComponent} from '../../../dialogs/delete-vendedor/delete-vendedor.dialog.component';
-
-import {merge, fromEvent} from 'rxjs';
-import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
+import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
 
 
 @Component({
@@ -31,9 +28,9 @@ export class ModificarEmpleadoComponent implements OnInit, AfterViewInit {
   index: number;
   id: string;
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild('filter') filter: ElementRef;
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
+  @ViewChild('filter', {static: true}) filter: ElementRef;
 
   constructor(private httpClient: HttpClient,
               public dialog: MatDialog,
@@ -158,7 +155,7 @@ export class VendedorDataSource extends DataSource<Vendedor> {
 
     this._exampleDatabase.obtenerVendedores();
 
-    return merge(...displayDataChanges).map(() => {
+    return merge(...displayDataChanges).pipe(map(() => {
       // Filter data
       this.filteredData = this._exampleDatabase.data.slice().filter((vendedor: Vendedor) => {
         const searchStr = (vendedor.clave + vendedor.nombre + vendedor.apellidos).toLowerCase();
@@ -172,7 +169,7 @@ export class VendedorDataSource extends DataSource<Vendedor> {
       const startIndex = this._paginator.pageIndex * this._paginator.pageSize;
       this.renderedData = sortedData.splice(startIndex, this._paginator.pageSize);
       return this.renderedData;
-    });
+    }));
   }
 
   disconnect() {

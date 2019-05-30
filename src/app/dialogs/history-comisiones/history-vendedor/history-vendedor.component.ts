@@ -1,13 +1,13 @@
 import {Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
+import {BehaviorSubject, fromEvent, merge, Observable} from 'rxjs';
 import {ComisionesService} from '../../../services/comisiones/comisiones.service';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {ConfirmPaymentComponent} from '../../confirm-payment/confirm-payment.component';
 import {HttpClient} from '@angular/common/http';
 import {DataSource} from '@angular/cdk/collections';
-import {MAT_DIALOG_DATA, MatDialog, MatPaginator, MatSnackBar, MatSort} from '@angular/material';
-
-import {fromEvent, merge} from 'rxjs';
+import {MAT_DIALOG_DATA, MatDialog} from '@angular/material/dialog';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {MatSort} from '@angular/material/sort';
 import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
 
 @Component({
@@ -22,9 +22,9 @@ export class HistoryVendedorComponent implements OnInit {
   exampleDatabase: ComisionesService | null;
   dataSource: ComisionVendedorDataSource | null;
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild('filter') filter: ElementRef;
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
+  @ViewChild('filter', {static: true}) filter: ElementRef;
 
   constructor(private httpClient: HttpClient,
               public dialog: MatDialog,

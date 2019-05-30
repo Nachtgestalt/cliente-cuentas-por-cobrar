@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {UserService} from '../user/user.service';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {BehaviorSubject} from 'rxjs';
 
 @Injectable()
 export class SidebarService {
@@ -10,7 +10,7 @@ export class SidebarService {
   private componentSource = new BehaviorSubject(null);
   currentComponent = this.componentSource.asObservable();
 
-  constructor(private _userService: UserService) {
+  constructor() {
   }
 
   loadSidebarMenu() {

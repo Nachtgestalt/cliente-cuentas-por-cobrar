@@ -1,14 +1,14 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import {MatDialog, MatPaginator, MatSnackBar, MatSort} from '@angular/material';
+import {BehaviorSubject, fromEvent, merge, Observable} from 'rxjs';
+import {MatDialog} from '@angular/material/dialog';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {MatSort} from '@angular/material/sort';
 import {DataSource} from '@angular/cdk/collections';
 import {Maestro} from '../../../../interfaces/maestro.interface';
 import {MaestroService} from '../../../../services/maestro/maestro.service';
 import {HttpClient} from '@angular/common/http';
 import {DeleteProfesorDialogComponent} from '../../../../dialogs/delete-profesor/delete-profesor.dialog.component';
-
-import {fromEvent, merge} from 'rxjs';
 import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
 
 @Component({
@@ -24,9 +24,9 @@ export class ModificarMaestroComponent implements OnInit {
   index: number;
   id: number;
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild('filter') filter: ElementRef;
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
+  @ViewChild('filter', {static: true}) filter: ElementRef;
 
   constructor(private httpClient: HttpClient,
               public dialog: MatDialog,

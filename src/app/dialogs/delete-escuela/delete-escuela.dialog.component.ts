@@ -1,8 +1,7 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {ProductosService} from "../../services/producto/productos.service";
-import {DeleteProductoDialogComponent} from "../delete-producto/delete-producto.dialog.component";
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
-import {EscuelaService} from "../../services/escuela/escuela.service";
+import {Component, Inject} from '@angular/core';
+import {DeleteProductoDialogComponent} from '../delete-producto/delete-producto.dialog.component';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {EscuelaService} from '../../services/escuela/escuela.service';
 
 @Component({
   selector: 'app-delete-escuela',
@@ -20,9 +19,9 @@ export class DeleteEscuelaDialogComponent {
   }
 
   confirmDelete(): void {
-    console.log('Entre al delete')
+    console.log('Entre al delete');
     this._escuelaService.borrarEscuela(this.data.clave)
-      .subscribe(res => {
+      .subscribe(() => {
         console.log('esta madre se borro!');
       });
   }

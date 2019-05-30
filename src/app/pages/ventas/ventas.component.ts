@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import 'rxjs/add/operator/takeWhile';
+
 import {Router} from '@angular/router';
 import {Refreshable} from '../../interfaces/refreshable.interface';
 
@@ -34,7 +34,7 @@ export class VentasComponent implements OnInit, Refreshable {
 
   ngOnInit() {
     console.log('Estoy en OnInit de ventas');
-    this.router.events.subscribe((res) => {
+    this.router.events.subscribe(() => {
       this.activeLinkIndex = this.routeLinks.indexOf(this.routeLinks.find(tab => tab.link === '.' + this.router.url));
     });
   }

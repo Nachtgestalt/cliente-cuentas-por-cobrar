@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
-import { VendedorService } from '../../../services/vendedor/vendedor.service';
+import {Component, OnInit} from '@angular/core';
+import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
+import {VendedorService} from '../../../services/vendedor/vendedor.service';
 import {UserService} from '../../../services/user/user.service';
+import swal from 'sweetalert';
+import {map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-usuarios',
@@ -40,10 +42,10 @@ export class UsuariosComponent implements OnInit {
 
   validarUsername(control: AbstractControl) {
     return this._vendedorService.existeUsername(control.value)
-      .map(res => {
+      .pipe(map(res => {
         console.log(res);
         return res ? {existeUsername: true} : null;
-      });
+      }));
   }
 
   getErrorMessages() {

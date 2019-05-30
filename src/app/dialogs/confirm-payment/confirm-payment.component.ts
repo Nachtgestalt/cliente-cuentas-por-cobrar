@@ -1,10 +1,10 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {ConfirmInventoryDialogComponent} from '../confirm-inventory/confirm-inventory.dialog.component';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
-import {InventarioService} from '../../services/inventario/inventario.service';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {CuentasXcobrarService} from '../../services/cuentas-xcobrar/cuentas-xcobrar.service';
 import {ComisionesService} from '../../services/comisiones/comisiones.service';
+import swal from 'sweetalert';
 
 @Component({
   selector: 'app-confirm-payment',
@@ -56,7 +56,7 @@ export class ConfirmPaymentComponent implements OnInit {
           console.log(res);
           this.dialogRef.close(true);
         },
-        error1 => {
+        () => {
           swal('Algo malo ha ocurrido', 'Error con el servidor', 'error');
           this.dialogRef.close(false);
         }
@@ -70,7 +70,7 @@ export class ConfirmPaymentComponent implements OnInit {
           console.log(res);
           this.dialogRef.close(true);
         },
-        error1 => {
+        () => {
           swal('Algo malo ha ocurrido', 'Error con el servidor', 'error');
           this.dialogRef.close(false);
         }
@@ -84,7 +84,7 @@ export class ConfirmPaymentComponent implements OnInit {
           console.log(res);
           this.dialogRef.close(true);
         },
-        error1 => {
+        () => {
           swal('Algo malo ha ocurrido', 'Error con el servidor', 'error');
           this.dialogRef.close(false);
         }
@@ -98,7 +98,7 @@ export class ConfirmPaymentComponent implements OnInit {
           console.log(res);
           this.dialogRef.close(true);
         },
-        error1 => {
+        () => {
           swal('Algo malo ha ocurrido', 'Error con el servidor', 'error');
           this.dialogRef.close(false);
         }

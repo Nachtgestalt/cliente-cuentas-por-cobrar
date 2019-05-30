@@ -1,13 +1,12 @@
 import {DataSource} from '@angular/cdk/table';
 import {Venta} from '../interfaces/venta.interface';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {BehaviorSubject, merge, Observable} from 'rxjs';
 import {VentaService} from '../services/venta/venta.service';
-import {MatPaginator, MatSort} from '@angular/material';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatSort} from '@angular/material/sort';
 import {CollectionViewer} from '@angular/cdk/collections';
-import {Observable} from 'rxjs/Observable';
 import {catchError, delay, finalize, map} from 'rxjs/operators';
 import {of} from 'rxjs/internal/observable/of';
-import {merge} from 'rxjs';
 
 export class VentaDataSource implements DataSource<Venta> {
   private lessonsSubject = new BehaviorSubject<Venta[]>([]);

@@ -1,10 +1,9 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-import { Producto } from '../../interfaces/producto.interface';
-import 'rxjs/add/operator/map';
+import {Producto} from '../../interfaces/producto.interface';
+
 import {URL_SERVICIOS} from '../../config/config';
-import {BehaviorSubject} from "rxjs/BehaviorSubject";
-import {Vendedor} from "../../interfaces/vendedor.interface";
+import {BehaviorSubject} from 'rxjs';
 
 @Injectable()
 export class ProductosService {
@@ -12,7 +11,8 @@ export class ProductosService {
   productoURL = URL_SERVICIOS + '/productos';
   dataChange: BehaviorSubject<Producto[]> = new BehaviorSubject<Producto[]>([]);
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+  }
 
   get data(): Producto[] {
     return this.dataChange.value;
@@ -33,7 +33,7 @@ export class ProductosService {
           this.dataChange.next(data);
         },
         (error: HttpErrorResponse) => {
-          console.log (error.name + ' ' + error.message);
+          console.log(error.name + ' ' + error.message);
         });
   }
 
@@ -42,7 +42,7 @@ export class ProductosService {
     return this.http.get(url, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}});
   }
 
-  actualizarProducto(producto: Producto, clave: string) {
+  actualizarProducto(producto: Producto) {
     const body = JSON.stringify(producto);
     return this.http.put(this.productoURL, body, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}});
   }
@@ -58,7 +58,7 @@ export class ProductosService {
   }
 
   existeClave(clave) {
-    const url = `${this.productoURL}/search/clave=${clave}`
+    const url = `${this.productoURL}/search/clave=${clave}`;
     return this.http.get(url, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}});
   }
 }

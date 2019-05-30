@@ -1,8 +1,6 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
-import {Temporada} from '../../interfaces/temporada.interface';
-import {TemporadaService} from '../../services/temporada/temporada.service';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {AddTemporadaComponent} from '../add-temporada/add-temporada.dialog.component';
 import {ZonaService} from '../../services/zona/zona.service';
 import {VendedorService} from '../../services/vendedor/vendedor.service';
@@ -21,25 +19,28 @@ export class AddZonaDialogComponent implements OnInit {
   constructor(public dialogRef: MatDialogRef<AddTemporadaComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any,
               private _zonaService: ZonaService,
-              private _vendedorService: VendedorService) { }
+              private _vendedorService: VendedorService) {
+  }
 
   ngOnInit() {
     console.log(this.data);
-    if ( this.data.edit ) {
-      this.mensajeDialog = 'Editar zona'
+    if (this.data.edit) {
+      this.mensajeDialog = 'Editar zona';
       this.forma = new FormGroup({
         'idzona': new FormControl(this.data.id, Validators.required),
         // 'vendedor': new FormControl('', Validators.required),
         'vendedor': new FormGroup({
-          'clave': new FormControl('', Validators.required)}
+            'clave': new FormControl('', Validators.required)
+          }
         )
       });
     } else {
-      this.mensajeDialog = 'Agregar zona'
+      this.mensajeDialog = 'Agregar zona';
       this.forma = new FormGroup({
         'idzona': new FormControl('', Validators.required),
         'vendedor': new FormGroup({
-          'clave': new FormControl('', Validators.required)}
+            'clave': new FormControl('', Validators.required)
+          }
         )
       });
     }
@@ -60,15 +61,15 @@ export class AddZonaDialogComponent implements OnInit {
 
   confirmAdd() {
     console.log(this.forma.value);
-    if( this.data.edit ) {
+    if (this.data.edit) {
       this._zonaService.actualizarZona(this.forma.value)
-        .subscribe( res => {
+        .subscribe(res => {
           console.log(res);
         });
     } else {
       console.log(this.forma.value);
       this._zonaService.agregarZona(this.forma.value)
-        .subscribe( res => {
+        .subscribe(res => {
           console.log(res);
         });
     }

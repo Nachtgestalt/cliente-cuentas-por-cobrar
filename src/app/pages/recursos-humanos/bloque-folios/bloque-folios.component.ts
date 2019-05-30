@@ -1,11 +1,12 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {BloqueFoliosService} from '../../../services/bloque-folios/bloque-folios.service';
 import {DataSource} from '@angular/cdk/collections';
-import {Observable} from 'rxjs/Observable';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import {MatDialog, MatPaginator, MatSnackBar, MatSort} from '@angular/material';
+import {BehaviorSubject, fromEvent, merge, Observable} from 'rxjs';
+import {MatDialog} from '@angular/material/dialog';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {MatSort} from '@angular/material/sort';
 import {HttpClient} from '@angular/common/http';
-import {fromEvent, merge} from 'rxjs';
 import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
 
 @Component({
@@ -14,9 +15,9 @@ import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
   styleUrls: ['./bloque-folios.component.css']
 })
 export class BloqueFoliosComponent implements OnInit {
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild('filter') filter: ElementRef;
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
+  @ViewChild('filter', {static: true}) filter: ElementRef;
 
   displayedColumns = ['clave', 'vendedor', 'tipo', 'inicio', 'fin', 'temporada'];
   exampleDatabase: BloqueFoliosService | null;

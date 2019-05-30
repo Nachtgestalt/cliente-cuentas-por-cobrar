@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
 import {URL_SERVICIOS} from '../../config/config';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {BehaviorSubject} from 'rxjs';
 
 @Injectable()
 export class ComisionesService {
@@ -47,7 +47,7 @@ export class ComisionesService {
     let params = new HttpParams();
     params = params.append('idtemporada', idTemporada);
 
-    return this.http.get<any[]>(url, {params})
+    return this.http.get<any[]>(url, {params});
       // .subscribe(data => {
       //     this.dataChangeVendedor.next(data);
       //   },
@@ -61,7 +61,7 @@ export class ComisionesService {
     let params = new HttpParams();
     params = params.append('idtemporada', idTemporada);
 
-    return this.http.get<any[]>(url, {params})
+    return this.http.get<any[]>(url, {params});
       // .subscribe(data => {
       //     console.log(data);
       //     this.dataChangeDirector.next(data);
@@ -76,7 +76,7 @@ export class ComisionesService {
     let params = new HttpParams();
     params = params.append('idtemporada', idTemporada);
 
-    return this.http.get<any[]>(url, {params})
+    return this.http.get<any[]>(url, {params});
       // .subscribe(data => {
       //     console.log(data);
       //     this.dataChangeLider.next(data);
@@ -142,8 +142,7 @@ export class ComisionesService {
     };
     console.log(body);
     const url = `${this.URLComisiones}/abonarVendedor`;
-    let headers = new HttpHeaders();
-    headers.append('Content-Type', 'application/json');
+    const headers = new HttpHeaders().append('Content-Type', 'application/json');
 
     return this.http.post(url, body, {headers});
 
@@ -156,8 +155,7 @@ export class ComisionesService {
       director: idDirector
     };
     const url = `${this.URLComisiones}/abonarDirector`;
-    let headers = new HttpHeaders();
-    headers.append('Content-Type', 'application/json');
+    const headers = new HttpHeaders().append('Content-Type', 'application/json');
 
     return this.http.post(url, body, {headers});
 

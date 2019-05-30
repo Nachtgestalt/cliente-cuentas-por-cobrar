@@ -3,14 +3,13 @@ import {FormControl, FormGroup} from '@angular/forms';
 import {ReportesService} from '../../../services/reportes/reportes.service';
 import {DomSanitizer} from '@angular/platform-browser';
 import * as moment from 'moment';
-import {Observable} from 'rxjs/Observable';
-import {Escuela} from '../../../interfaces/escuela.interface';
+import {Observable} from 'rxjs';
 import {Producto} from '../../../interfaces/producto.interface';
 import {ProductosService} from '../../../services/producto/productos.service';
-import {map} from 'rxjs/operators/map';
-import {startWith} from 'rxjs/operators/startWith';
+import {map, startWith} from 'rxjs/operators';
 import {VendedorService} from '../../../services/vendedor/vendedor.service';
 import {Vendedor} from '../../../interfaces/vendedor.interface';
+import swal from 'sweetalert';
 
 @Component({
   selector: 'app-reporte-venta',

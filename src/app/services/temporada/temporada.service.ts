@@ -1,7 +1,6 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-import {Producto} from '../../interfaces/producto.interface';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {BehaviorSubject} from 'rxjs';
 import {Temporada} from '../../interfaces/temporada.interface';
 import {URL_SERVICIOS} from '../../config/config';
 import * as moment from 'moment';
@@ -61,7 +60,7 @@ export class TemporadaService {
   }
 
   getTemporada(id: any) {
-    const url = `${this.temporadaURL}/${id}`
+    const url = `${this.temporadaURL}/${id}`;
     return this.http.get(url, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}});
   }
 }

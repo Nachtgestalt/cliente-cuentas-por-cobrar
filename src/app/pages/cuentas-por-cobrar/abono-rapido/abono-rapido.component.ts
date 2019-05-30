@@ -1,14 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {Observable} from 'rxjs/Observable';
-import {Escuela} from '../../../interfaces/escuela.interface';
-import {startWith} from 'rxjs/operators/startWith';
-import {map} from 'rxjs/operators/map';
-import {VentaService} from '../../../services/venta/venta.service';
+import {Observable} from 'rxjs';
+import {map, startWith} from 'rxjs/operators';
 import {Venta} from '../../../interfaces/venta.interface';
 import {CuentasXcobrarService} from '../../../services/cuentas-xcobrar/cuentas-xcobrar.service';
-import {Subject, Subscription} from 'rxjs/index';
 import {ActivatedRoute, Router} from '@angular/router';
+import swal from 'sweetalert';
 
 @Component({
   selector: 'app-abono-rapido',

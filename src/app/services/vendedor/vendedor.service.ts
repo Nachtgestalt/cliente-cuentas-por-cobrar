@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {Vendedor} from '../../interfaces/vendedor.interface';
 import {URL_SERVICIOS} from '../../config/config';
-import 'rxjs/add/operator/map';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+
+import {BehaviorSubject} from 'rxjs';
 
 @Injectable()
 export class VendedorService {
@@ -74,7 +74,7 @@ export class VendedorService {
     return this.http.get(url, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}});
   }
 
-  actualizarVendedor(vendedor: any, clave: string) {
+  actualizarVendedor(vendedor: any) {
     const body = JSON.stringify(vendedor);
     return this.http.put(this.vendedorURL, body, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}});
   }

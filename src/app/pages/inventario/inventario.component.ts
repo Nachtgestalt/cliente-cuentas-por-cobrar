@@ -1,8 +1,10 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {MatDialog, MatPaginator, MatSnackBar, MatSort} from '@angular/material';
+import {MatDialog} from '@angular/material/dialog';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {MatSort} from '@angular/material/sort';
 import {DataSource} from '@angular/cdk/collections';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import {Observable} from 'rxjs/Observable';
+import {BehaviorSubject, fromEvent, merge, Observable} from 'rxjs';
 import {Inventario} from '../../interfaces/inventario.interface';
 import {InventarioService} from '../../services/inventario/inventario.service';
 import {HttpClient} from '@angular/common/http';
@@ -11,7 +13,6 @@ import {HistoryStockComponent} from '../../dialogs/history-stock/history-stock.c
 import {ReportesService} from '../../services/reportes/reportes.service';
 import {DomSanitizer} from '@angular/platform-browser';
 import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
-import {fromEvent, merge} from 'rxjs';
 
 @Component({
   selector: 'app-inventario',
@@ -31,9 +32,9 @@ export class InventarioComponent implements OnInit {
   index: number;
   id: number;
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild('filter') filter: ElementRef;
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
+  @ViewChild('filter', {static: true}) filter: ElementRef;
 
   constructor(private httpClient: HttpClient,
               public dialog: MatDialog,

@@ -1,6 +1,7 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {MatPaginator, MatSort} from '@angular/material';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatSort} from '@angular/material/sort';
 import {HttpClient} from '@angular/common/http';
 import {CuentasXcobrarService} from '../../../services/cuentas-xcobrar/cuentas-xcobrar.service';
 import {CuentasEscuelaDataSource} from '../../../datasources/cuentasEscuela.datasource';
@@ -24,9 +25,9 @@ export class CuentasEscuelaComponent implements OnInit {
   exampleDatabase: CuentasXcobrarService | null;
   dataSource: CuentasEscuelaDataSource | null;
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild('filter') filter: ElementRef;
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
+  @ViewChild('filter', {static: true}) filter: ElementRef;
 
   constructor(private router: Router,
               private route: ActivatedRoute,
@@ -76,14 +77,14 @@ export class CuentasEscuelaComponent implements OnInit {
     const data = document.getElementById('tableToConvert');
     html2canvas(data).then(canvas => {
       // Few necessary setting options
-      let imgWidth = 295;
-      let pageHeight = 208;
-      let imgHeight = canvas.height * imgWidth / canvas.width;
-      let heightLeft = imgHeight;
+      const imgWidth = 295;
+      const pageHeight = 208;
+      const imgHeight = canvas.height * imgWidth / canvas.width;
+      const heightLeft = imgHeight;
 
       const contentDataURL = canvas.toDataURL('image/png');
-      let pdf = new jspdf('l', 'mm', 'a4'); // A4 size page of PDF
-      let position = 10;
+      const pdf = new jspdf('l', 'mm', 'a4'); // A4 size page of PDF
+      const position = 10;
       pdf.addImage(contentDataURL, 'PNG', 10, position, imgWidth, imgHeight);
       const titlePDF = `CuentasXcobrar_Escuelas_Vendedor=${this.idVendedor}.pdf`;
       pdf.save(titlePDF); // Generated PDF

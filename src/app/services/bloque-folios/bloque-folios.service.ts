@@ -1,9 +1,8 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
 import {URL_SERVICIOS} from '../../config/config';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {BehaviorSubject} from 'rxjs';
 import {Escuela} from '../../interfaces/escuela.interface';
-import {Maestro} from '../../interfaces/maestro.interface';
 
 @Injectable()
 export class BloqueFoliosService {
@@ -32,7 +31,7 @@ export class BloqueFoliosService {
     let params = new HttpParams();
     params = params.append('clave', clave_vendedor);
     params = params.append('valor', folio);
-    return this.http.get(url, {headers, params})
+    return this.http.get(url, {headers, params});
   }
 
   obtenerBloqueFolios() {
@@ -41,7 +40,7 @@ export class BloqueFoliosService {
           console.log(data);
           this.dataChange.next(data);
         },
-        (error: HttpErrorResponse) => {
+        () => {
           // console.log (error.name + ' ' + error.message);
         });
   }

@@ -1,12 +1,12 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {AddTemporadaComponent} from '../add-temporada/add-temporada.dialog.component';
 import {TemporadaService} from '../../services/temporada/temporada.service';
-import {Moment} from 'moment';
 import {Temporada} from '../../interfaces/temporada.interface';
 import {FolioService} from '../../services/folio/folio.service';
 import {Folio} from '../../interfaces/folio.interface';
+import {map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-add-folio',
@@ -39,14 +39,14 @@ export class AddFolioDialogComponent implements OnInit {
               public _temporadaService: TemporadaService,
               private _folioService: FolioService) {
     this._temporadaService.getTemporadas()
-      .subscribe( (res: Temporada[]) => {
+      .subscribe((res: Temporada[]) => {
         this.temporadas = res;
         console.log(res);
       });
   }
 
   ngOnInit() {
-    if ( this.data.edit ) {
+    if (this.data.edit) {
       console.log(this.data);
       this.mensajeDialog = 'Editar Folio';
       this.forma = new FormGroup({
@@ -69,7 +69,6 @@ export class AddFolioDialogComponent implements OnInit {
           res => {
             console.log(res);
           }
-
         );
     }
   }
@@ -79,13 +78,13 @@ export class AddFolioDialogComponent implements OnInit {
   }
 
   confirmAdd() {
-    if ( this.data.edit ) {
+    if (this.data.edit) {
       console.log(this.forma.value);
       this.folio = this.forma.value;
       this.folio.idfolios = this.data.idfolios;
       // console.log(this.folio);
       this._folioService.actualizarFolio(this.folio)
-        .subscribe( res => {
+        .subscribe(res => {
           console.log(res);
         });
     } else {
@@ -94,7 +93,7 @@ export class AddFolioDialogComponent implements OnInit {
       this.folio.idfolios = null;
       console.log(this.folio);
       this._folioService.agregarFolio(this.folio)
-        .subscribe( res => {
+        .subscribe(res => {
           console.log(res);
         });
     }
@@ -106,11 +105,13 @@ export class AddFolioDialogComponent implements OnInit {
 
   ValidarRango(control: AbstractControl) {
     return this._folioService.verificarRangoFolio(control.value, this.forma.get('tipo').value)
-      .map(
-        res => {
-          console.log(res);
-          return res ? {fueraRango: true} : null;
-        });
+      .pipe(
+        map(
+          res => {
+            console.log(res);
+            return res ? {fueraRango: true} : null;
+          })
+      );
 
   }
 }

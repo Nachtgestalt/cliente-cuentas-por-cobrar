@@ -21,12 +21,14 @@ import {InventoryDialogComponent} from './inventory/inventory.dialog.component';
 import {HistoryStockComponent} from './history-stock/history-stock.component';
 import {HistoryDirectorComponent} from './history-comisiones/history-director/history-director.component';
 import {HistoryVendedorComponent} from './history-comisiones/history-vendedor/history-vendedor.component';
+import {DirectivesModule} from '../directives/directives.module';
 
 @NgModule({
   imports: [
     CommonModule,
     ReactiveFormsModule,
     MaterialModule,
+    DirectivesModule,
   ],
   declarations: [
     DeleteVendedorDialogComponent,

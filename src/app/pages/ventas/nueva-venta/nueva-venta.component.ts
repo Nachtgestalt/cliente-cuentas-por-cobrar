@@ -3,7 +3,7 @@ import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/
 import {MY_FORMATS} from '../../../dialogs/add-temporada/add-temporada.dialog.component';
 import {MomentDateAdapter} from '@angular/material-moment-adapter';
 import {Escuela} from '../../../interfaces/escuela.interface';
-import {startWith} from 'rxjs/operators/startWith';
+import {map, startWith} from 'rxjs/operators';
 import {ZonaService} from '../../../services/zona/zona.service';
 import {Producto} from '../../../interfaces/producto.interface';
 import {Zona} from '../../../interfaces/zona.interface';
@@ -17,9 +17,9 @@ import {DomSanitizer} from '@angular/platform-browser';
 import {BloqueFoliosService} from '../../../services/bloque-folios/bloque-folios.service';
 import {Vendedor} from '../../../interfaces/vendedor.interface';
 import {VentaService} from '../../../services/venta/venta.service';
-import {map} from 'rxjs/operators/map';
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs';
 import {Maestro} from '../../../interfaces/maestro.interface';
+import swal from 'sweetalert';
 
 @Component({
   selector: 'app-nueva-venta',
@@ -96,20 +96,17 @@ export class NuevaVentaComponent implements OnInit, OnDestroy {
 
     if (this.isValid) {
       this._zonaService.getZonas()
-        .takeWhile(() => this.isAlive)
         .subscribe((res: Zona[]) => {
           this.zonas = res;
           console.log(this.zonas);
         });
 
       this._vendedorService.getVendedores()
-        .takeWhile(() => this.isAlive)
         .subscribe((res: Vendedor[]) => {
           this.vendedores = res;
         });
 
       this._productoService.getAll()
-        .takeWhile(() => this.isAlive)
         .subscribe(
           (res: Producto[]) => {
             this.productos = res;
@@ -118,7 +115,6 @@ export class NuevaVentaComponent implements OnInit, OnDestroy {
         );
 
       this._folioService.getFoliosTemporada(this.currentSeason.idtemporada)
-        .takeWhile(() => this.isAlive)
         .subscribe(
           res => {
             console.log(res);
@@ -137,7 +133,6 @@ export class NuevaVentaComponent implements OnInit, OnDestroy {
 
   createValueChanges() {
     this.forma.get('zona').valueChanges
-      .takeWhile(() => this.isAlive)
       .subscribe(values => {
         console.log(values);
         this.resetFormAfterChangeZone();
@@ -148,7 +143,7 @@ export class NuevaVentaComponent implements OnInit, OnDestroy {
         //   .setValidators(this.validarFechaValida);
         // Al tener elegida la zona cargamos la lista de escuelas que pertenecen
         this._escuelaService.getEscuelasZona(values.idzona)
-          .takeWhile(() => this.isAlive)
+
           .subscribe((res: Escuela[]) => {
             this.escuelas = res;
             this.filteredOptions = this.forma.get('escuela').valueChanges
@@ -163,7 +158,6 @@ export class NuevaVentaComponent implements OnInit, OnDestroy {
       });
 
     this.forma.get('escuela').valueChanges
-      .takeWhile(() => this.isAlive)
       .subscribe(values => {
         console.log(values);
         if (values !== null) {
@@ -174,7 +168,6 @@ export class NuevaVentaComponent implements OnInit, OnDestroy {
       });
 
     this.forma.get('maestro').valueChanges
-      .takeWhile(() => this.isAlive)
       .subscribe(values => {
         console.log(values);
         this.venta.idprofesor = values.idprofesor;
@@ -184,7 +177,6 @@ export class NuevaVentaComponent implements OnInit, OnDestroy {
       });
 
     this.forma.get('folio').valueChanges
-      .takeWhile(() => this.isAlive)
       .subscribe(values => {
         console.log(this.forma.get('folio'));
         if (values !== null) {
@@ -230,7 +222,7 @@ export class NuevaVentaComponent implements OnInit, OnDestroy {
       );
 
     this.forma.get('pedidos.0').get('title').valueChanges
-      .takeWhile(() => this.isAlive)
+
       .subscribe(
         res => {
           console.log(res);
@@ -239,7 +231,7 @@ export class NuevaVentaComponent implements OnInit, OnDestroy {
       );
 
     this.forma.get('pedidos.0').get('amount').valueChanges
-      .takeWhile(() => this.isAlive)
+
       .subscribe(
         (res: any) => {
           const precio: any = Number(this.forma.get('pedidos.0').get('price').value);
@@ -248,7 +240,7 @@ export class NuevaVentaComponent implements OnInit, OnDestroy {
       );
 
     this.forma.get('pedidos.0').get('price').valueChanges
-      .takeWhile(() => this.isAlive)
+
       .subscribe(
         (res: any) => {
           const precio: any = Number(this.forma.get('pedidos.0').get('amount').value);
@@ -318,7 +310,7 @@ export class NuevaVentaComponent implements OnInit, OnDestroy {
 
     console.log(this.venta);
     this._ventaService.postVenta(this.venta)
-      .takeWhile(() => this.isAlive)
+
       .subscribe(
         res => {
           console.log(res);
@@ -330,7 +322,6 @@ export class NuevaVentaComponent implements OnInit, OnDestroy {
           swal('Venta realizada', 'Venta realizada con exito', 'success')
             .then((value) => {
               this._ventaService.getPFDVenta(this.venta.folio)
-                .takeWhile(() => this.isAlive)
                 .subscribe(
                   (data: any) => {
                     console.log(data);
@@ -410,7 +401,7 @@ export class NuevaVentaComponent implements OnInit, OnDestroy {
       );
 
     this.forma.get(`pedidos.${control.length - 1}`).get('title').valueChanges
-      .takeWhile(() => this.isAlive)
+
       .subscribe(
         res => {
           console.log(res);
@@ -419,7 +410,7 @@ export class NuevaVentaComponent implements OnInit, OnDestroy {
       );
 
     this.forma.get(`pedidos.${control.length - 1}`).get('amount').valueChanges
-      .takeWhile(() => this.isAlive)
+
       .subscribe(
         (res: any) => {
           const precio: any = Number(this.forma.get(`pedidos.${index}`).get('price').value);
@@ -428,7 +419,7 @@ export class NuevaVentaComponent implements OnInit, OnDestroy {
       );
 
     this.forma.get(`pedidos.${control.length - 1}`).get('price').valueChanges
-      .takeWhile(() => this.isAlive)
+
       .subscribe(
         (res: any) => {
           const cantidad: any = Number(this.forma.get(`pedidos.${index}`).get('amount').value);
@@ -462,17 +453,17 @@ export class NuevaVentaComponent implements OnInit, OnDestroy {
 
   validarFolio(control: AbstractControl) {
     return this._ventaService.folioAsignadoVenta(control.value)
-      .map(res => {
+      .pipe(map(res => {
         console.log('Folio asignado: ', res);
         return res ? {folioexiste: true} : null;
-      });
+      }));
   }
 
   validarFolioEnRango(control: AbstractControl) {
     return this._bloqueFoliosService.folioInRange(this.venta.vendedor_clave, control.value)
-      .map(res => {
+      .pipe(map(res => {
         console.log('Folio en rango: ', res);
         return res ? null : {folioExisteEnRango: true};
-      });
+      }));
   }
 }

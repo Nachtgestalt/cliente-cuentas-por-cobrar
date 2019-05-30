@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AbstractControl, FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {VendedorService} from '../../../services/vendedor/vendedor.service';
 import {Vendedor} from '../../../interfaces/vendedor.interface';
@@ -8,7 +8,9 @@ import {FolioService} from '../../../services/folio/folio.service';
 import {Folio} from '../../../interfaces/folio.interface';
 import {BloqueFolios} from '../../../interfaces/bloque_folios.interface';
 import {BloqueFoliosService} from '../../../services/bloque-folios/bloque-folios.service';
-import 'rxjs/add/operator/takeWhile';
+import swal from 'sweetalert';
+import {map} from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-asignar-folios-empleado',
@@ -34,7 +36,9 @@ export class AsignarFoliosEmpleadoComponent implements OnInit {
   isActive = true;
 
   /** Returns a FormArray with the name 'formArray'. */
-  get formArray(): AbstractControl | null { return this.formGroup.get('formArray'); }
+  get formArray(): AbstractControl | null {
+    return this.formGroup.get('formArray');
+  }
 
   constructor(private _formBuilder: FormBuilder,
               private _vendedorService: VendedorService,
@@ -44,12 +48,12 @@ export class AsignarFoliosEmpleadoComponent implements OnInit {
     this.crearForma();
 
     this._vendedorService.getVendedores()
-      .subscribe( (vendedores: Vendedor[]) => {
+      .subscribe((vendedores: Vendedor[]) => {
         console.log(vendedores);
         this.vendedores = vendedores;
       });
     this._temporadaService.getTemporadas()
-      .subscribe( (temporadas: Temporada[]) => {
+      .subscribe((temporadas: Temporada[]) => {
         console.log(temporadas);
         this.temporadas = temporadas;
       });
@@ -80,43 +84,44 @@ export class AsignarFoliosEmpleadoComponent implements OnInit {
   createValueChanges() {
     this.alive = true;
     (this.formGroup.get('formArray') as FormArray).at(0).get('vendedor_clave').valueChanges
-      .takeWhile(() => this.alive)
-      .subscribe( values => {
+      .subscribe(values => {
         console.log(values);
         this.bloqueFolios.id.vendedorClave = values.clave;
         console.log(this.bloqueFolios);
       });
 
     (this.formGroup.get('formArray') as FormArray).at(1).get('tipo_folios').valueChanges
-      .takeWhile(() => this.alive)
-      .subscribe( values => {
+      .subscribe(values => {
         console.log(values);
         this.bloqueFolios.id.folioIdfolios = values.idfolios;
-        (this.formGroup.get('formArray') as FormArray).at(2).get('inicio').setValidators([Validators.required, Validators.min(values.inicio), Validators.max(values.fin)]);
-        (this.formGroup.get('formArray') as FormArray).at(2).get('fin').setValidators([Validators.required, Validators.min(values.inicio), Validators.max(values.fin)]);
+        (this.formGroup.get('formArray') as FormArray)
+          .at(2).get('inicio')
+          .setValidators([Validators.required, Validators.min(values.inicio), Validators.max(values.fin)]);
+        (this.formGroup.get('formArray') as FormArray)
+          .at(2).get('fin')
+          .setValidators([Validators.required, Validators.min(values.inicio), Validators.max(values.fin)]);
         (this.formGroup.get('formArray') as FormArray).at(2).get('inicio').setAsyncValidators([this.ValidarRango.bind(this)]);
         (this.formGroup.get('formArray') as FormArray).at(2).get('fin').setAsyncValidators([this.ValidarRango.bind(this)]);
         console.log(this.bloqueFolios);
-    });
+      });
 
     (this.formGroup.get('formArray') as FormArray).at(1).get('folio_idfolios').valueChanges
-      .takeWhile(() => this.alive)
       .subscribe(values => {
-      this._temporadaService.getTemporada(values.idtemporada)
-        .subscribe( (res: any) => {
-          this._folioService.getFoliosTemporada(res.idtemporada)
-            .subscribe((data: Folio[]) => {
-              if (data.length !== 0) {
-                this.hayFolios = true;
-                this.folios = data;
-              } else {
-                this.hayFolios = false;
-              }
-            });
-          console.log(res);
-        });
-      console.log(values);
-    });
+        this._temporadaService.getTemporada(values.idtemporada)
+          .subscribe((res: any) => {
+            this._folioService.getFoliosTemporada(res.idtemporada)
+              .subscribe((data: Folio[]) => {
+                if (data.length !== 0) {
+                  this.hayFolios = true;
+                  this.folios = data;
+                } else {
+                  this.hayFolios = false;
+                }
+              });
+            console.log(res);
+          });
+        console.log(values);
+      });
   }
 
   asignarFolios() {
@@ -124,7 +129,6 @@ export class AsignarFoliosEmpleadoComponent implements OnInit {
     this.bloqueFolios.fin = this.formGroup.get('formArray').get('2').get('fin').value;
 
     this._bloqueFolioService.agregarBloqueFolios(this.bloqueFolios)
-      .takeWhile(() => this.alive)
       .subscribe(res => {
         console.log(res);
         this.crearForma();
@@ -135,7 +139,7 @@ export class AsignarFoliosEmpleadoComponent implements OnInit {
         console.log(this.formGroup.value);
         this.isActive = false;
         swal('Bloque de folios agregado', 'Bloque de folios agregado con exito', 'success');
-        setTimeout( () => this.isActive = true, 200);
+        setTimeout(() => this.isActive = true, 200);
       });
 
     // this.bloqueFolios.id.folioIdfolios = this.formGroup.get('formArray').get('0').value;
@@ -143,10 +147,10 @@ export class AsignarFoliosEmpleadoComponent implements OnInit {
 
   validarClave(control: AbstractControl) {
     return this._bloqueFolioService.existeFolioXVendedorTemporada(this.bloqueFolios.id.vendedorClave, 'b', 'v')
-      .map(
+      .pipe(map(
         res => {
           return res ? {existeClave: true} : null;
-        });
+        }));
 
   }
 
@@ -154,11 +158,11 @@ export class AsignarFoliosEmpleadoComponent implements OnInit {
     const idFolios = this.bloqueFolios.id.folioIdfolios;
 
     return this._bloqueFolioService.bloqueFolioInRange(control.value, idFolios)
-      .map(
+      .pipe(map(
         res => {
           console.log(res);
-          return res ?  {fueraRango: true} : null ;
-        });
+          return res ? {fueraRango: true} : null;
+        }));
 
   }
 }

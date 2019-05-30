@@ -47,12 +47,12 @@ export class LoginComponent implements OnInit {
   login() {
     this._userService.autenticar(this.formulario.value)
       .pipe(
-        map(token => {
+        map((token: string) => {
           console.log(token);
           this._userService.setTokenInStorage(token);
           return token;
         }),
-        mergeMap(tokenRes =>
+        mergeMap(() =>
           forkJoin(
             this._userService.obtenerUsuario(this.formulario.value)
               .pipe(
@@ -79,7 +79,7 @@ export class LoginComponent implements OnInit {
             this.router.navigate(['/produccion']);
           }
         },
-        error => {
+        () => {
           swal('Error al iniciar sesión', 'Usuario y/o contraseña invalidos', 'error');
         }
       );

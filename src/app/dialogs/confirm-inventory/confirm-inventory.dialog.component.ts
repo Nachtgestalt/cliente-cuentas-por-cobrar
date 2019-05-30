@@ -1,9 +1,8 @@
-import {AfterViewInit, Component, ElementRef, Inject, OnInit, Renderer2, ViewChild} from '@angular/core';
+import {Component, Inject, OnInit, Renderer2} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {Vendedor} from '../../interfaces/vendedor.interface';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
-import {AddTemporadaComponent} from '../add-temporada/add-temporada.dialog.component';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {InventarioService} from '../../services/inventario/inventario.service';
+import swal from 'sweetalert';
 
 @Component({
   selector: 'app-confirm-inventory',
@@ -11,16 +10,15 @@ import {InventarioService} from '../../services/inventario/inventario.service';
   styleUrls: ['./confirm-inventory.dialog.component.css']
 })
 export class ConfirmInventoryDialogComponent implements OnInit {
-  @ViewChild('input1') inputEl: ElementRef;
   mensajeDialog: string;
-  vendedorSelect: Vendedor[];
   forma: FormGroup;
   cantidadEntregar: string;
 
   constructor(public dialogRef: MatDialogRef<ConfirmInventoryDialogComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any,
               public _inventarioService: InventarioService,
-              public renderer: Renderer2) { }
+              public renderer: Renderer2) {
+  }
 
   ngOnInit() {
     this.crearForma(this.data);
@@ -61,7 +59,7 @@ export class ConfirmInventoryDialogComponent implements OnInit {
           console.log(res);
           this.dialogRef.close(true);
         },
-        error1 => {
+        () => {
           swal('Algo malo ha ocurrido', 'Error con el servidor', 'error');
         }
       );

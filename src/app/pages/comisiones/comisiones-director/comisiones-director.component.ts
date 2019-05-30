@@ -1,6 +1,9 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {MatDialog, MatPaginator, MatSnackBar, MatSort} from '@angular/material';
-import {Observable} from 'rxjs/Observable';
+import {MatDialog} from '@angular/material/dialog';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {MatSort} from '@angular/material/sort';
+import {fromEvent} from 'rxjs';
 import {ConfirmPaymentComponent} from '../../../dialogs/confirm-payment/confirm-payment.component';
 import {HttpClient} from '@angular/common/http';
 import {ComisionesService} from '../../../services/comisiones/comisiones.service';
@@ -8,8 +11,8 @@ import {HistoryDirectorComponent} from '../../../dialogs/history-comisiones/hist
 import {DomSanitizer} from '@angular/platform-browser';
 import {ReportesService} from '../../../services/reportes/reportes.service';
 import {ComisionesDirectorDataSource} from '../../../datasources/comisionesDirector.datasource';
-import {fromEvent} from 'rxjs';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
+import swal from 'sweetalert';
 
 @Component({
   selector: 'app-comisiones-director',
@@ -26,9 +29,9 @@ export class ComisionesDirectorComponent implements OnInit {
 
   isLoadingResults = false;
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild('filter') filter: ElementRef;
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
+  @ViewChild('filter', {static: true}) filter: ElementRef;
 
   constructor(private httpClient: HttpClient,
               public _reportesService: ReportesService,

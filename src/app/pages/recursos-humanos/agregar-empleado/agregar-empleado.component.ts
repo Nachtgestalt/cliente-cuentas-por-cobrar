@@ -1,12 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import {FormGroup, FormControl, Validators, AbstractControl} from '@angular/forms';
+import {Component, OnInit} from '@angular/core';
+import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
 
 import {VendedorService} from '../../../services/vendedor/vendedor.service';
 import {Vendedor} from '../../../interfaces/vendedor.interface';
 import {ActivatedRoute, Router} from '@angular/router';
 
 import * as _swal from 'sweetalert';
-import { SweetAlert } from 'sweetalert/typings/core';
+import {SweetAlert} from 'sweetalert/typings/core';
+import {map} from 'rxjs/operators';
+
 const swal: SweetAlert = _swal as any;
 
 @Component({
@@ -15,7 +17,7 @@ const swal: SweetAlert = _swal as any;
   styleUrls: ['./agregar-empleado.component.css']
 })
 export class AgregarEmpleadoComponent implements OnInit {
-  active: boolean = true;
+  active = true;
   vendedorAgregado = false;
   forma: FormGroup;
   empleadoActualizar = true;
@@ -155,23 +157,23 @@ export class AgregarEmpleadoComponent implements OnInit {
 
   validarClave(control: AbstractControl) {
     return this._vendedorService.existeClave(control.value)
-      .map(res => {
+      .pipe(map(res => {
         return res ? {existeClave: true} : null;
-      });
+      }));
   }
 
   validarRfc(control: AbstractControl) {
     return this._vendedorService.existeRfc(control.value)
-      .map(res => {
+      .pipe(map(res => {
         return res ? {existeRfc: true} : null;
-      });
+      }));
   }
 
   validarEmail(control: AbstractControl) {
     return this._vendedorService.existeEmail(control.value)
-      .map(res => {
+      .pipe(map(res => {
         return res ? {existeEmail: true} : null;
-      });
+      }));
   }
 
   getErrorMessages() {

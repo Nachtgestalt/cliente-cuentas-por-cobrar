@@ -1,10 +1,8 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-import {Temporada} from '../../interfaces/temporada.interface';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {BehaviorSubject} from 'rxjs';
 import {URL_SERVICIOS} from '../../config/config';
 import {Zona} from '../../interfaces/zona.interface';
-import {Escuela} from '../../interfaces/escuela.interface';
 
 @Injectable()
 export class ZonaService {
@@ -21,21 +19,22 @@ export class ZonaService {
     return this.dialogData;
   }
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+  }
 
   obtenerZonas() {
     return this.http.get<Zona[]>(this.zonaURL, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}})
       .subscribe(data => {
-        console.log(data);
+          console.log(data);
           this.dataChange.next(data);
         },
         (error: HttpErrorResponse) => {
-          console.log (error.name + ' ' + error.message);
+          console.log(error.name + ' ' + error.message);
         });
   }
 
   getZonas() {
-    return this.http.get(this.zonaURL, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}} )
+    return this.http.get(this.zonaURL, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}});
   }
 
   agregarZona(zona) {

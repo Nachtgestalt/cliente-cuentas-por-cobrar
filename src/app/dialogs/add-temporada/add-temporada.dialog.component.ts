@@ -1,9 +1,9 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {TemporadaService} from '../../services/temporada/temporada.service';
 import {Temporada} from '../../interfaces/temporada.interface';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import { MomentDateAdapter} from '@angular/material-moment-adapter';
+import {MomentDateAdapter} from '@angular/material-moment-adapter';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
 import {Moment} from 'moment';
 
@@ -45,8 +45,7 @@ export class AddTemporadaComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<AddTemporadaComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any,
-              public _temporadaService: TemporadaService,
-              private adapter: DateAdapter<any>) { }
+              public _temporadaService: TemporadaService) { }
 
   ngOnInit() {
     console.log(this.data);

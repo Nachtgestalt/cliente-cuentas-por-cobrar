@@ -1,13 +1,12 @@
 import {Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {MAT_DIALOG_DATA, MatDialogRef, MatPaginator, MatSort} from '@angular/material';
-import {Observable} from 'rxjs/Observable';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatSort} from '@angular/material/sort';
+import {BehaviorSubject, fromEvent, merge, Observable} from 'rxjs';
 import {DataSource} from '@angular/cdk/collections';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {StockService} from '../../services/stock/stock.service';
-
-import {merge, fromEvent} from 'rxjs';
-import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
+import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-history-stock',
@@ -20,9 +19,9 @@ export class HistoryStockComponent implements OnInit {
   exampleDatabase: StockService | null;
   dataSource: StocksDataSource | null;
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild('filter') filter: ElementRef;
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
+  @ViewChild('filter', {static: true}) filter: ElementRef;
 
   constructor(private httpClient: HttpClient,
               public dialogRef: MatDialogRef<HistoryStockComponent>,
@@ -86,7 +85,7 @@ export class StocksDataSource extends DataSource<any> {
     const user = JSON.parse(localStorage.getItem('user'));
     user.role === 'HACIENDA_ROLE' ? this._exampleDatabase.getHStockByBook(this.id) : this._exampleDatabase.getStockByBook(this.id);
 
-    return merge(...displayDataChanges).map(() => {
+    return merge(...displayDataChanges).pipe(map(() => {
       // Filter data
       this.filteredData = this._exampleDatabase.data.slice().filter((resurtido: any) => {
         const searchStr = (resurtido.libro.titulo).toLowerCase();
@@ -100,7 +99,7 @@ export class StocksDataSource extends DataSource<any> {
       const startIndex = this._paginator.pageIndex * this._paginator.pageSize;
       this.renderedData = sortedData.splice(startIndex, this._paginator.pageSize);
       return this.renderedData;
-    });
+    }));
   }
 
   disconnect() {

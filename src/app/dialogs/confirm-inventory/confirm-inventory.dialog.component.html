@@ -5,7 +5,7 @@
 
     <div class="form-group row">
       <mat-form-field color="accent">
-        <input matInput #input class="form-control" placeholder="Folio de venta:" [(ngModel)]="forma.value.folio"
+        <input matInput class="form-control" placeholder="Folio de venta:" [(ngModel)]="forma.value.folio"
                formControlName="folio" [readonly]="true" required uppercase>
         <!--<mat-error *ngIf="forma.get('folio').hasError">{{getErrorMessages()}}</mat-error>-->
       </mat-form-field>
@@ -13,7 +13,7 @@
 
     <div class="form-group row">
       <mat-form-field color="accent">
-        <input matInput #input class="form-control" placeholder="Titulo:" [(ngModel)]="forma.value.titulo"
+        <input matInput class="form-control" placeholder="Titulo:" [(ngModel)]="forma.value.titulo"
                formControlName="titulo" [readonly]="true" required uppercase>
         <!--<mat-error *ngIf="forma.get('folio').hasError">{{getErrorMessages()}}</mat-error>-->
       </mat-form-field>
@@ -21,7 +21,7 @@
 
     <div class="form-group row">
       <mat-form-field color="accent">
-        <input matInput #input class="form-control" placeholder="{{cantidadEntregar}}"
+        <input matInput class="form-control" placeholder="{{cantidadEntregar}}"
                type="number"
                [(ngModel)]="forma.value.cantidad"
                formControlName="cantidad" [readonly]="!data.entrega" #input1 required>

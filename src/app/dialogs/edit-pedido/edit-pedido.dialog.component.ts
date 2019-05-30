@@ -1,16 +1,16 @@
 import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {VentaService} from '../../services/venta/venta.service';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {AddTemporadaComponent, MY_FORMATS} from '../add-temporada/add-temporada.dialog.component';
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
 import {MomentDateAdapter} from '@angular/material-moment-adapter';
 import {Escuela} from '../../interfaces/escuela.interface';
-import {startWith} from 'rxjs/operators/startWith';
-import {map, takeWhile, takeUntil} from 'rxjs/operators';
-import {Observable} from 'rxjs/Observable';
+import {map, startWith} from 'rxjs/operators';
+import {Observable} from 'rxjs';
 import {EscuelaService} from '../../services/escuela/escuela.service';
 import {Maestro} from '../../interfaces/maestro.interface';
+import swal from 'sweetalert';
 
 @Component({
   selector: 'app-edit-pedido',
@@ -54,7 +54,6 @@ export class EditPedidoDialogComponent implements OnInit, OnDestroy {
         res => {
           this.venta = res;
           this._escuelaService.getEscuelasZona(res.zona)
-            .takeWhile(() => this.isAlive)
             .subscribe(
               (respuesta: Escuela[]) => {
                 this.escuelas = respuesta;

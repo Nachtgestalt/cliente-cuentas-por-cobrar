@@ -1,8 +1,10 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import {MatDialog, MatPaginator, MatSnackBar, MatSort} from '@angular/material';
+import {BehaviorSubject, fromEvent, merge, Observable} from 'rxjs';
+import {MatDialog} from '@angular/material/dialog';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {MatSort} from '@angular/material/sort';
 import {ZonaService} from '../../../services/zona/zona.service';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {HttpClient} from '@angular/common/http';
 import {Zona} from '../../../interfaces/zona.interface';
 import {DeleteProductoDialogComponent} from '../../../dialogs/delete-producto/delete-producto.dialog.component';
@@ -11,8 +13,7 @@ import {AddZonaDialogComponent} from '../../../dialogs/add-zona/add-zona.dialog.
 import {Vendedor} from '../../../interfaces/vendedor.interface';
 import {ReportesService} from '../../../services/reportes/reportes.service';
 import {DomSanitizer} from '@angular/platform-browser';
-import {fromEvent, merge} from 'rxjs';
-import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
+import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-zonas',
@@ -27,9 +28,9 @@ export class ZonasComponent implements OnInit {
   index: number;
   id: string;
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild('filter') filter: ElementRef;
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
+  @ViewChild('filter', {static: true}) filter: ElementRef;
 
   constructor(private httpClient: HttpClient,
               public dialog: MatDialog,
@@ -185,7 +186,7 @@ export class ZonaDataSource extends DataSource<Zona> {
 
     this._exampleDatabase.obtenerZonas();
 
-    return merge(...displayDataChanges).map(() => {
+    return merge(...displayDataChanges).pipe(map(() => {
       // Filter data
       this.filteredData = this._exampleDatabase.data.slice().filter((zona: Zona) => {
         const searchStr = (zona.idzona).toLowerCase();
@@ -199,7 +200,7 @@ export class ZonaDataSource extends DataSource<Zona> {
       const startIndex = this._paginator.pageIndex * this._paginator.pageSize;
       this.renderedData = sortedData.splice(startIndex, this._paginator.pageSize);
       return this.renderedData;
-    });
+    }));
   }
 
   disconnect() {

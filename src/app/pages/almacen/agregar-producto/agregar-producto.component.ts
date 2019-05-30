@@ -1,11 +1,12 @@
 import {Component, OnInit} from '@angular/core';
-import {FormGroup, FormControl, Validators, NgForm, AbstractControl} from '@angular/forms';
+import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
 import {ProductosService} from '../../../services/producto/productos.service';
-import {Http, Headers} from '@angular/http';
 import {Producto} from '../../../interfaces/producto.interface';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Stock} from '../../../interfaces/stock.interface';
 import {StockService} from '../../../services/stock/stock.service';
+import swal from 'sweetalert';
+import {map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-agregar',
@@ -64,7 +65,6 @@ export class AgregarProductoComponent implements OnInit {
   ];
 
 
-
   constructor(private _productosService: ProductosService,
               private _stockService: StockService,
               private router: Router,
@@ -119,7 +119,6 @@ export class AgregarProductoComponent implements OnInit {
             this.grados = this.gradosSecunadaria;
           }
         }
-
       );
   }
 
@@ -147,7 +146,7 @@ export class AgregarProductoComponent implements OnInit {
         .subscribe(
           (res: any) => {
             console.log(res);
-            let stock: Stock = {
+            const stock: Stock = {
               idstock: null,
               cantidad: this.forma.get('cantidad').value,
               libro: res.clave_producto,
@@ -168,12 +167,11 @@ export class AgregarProductoComponent implements OnInit {
             this.active = false;
             swal('Producto agregado', 'Producto agregado con exito', 'success');
             setTimeout(() => this.active = true, 1000);
-          },
-          error1 => {}
+          }
         );
     } else {
       this._productosService.actualizarProducto(this.forma.value, this.clave)
-        .subscribe(res => {
+        .subscribe(() => {
           this.forma.reset();
           this.active = false;
           swal('Producto actualizado', 'Producto actualizado con exito', 'success');
@@ -190,11 +188,12 @@ export class AgregarProductoComponent implements OnInit {
 
   validarClave(control: AbstractControl) {
     return this._productosService.existeClave(control.value)
-      .map(
-        res => {
-          return res ? {existeClave: true} : null;
-        });
-
+      .pipe(
+        map(
+          res => {
+            return res ? {existeClave: true} : null;
+          })
+      );
   }
 
 }

@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpErrorResponse, HttpEvent, HttpHandler, HttpRequest, HttpResponse} from '@angular/common/http';
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs';
 import {tap} from 'rxjs/operators';
 import {Router} from '@angular/router';
 
@@ -9,7 +9,8 @@ export class CatchInterceptorService {
 
   private started;
 
-  constructor(public router: Router) { }
+  constructor(public router: Router) {
+  }
 
   public intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const handledRequest = next.handle(req);
@@ -26,8 +27,8 @@ export class CatchInterceptorService {
 
   private interceptResponse = (event: HttpEvent<any>) => {
     if (event instanceof HttpResponse) {
-      const elapsed_ms = Date.now() - this.started;
-      console.debug(`Request for ${event.url} took ${elapsed_ms} ms.`);
+      // const elapsed_ms = Date.now() - this.started;
+      // console.debug(`Request for ${event.url} took ${elapsed_ms} ms.`);
     }
   }
 
@@ -35,7 +36,7 @@ export class CatchInterceptorService {
     if (err instanceof HttpErrorResponse) {
       this.catchHttpError(err);
     } else {
-      console.error(err.message);
+      // console.error(err.message);
     }
   }
 

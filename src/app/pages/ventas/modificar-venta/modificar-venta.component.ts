@@ -1,5 +1,8 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {MatDialog, MatPaginator, MatSnackBar, MatSort} from '@angular/material';
+import {MatDialog} from '@angular/material/dialog';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {MatSort} from '@angular/material/sort';
 import {ConfirmInventoryDialogComponent} from '../../../dialogs/confirm-inventory/confirm-inventory.dialog.component';
 import {HttpClient} from '@angular/common/http';
 import {VentaService} from '../../../services/venta/venta.service';
@@ -22,8 +25,6 @@ import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 export class ModificarVentaComponent implements OnInit {
   isLoadingResults = true;
 
-  private isAlive = true;
-
   displayedColumns = ['folio', 'fecha', 'escuela', 'profesor', 'pagado', 'restante', 'edit'];
   exampleDatabase: VentaService | null;
   dataSource: VentaDataSource | null;
@@ -35,9 +36,9 @@ export class ModificarVentaComponent implements OnInit {
 
   user = JSON.parse(localStorage.getItem('user'));
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild('filter') filter: ElementRef;
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
+  @ViewChild('filter', {static: true}) filter: ElementRef;
 
   constructor(private httpClient: HttpClient,
               public dialog: MatDialog,
@@ -180,7 +181,6 @@ export class ModificarVentaComponent implements OnInit {
   print(folio) {
     let pdfResult;
     this._ventaService.getPFDVenta(folio)
-      .takeWhile(() => this.isAlive)
       .subscribe(
         (data: any) => {
           console.log(data);

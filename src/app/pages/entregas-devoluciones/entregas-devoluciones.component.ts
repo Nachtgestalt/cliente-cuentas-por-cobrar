@@ -1,15 +1,16 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {Inventario} from '../../interfaces/inventario.interface';
 import {InventarioService} from '../../services/inventario/inventario.service';
-import {MatDialog, MatPaginator, MatSnackBar, MatSort} from '@angular/material';
+import {MatDialog} from '@angular/material/dialog';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {MatSort} from '@angular/material/sort';
 import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs/Observable';
+import {BehaviorSubject, fromEvent, merge, Observable} from 'rxjs';
 import {DataSource} from '@angular/cdk/collections';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {ConfirmInventoryDialogComponent} from '../../dialogs/confirm-inventory/confirm-inventory.dialog.component';
 import {catchError, debounceTime, delay, distinctUntilChanged, finalize, map} from 'rxjs/operators';
 import {of} from 'rxjs/internal/observable/of';
-import {fromEvent, merge} from 'rxjs';
 
 @Component({
   selector: 'app-entregas-devoluciones',
@@ -26,9 +27,9 @@ export class EntregasDevolucionesComponent implements OnInit {
   index: number;
   id: number;
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild('filter') filter: ElementRef;
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
+  @ViewChild('filter', {static: true}) filter: ElementRef;
 
   constructor(private httpClient: HttpClient,
               public dialog: MatDialog,
@@ -58,11 +59,7 @@ export class EntregasDevolucionesComponent implements OnInit {
   confirm(i: number, idHistorial: number, folio: string, titulo: string, cantidad: number) {
     this.index = i;
     this.id = idHistorial;
-    if (cantidad < 0) {
-      this.entrega = false;
-    } else {
-      this.entrega = true;
-    }
+    this.entrega = cantidad >= 0;
     const dialogRef = this.dialog.open(ConfirmInventoryDialogComponent, {
       data: {
         idHistorial: idHistorial,

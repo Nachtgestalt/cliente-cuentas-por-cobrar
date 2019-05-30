@@ -1,18 +1,18 @@
 import {Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
 import {InventarioService} from '../../services/inventario/inventario.service';
 import {AddTemporadaComponent} from '../add-temporada/add-temporada.dialog.component';
-import {MAT_DIALOG_DATA, MatDialogRef, MatPaginator, MatSort} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatSort} from '@angular/material/sort';
 import {DataSource} from '@angular/cdk/collections';
-import {Observable} from 'rxjs/Observable';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {BehaviorSubject, fromEvent, merge, Observable} from 'rxjs';
 import {ShowResurtidoInterface} from '../../interfaces/showResurtido.interface';
 import {HttpClient} from '@angular/common/http';
 import {DomSanitizer} from '@angular/platform-browser';
 import * as moment from 'moment';
 import {HistorialVentaService} from '../../services/historial-venta/historial-venta.service';
-
-import {merge, fromEvent} from 'rxjs';
-import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
+import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
+import swal from 'sweetalert';
 
 @Component({
   selector: 'app-show-resurtidos',
@@ -22,7 +22,7 @@ import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 export class ShowResurtidosDialogComponent implements OnInit {
 
   user = JSON.parse(localStorage.getItem('user'));
-  noData: boolean = false;
+  noData = false;
   displayedColumns = ['numresurtido', 'fecha', 'edit'];
   exampleDatabase: InventarioService | null;
   dataSource: ShowResurtidoInterfaceDataSource | null;
@@ -30,9 +30,9 @@ export class ShowResurtidosDialogComponent implements OnInit {
   index: number;
   id: string;
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild('filter') filter: ElementRef;
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
+  @ViewChild('filter', {static: true}) filter: ElementRef;
 
   constructor(private httpClient: HttpClient,
               private _historialVentaService: HistorialVentaService,
@@ -149,7 +149,7 @@ export class ShowResurtidoInterfaceDataSource extends DataSource<ShowResurtidoIn
 
     this._exampleDatabase.obtenerResurtidos(this.folio);
 
-    return merge(...displayDataChanges).map(() => {
+    return merge(...displayDataChanges).pipe(map(() => {
       // Filter data
       this.filteredData = this._exampleDatabase.dataResurtido.slice().filter((resurtido: ShowResurtidoInterface) => {
         const searchStr = (resurtido.numresurtido + moment(resurtido.fecha).format('DD MMM YYYY')).toLowerCase();
@@ -163,7 +163,7 @@ export class ShowResurtidoInterfaceDataSource extends DataSource<ShowResurtidoIn
       const startIndex = this._paginator.pageIndex * this._paginator.pageSize;
       this.renderedData = sortedData.splice(startIndex, this._paginator.pageSize);
       return this.renderedData;
-    });
+    }));
   }
 
   disconnect() {

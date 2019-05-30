@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivationEnd, Router} from '@angular/router';
-import 'rxjs/add/operator/filter';
+
 import {Title} from '@angular/platform-browser';
+import {filter, map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-breadcrumbs',
@@ -10,13 +11,13 @@ import {Title} from '@angular/platform-browser';
 })
 export class BreadcrumbsComponent implements OnInit {
 
-  lbltitle: string = '';
+  lbltitle = '';
   lblSubtitle = '';
   breadcrumbs: any;
 
-  constructor( private router: Router, public _title: Title) {
+  constructor(private router: Router, public _title: Title) {
     this.getDataRoute()
-      .subscribe( data => {
+      .subscribe(data => {
         console.log('Breadcrumbs data: ', data);
         this.breadcrumbs = data;
         this.lbltitle = data.titulo;
@@ -30,9 +31,11 @@ export class BreadcrumbsComponent implements OnInit {
 
   getDataRoute() {
     return this.router.events
-      .filter( evento => evento instanceof ActivationEnd)
-      .filter( (evento: ActivationEnd) => evento.snapshot.firstChild === null)
-      .map((evento: ActivationEnd) => evento.snapshot.data);
+      .pipe(
+        filter(evento => evento instanceof ActivationEnd),
+        filter((evento: ActivationEnd) => evento.snapshot.firstChild === null),
+        map((evento: ActivationEnd) => evento.snapshot.data)
+      );
   }
 
 }

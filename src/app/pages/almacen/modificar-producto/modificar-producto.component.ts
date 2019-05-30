@@ -1,14 +1,14 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {MatDialog, MatPaginator, MatSnackBar, MatSort} from '@angular/material';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {MatDialog} from '@angular/material/dialog';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {MatSort} from '@angular/material/sort';
+import {BehaviorSubject, fromEvent, merge, Observable} from 'rxjs';
 import {DataSource} from '@angular/cdk/collections';
-import {Observable} from 'rxjs/Observable';
 import {Producto} from '../../../interfaces/producto.interface';
 import {ProductosService} from '../../../services/producto/productos.service';
 import {HttpClient} from '@angular/common/http';
 import {DeleteProductoDialogComponent} from '../../../dialogs/delete-producto/delete-producto.dialog.component';
-
-import {merge, fromEvent} from 'rxjs';
 import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
 
 @Component({
@@ -24,9 +24,9 @@ export class ModificarProductoComponent implements OnInit {
   index: number;
   id: string;
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild('filter') filter: ElementRef;
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
+  @ViewChild('filter', {static: true}) filter: ElementRef;
 
   constructor(private httpClient: HttpClient,
               public dialog: MatDialog,

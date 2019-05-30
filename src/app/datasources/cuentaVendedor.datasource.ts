@@ -1,9 +1,8 @@
 import {DataSource} from '@angular/cdk/table';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {BehaviorSubject, merge, Observable} from 'rxjs';
 import {CuentasXcobrarService} from '../services/cuentas-xcobrar/cuentas-xcobrar.service';
-import {MatPaginator, MatSort} from '@angular/material';
-import {Observable} from 'rxjs/Observable';
-import {merge} from 'rxjs';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatSort} from '@angular/material/sort';
 
 import {catchError, delay, finalize, map} from 'rxjs/operators';
 import {of} from 'rxjs/internal/observable/of';

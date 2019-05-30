@@ -1,6 +1,6 @@
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {Component, Inject} from '@angular/core';
-import {VendedorService} from "../../services/vendedor/vendedor.service";
+import {VendedorService} from '../../services/vendedor/vendedor.service';
 
 
 @Component({
@@ -20,11 +20,11 @@ export class DeleteVendedorDialogComponent {
 
   confirmDelete(): void {
     this._vendedorService.deleteVendedor(this.data.clave)
-      .subscribe(res => {
+      .subscribe(() => {
         this.deleteOk = true;
         console.log('esta madre se borro!');
       },
-      error1 => {
+        () => {
         this.deleteOk = false;
       }
       );

@@ -5,9 +5,8 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {EscuelaService} from '../../../../services/escuela/escuela.service';
 import {Escuela} from '../../../../interfaces/escuela.interface';
 import {Maestro} from '../../../../interfaces/maestro.interface';
-import {Observable} from 'rxjs/Observable';
-import {startWith} from 'rxjs/operators/startWith';
-import {map} from 'rxjs/operators/map';
+import {Observable} from 'rxjs';
+import {map, startWith} from 'rxjs/operators';
 import * as _swal from 'sweetalert';
 import {SweetAlert} from 'sweetalert/typings/core';
 

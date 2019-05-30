@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {URL_SERVICIOS} from '../../config/config';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {BehaviorSubject} from 'rxjs';
 import {Escuela} from '../../interfaces/escuela.interface';
 import {Maestro} from '../../interfaces/maestro.interface';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
@@ -53,7 +53,6 @@ export class MaestroService {
   }
 
   obtenerMaestros() {
-    let escuelasNombres = '';
     return this.http.get<Maestro[]>(this.profesoresURL, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}})
       .subscribe((data: Maestro[]) => {
         console.log(data);

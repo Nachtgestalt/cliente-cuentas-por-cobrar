@@ -1,10 +1,7 @@
-import { Injectable } from '@angular/core';
-import {HttpClient, HttpErrorResponse, HttpParams} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {URL_SERVICIOS} from '../../config/config';
-import {Maestro} from '../../interfaces/maestro.interface';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import {Inventario} from '../../interfaces/inventario.interface';
-import {Observable} from 'rxjs/Observable';
+import {BehaviorSubject} from 'rxjs';
 
 @Injectable()
 export class CuentasXcobrarService {
@@ -35,7 +32,7 @@ export class CuentasXcobrarService {
     let params = new HttpParams();
     params = params.append('idtemporada', idTemporada);
 
-    return this.http.get<any[]>(url, {params})
+    return this.http.get<any[]>(url, {params});
       // .subscribe(data => {
       //     console.log(data);
       //     this.dataChange.next(data);
@@ -52,7 +49,7 @@ export class CuentasXcobrarService {
     params = params.append('claveV', claveVendedor);
     console.log('Clave del vendedor', claveVendedor);
 
-    return this.http.get<any[]>(url, {params})
+    return this.http.get<any[]>(url, {params});
     //   .subscribe(data => {
     //       console.log(data);
     //       this.dataChangeEscuela.next(data);

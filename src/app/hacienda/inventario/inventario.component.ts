@@ -1,5 +1,8 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {MatDialog, MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
+import {MatDialog} from '@angular/material/dialog';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatSort} from '@angular/material/sort';
+import {MatTableDataSource} from '@angular/material/table';
 import {StockHService} from '../services/stock-h.service';
 import {AgregarStockComponent} from './agregar-stock/agregar-stock.component';
 
@@ -9,8 +12,8 @@ import {AgregarStockComponent} from './agregar-stock/agregar-stock.component';
   styleUrls: ['./inventario.component.css']
 })
 export class InventarioComponent implements OnInit {
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
 
   displayedColumns: string[] = ['folio', 'titulo', 'cantidad', 'edit'];
   dataSource: MatTableDataSource<Array<any>> = new MatTableDataSource([]);

@@ -1,6 +1,6 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {AddTemporadaComponent} from '../add-temporada/add-temporada.dialog.component';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {FormControl, FormGroup} from '@angular/forms';
 import {StockService} from '../../services/stock/stock.service';
 import {Stock} from '../../interfaces/stock.interface';
@@ -53,7 +53,7 @@ export class InventoryDialogComponent implements OnInit {
       cantidad = -1 * this.forma.get('cantidad').value;
     }
 
-    let stock: Stock = {
+    const stock: Stock = {
       idstock: null,
       cantidad: cantidad,
       libro: this.data.claveProducto,

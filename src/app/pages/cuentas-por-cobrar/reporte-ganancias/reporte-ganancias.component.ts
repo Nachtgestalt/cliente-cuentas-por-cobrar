@@ -1,15 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {Producto} from '../../../interfaces/producto.interface';
 import {Vendedor} from '../../../interfaces/vendedor.interface';
-import {map} from 'rxjs/operators/map';
-import {Observable} from 'rxjs/Observable';
-import {startWith} from 'rxjs/operators/startWith';
+import {map, startWith} from 'rxjs/operators';
+import {Observable} from 'rxjs';
 import {DomSanitizer} from '@angular/platform-browser';
 import {ReportesService} from '../../../services/reportes/reportes.service';
 import {ProductosService} from '../../../services/producto/productos.service';
 import {VendedorService} from '../../../services/vendedor/vendedor.service';
 import * as moment from 'moment';
+import swal from 'sweetalert';
 
 @Component({
   selector: 'app-reporte-ganancias',

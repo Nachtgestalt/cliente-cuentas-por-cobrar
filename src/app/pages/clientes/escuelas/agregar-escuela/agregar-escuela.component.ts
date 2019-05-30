@@ -5,6 +5,8 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {EscuelaService} from '../../../../services/escuela/escuela.service';
 import {ZonaService} from '../../../../services/zona/zona.service';
 import {Zona} from '../../../../interfaces/zona.interface';
+import swal from 'sweetalert';
+import {map} from 'rxjs/operators';
 
 
 @Component({
@@ -111,7 +113,7 @@ export class AgregarEscuelaComponent implements OnInit {
 
   ngOnInit() {
     this._zonaService.getZonas()
-      .subscribe( (res: Zona[]) => {
+      .subscribe((res: Zona[]) => {
         this.zonaSelect = res;
       });
   }
@@ -200,10 +202,11 @@ export class AgregarEscuelaComponent implements OnInit {
 
   validarClave(control: AbstractControl) {
     return this._escuelaService.existeClave(control.value)
-      .map(
-        res => {
-          return res ? {existeClave: true} : null;
-        });
-
+      .pipe(
+        map(
+          res => {
+            return res ? {existeClave: true} : null;
+          })
+      );
   }
 }
