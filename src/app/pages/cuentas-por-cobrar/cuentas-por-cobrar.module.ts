@@ -11,12 +11,14 @@ import {RouterModule} from '@angular/router';
 import {CUENTAS_POR_COBRAR_ROUTES} from './cuentas-por-cobrar.routes';
 import {MaterialModule} from '../../material.module';
 import {ReactiveFormsModule} from '@angular/forms';
+import {DirectivesModule} from '../../directives/directives.module';
 
 @NgModule({
   imports: [
     CommonModule,
     MaterialModule,
     ReactiveFormsModule,
+    DirectivesModule,
     RouterModule.forChild(CUENTAS_POR_COBRAR_ROUTES)
   ],
   declarations: [

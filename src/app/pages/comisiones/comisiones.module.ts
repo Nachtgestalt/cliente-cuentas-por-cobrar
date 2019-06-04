@@ -8,12 +8,14 @@ import {MaterialModule} from '../../material.module';
 import {ReactiveFormsModule} from '@angular/forms';
 import {RouterModule} from '@angular/router';
 import {COMISIONES_ROUTES} from './comisiones.routes';
+import {DirectivesModule} from '../../directives/directives.module';
 
 @NgModule({
   imports: [
     CommonModule,
     MaterialModule,
     ReactiveFormsModule,
+    DirectivesModule,
     RouterModule.forChild(COMISIONES_ROUTES)
   ],
   declarations: [

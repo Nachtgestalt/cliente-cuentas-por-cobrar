@@ -139,8 +139,7 @@ export class NuevaVentaComponent implements OnInit, OnDestroy {
         this.setFormValuesAfterChangeZone(values);
         this.forma.get('folio')
           .setAsyncValidators(Validators.composeAsync([this.validarFolio.bind(this), this.validarFolioEnRango.bind(this)]));
-        // this.forma.get('fecha')
-        //   .setValidators(this.validarFechaValida);
+        // .setAsyncValidators(Validators.composeAsync([this.validarFolio.bind(this)]));
         // Al tener elegida la zona cargamos la lista de escuelas que pertenecen
         this._escuelaService.getEscuelasZona(values.idzona)
 
@@ -234,6 +233,7 @@ export class NuevaVentaComponent implements OnInit, OnDestroy {
 
       .subscribe(
         (res: any) => {
+          console.log(this.forma);
           const precio: any = Number(this.forma.get('pedidos.0').get('price').value);
           this.forma.get('pedidos.0').get('total').setValue(precio * res);
         }

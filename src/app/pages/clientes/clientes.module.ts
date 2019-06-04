@@ -11,12 +11,14 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {RouterModule} from '@angular/router';
 import {CLIENTES_ROUTES} from './clientes.routes';
 import {ClientesComponent} from './clientes.component';
+import {DirectivesModule} from '../../directives/directives.module';
 
 @NgModule({
   imports: [
     CommonModule,
     MaterialModule,
     ReactiveFormsModule,
+    DirectivesModule,
     RouterModule.forChild(CLIENTES_ROUTES)
   ],
   declarations: [

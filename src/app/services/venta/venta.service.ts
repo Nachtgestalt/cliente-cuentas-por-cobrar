@@ -41,7 +41,10 @@ export class VentaService {
   }
 
   obtenerVentas() {
-    return this.http.get<Venta[]>(this.ventasURL, {headers: {'Content-Type': 'application/json'}});
+    const temporada = JSON.parse(localStorage.getItem('season'));
+    const params = new HttpParams().set('hacienda', '0');
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+    return this.http.get<Venta[]>(`${this.ventasURL}/${temporada.idtemporada}`, {headers, params});
   }
 
   getVenta(id) {

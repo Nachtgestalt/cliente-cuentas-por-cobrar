@@ -142,7 +142,7 @@ export class AgregarEmpleadoComponent implements OnInit {
           setTimeout(() => this.active = true, 1000);
         });
     } else {
-      this._vendedorService.actualizarVendedor(this.forma.value, this.clave)
+      this._vendedorService.actualizarVendedor(this.forma.value)
         .subscribe(res => {
           console.log('esta madre se actualizo!');
           this.forma.reset();

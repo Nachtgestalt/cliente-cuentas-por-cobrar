@@ -170,7 +170,7 @@ export class AgregarProductoComponent implements OnInit {
           }
         );
     } else {
-      this._productosService.actualizarProducto(this.forma.value, this.clave)
+      this._productosService.actualizarProducto(this.forma.value)
         .subscribe(() => {
           this.forma.reset();
           this.active = false;

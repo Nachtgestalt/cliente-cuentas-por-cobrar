@@ -27,11 +27,11 @@ export class TemporadaService {
 
     console.log(body);
 
-    return this.http.post(this.temporadaURL, body, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}});
+    return this.http.post(this.temporadaURL, body, {headers: {'Content-Type': 'application/json'}});
   }
 
   obtenerTemporadas() {
-    return this.http.get<Temporada[]>(this.temporadaURL, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}})
+    return this.http.get<Temporada[]>(this.temporadaURL, {headers: {'Content-Type': 'application/json'}})
       .subscribe(data => {
           for (const temporada of data) {
             temporada.fecha_inicio = moment(temporada.fecha_inicio).locale('es').format('DD MMM YYYY');
@@ -46,7 +46,7 @@ export class TemporadaService {
   }
 
   getTemporadas() {
-    return this.http.get(this.temporadaURL, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}});
+    return this.http.get(this.temporadaURL, {headers: {'Content-Type': 'application/json'}});
   }
 
   getCurrentSeason() {
@@ -56,11 +56,11 @@ export class TemporadaService {
   actualizarTemporada(temporada) {
     const body = JSON.stringify(temporada);
     console.log(body);
-    return this.http.put(this.temporadaURL, body, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}});
+    return this.http.put(this.temporadaURL, body, {headers: {'Content-Type': 'application/json'}});
   }
 
   getTemporada(id: any) {
     const url = `${this.temporadaURL}/${id}`;
-    return this.http.get(url, {headers: {'authorization': this.token, 'Content-Type': 'application/json'}});
+    return this.http.get(url, {headers: {'Content-Type': 'application/json'}});
   }
 }
