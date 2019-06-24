@@ -42,9 +42,10 @@ export class VentaService {
 
   obtenerVentas() {
     const temporada = JSON.parse(localStorage.getItem('season'));
-    const params = new HttpParams().set('hacienda', '0');
+    // const params = new HttpParams().set('hacienda', '0');
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    return this.http.get<Venta[]>(`${this.ventasURL}/${temporada.idtemporada}`, {headers, params});
+    // return this.http.get<Venta[]>(`${this.ventasURL}`, {headers});
+    return this.http.get<Venta[]>(`${this.ventasURL}/${temporada.idtemporada}`, {headers});
   }
 
   getVenta(id) {
