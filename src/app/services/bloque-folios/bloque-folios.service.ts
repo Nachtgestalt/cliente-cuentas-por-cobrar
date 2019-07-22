@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {URL_SERVICIOS} from '../../config/config';
 import {BehaviorSubject} from 'rxjs';
 import {Escuela} from '../../interfaces/escuela.interface';
@@ -8,6 +8,8 @@ import {Escuela} from '../../interfaces/escuela.interface';
 export class BloqueFoliosService {
   token = localStorage.getItem('token');
   private urlBloqueFolios = URL_SERVICIOS + '/bloque_folio';
+  temporada = JSON.parse(localStorage.getItem('season'));
+  idTemporada = this.temporada.idtemporada;
 
   dataChange: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
 
@@ -35,7 +37,7 @@ export class BloqueFoliosService {
   }
 
   obtenerBloqueFolios() {
-    return this.http.get<any[]>(this.urlBloqueFolios)
+    return this.http.get<any[]>(`${this.urlBloqueFolios}/temporada/${this.idTemporada}`)
       .subscribe((data: any[]) => {
           console.log(data);
           this.dataChange.next(data);

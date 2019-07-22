@@ -80,6 +80,9 @@ export class AgregarMaestroComponent implements OnInit, OnDestroy {
   }
 
   crearForma() {
+    this.forma = new FormGroup({
+      idprofesor: new FormControl(),
+    });
     this.forma = this._fb.group({
       idprofesor: ['', []],
       nombre: ['', [Validators.required]],

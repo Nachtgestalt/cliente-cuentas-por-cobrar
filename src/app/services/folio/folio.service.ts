@@ -9,7 +9,8 @@ export class FolioService {
   token = localStorage.getItem('token');
   foliosURL = URL_SERVICIOS + '/Folio';
   dataChange: BehaviorSubject<Folio[]> = new BehaviorSubject<Folio[]>([]);
-
+  temporada = JSON.parse(localStorage.getItem('season'));
+  idTemporada = this.temporada.idtemporada;
   constructor(private http: HttpClient) { }
 
   get data(): Folio[] {
@@ -17,8 +18,9 @@ export class FolioService {
   }
 
   obtenerFolios() {
+    const url = `${this.foliosURL}/Temporada/${this.idTemporada}`;
     const headers = new HttpHeaders().append('Content-Type', 'application/json' );
-    return this.http.get<Folio[]>(this.foliosURL, {headers})
+    return this.http.get<Folio[]>(`${url}`, {headers})
       .subscribe(data => {
         console.log(data);
           this.dataChange.next(data);

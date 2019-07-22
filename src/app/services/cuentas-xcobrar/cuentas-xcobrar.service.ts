@@ -6,6 +6,8 @@ import {BehaviorSubject} from 'rxjs';
 @Injectable()
 export class CuentasXcobrarService {
   URLCuentasXCobrar = `${URL_SERVICIOS}/cuentas`;
+  temporada = JSON.parse(localStorage.getItem('season'));
+  idTemporada = this.temporada.idtemporada;
 
   dataChange: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
   dataChangeEscuela: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
@@ -29,7 +31,7 @@ export class CuentasXcobrarService {
 
   getCuentasXVendedor(idTemporada) {
     const url = `${this.URLCuentasXCobrar}/cuentasByVendedor`;
-    let params = new HttpParams();
+    let params = new HttpParams().set('idtemporada', `${this.idTemporada}`);
     params = params.append('idtemporada', idTemporada);
 
     return this.http.get<any[]>(url, {params});
@@ -47,6 +49,7 @@ export class CuentasXcobrarService {
     let params = new HttpParams();
     params = params.append('idtemporada', idTemporada);
     params = params.append('claveV', claveVendedor);
+    params = params.append('idtemporada', `${this.idTemporada}`);
     console.log('Clave del vendedor', claveVendedor);
 
     return this.http.get<any[]>(url, {params});
@@ -68,6 +71,7 @@ export class CuentasXcobrarService {
     params = params.append('idtemporada', idTemporada);
     params = params.append('claveV', claveVendedor);
     params = params.append('claveE', claveEscuela);
+    params = params.append('idtemporada', `${this.idTemporada}`);
 
     return this.http.get<any[]>(url, {params});
       // .subscribe(data => {

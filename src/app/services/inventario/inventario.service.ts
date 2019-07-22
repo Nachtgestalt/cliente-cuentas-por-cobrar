@@ -12,6 +12,8 @@ export class InventarioService {
   token = localStorage.getItem('token');
   inventarioURL = URL_SERVICIOS + '/inventario';
   dataChange: BehaviorSubject<Inventario[]> = new BehaviorSubject<Inventario[]>([]);
+  temporada = JSON.parse(localStorage.getItem('season'));
+  idTemporada = this.temporada.idtemporada;
 
   dataChangeResurtido: BehaviorSubject<ShowResurtidoInterface[]> = new BehaviorSubject<ShowResurtidoInterface[]>([]);
 
@@ -35,6 +37,7 @@ export class InventarioService {
     let params = new HttpParams();
     params = params.append('idHistorial', idHistorial);
     params = params.append('entregados', cantidad);
+    params = params.append('hacienda', '0');
 
     return this.http.get(url, {headers, params});
   }
@@ -86,7 +89,8 @@ export class InventarioService {
   }
 
   getInventario() {
-    return this.http.get<Inventario[]>(this.inventarioURL, {headers: {'Content-Type': 'application/json'}})
+    const params = new HttpParams().set('temporada', `${this.idTemporada}`);
+    return this.http.get<Inventario[]>(`${this.inventarioURL}/0`, {params})
       .pipe(
         map((res: any) => {
           console.log(res);
