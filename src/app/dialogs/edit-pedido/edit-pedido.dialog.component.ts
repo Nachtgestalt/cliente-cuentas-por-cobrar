@@ -11,6 +11,7 @@ import {Observable} from 'rxjs';
 import {EscuelaService} from '../../services/escuela/escuela.service';
 import {Maestro} from '../../interfaces/maestro.interface';
 import swal from 'sweetalert';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-edit-pedido',
@@ -163,6 +164,7 @@ export class EditPedidoDialogComponent implements OnInit, OnDestroy {
     venta.lideres = lideres;
     venta.idprofesor = maestro.idprofesor;
     venta.escuela_clave = escuela.clave;
+    venta.fecha = moment(venta.fecha).toISOString();
     console.log(venta);
     this._ventaService.putVenta(venta)
       .subscribe(res => {
