@@ -287,7 +287,7 @@ export class NuevaVentaComponent implements OnInit, OnDestroy {
     this.isValidSell = false;
     const control = this.forma.controls['pedidos'].value;
     const fechaForm: Moment = this.forma.get('fecha').value;
-    const fecha = fechaForm.format('YYYY[-]MM[-]DD');
+    // const fecha = fechaForm.format('YYYY[-]MM[-]DD');
     // this.venta.pedidos.pop();
     for (const pedido of control) {
       console.log(pedido);
@@ -302,7 +302,7 @@ export class NuevaVentaComponent implements OnInit, OnDestroy {
         }
       );
     }
-    this.venta.fecha = fecha;
+    this.venta.fecha = this.forma.get('fecha').value;
     this.venta.lideres = this.forma.get('lideres').value;
     this.venta.comision_vendedor = this.forma.get('comision_vendedor').value;
     this.venta.comision_profesor = this.forma.get('comision_profesor').value;
