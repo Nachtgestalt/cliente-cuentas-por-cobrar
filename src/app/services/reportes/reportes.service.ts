@@ -1,10 +1,12 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {URL_SERVICIOS} from '../../config/config';
 import {map} from 'rxjs/operators';
 
 @Injectable()
 export class ReportesService {
+  temporada = JSON.parse(localStorage.getItem('season'));
+  idTemporada = this.temporada.idtemporada;
   reportesURL = URL_SERVICIOS + '/reportes';
 
   constructor(private http: HttpClient) { }
@@ -48,6 +50,7 @@ export class ReportesService {
     if (parametros.tipo_pedido) {
       params = params.append('tipoPedido', parametros.tipo_pedido);
     }
+    params = params.append('temporada', this.idTemporada);
     return this.http.get(`${this.reportesURL}/Venta`, {responseType: 'blob', params})
       .pipe(
         map(res => {

@@ -87,9 +87,9 @@ export class ReporteVentaComponent implements OnInit {
     let fecha_fin;
     const vendedor = this.form.get('vendedor').value;
     const tipo_pedido = this.form.get('tipo_pedido').value;
-    this.form.get('fecha_inicio').value ? fecha_inicio = moment(this.form.get('fecha_inicio').value).format('YYYY-MM-D') :
+    this.form.get('fecha_inicio').value ? fecha_inicio = moment(this.form.get('fecha_inicio').value).toISOString() :
       fecha_inicio = null;
-    this.form.get('fecha_fin').value ? fecha_fin = moment(this.form.get('fecha_fin').value).format( 'YYYY-MM-D') :
+    this.form.get('fecha_fin').value ? fecha_fin = moment(this.form.get('fecha_fin').value).toISOString() :
       fecha_fin = null;
     this.form.get('libro').value ? libro = this.form.get('libro').value : libro = null;
     const params = {
