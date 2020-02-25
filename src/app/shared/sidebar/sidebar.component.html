@@ -7,7 +7,7 @@
                  [mode]="mobileQuery.matches ? 'over' : 'push'"
                  [fixedInViewport]="mobileQuery.matches" fixedTopGap="56" class="side-nav">
       <mat-nav-list *ngFor="let menu of _sidebar.menu" class="side-list">
-        <a mat-list-item [routerLink]="[menu.url]"><i [class]="[menu.icono]"></i>{{menu.titulo}}</a>
+        <a mat-list-item [routerLink]="[menu.url]"><i [class]="menu.icono"></i>{{menu.titulo}}</a>
       </mat-nav-list>
     </mat-sidenav>
     <mat-sidenav-content class="pt-3 px-5">
