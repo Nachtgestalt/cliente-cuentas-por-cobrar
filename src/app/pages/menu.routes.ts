@@ -13,25 +13,25 @@ export const MENU_ROUTES: Routes = [
   {path: 'dashboard', component: HomeComponent, data: {titulo: 'Inicio'}},
   {
     path: 'ventas',
-    loadChildren: './ventas/ventas.module#VentasModule'
+    loadChildren: () => import('./ventas/ventas.module').then(m => m.VentasModule)
   },
   {
     path: 'almacen',
-    loadChildren: './almacen/almacen.module#AlmacenModule'
+    loadChildren: () => import('./almacen/almacen.module').then(m => m.AlmacenModule)
   },
   {
     path: 'clientes',
-    loadChildren: './clientes/clientes.module#ClientesModule',
+    loadChildren: () => import('./clientes/clientes.module').then(m => m.ClientesModule),
     data: {titulo: 'Clientes'}
   },
   {
     path: 'cuentas',
-    loadChildren: './cuentas-por-cobrar/cuentas-por-cobrar.module#CuentasPorCobrarModule',
+    loadChildren: () => import('./cuentas-por-cobrar/cuentas-por-cobrar.module').then(m => m.CuentasPorCobrarModule),
     canActivate: [AdminGuard],
   },
   {
     path: 'comisiones',
-    loadChildren: './comisiones/comisiones.module#ComisionesModule',
+    loadChildren: () => import('./comisiones/comisiones.module').then(m => m.ComisionesModule),
     canActivate: [AdminGuard],
   },
   {
@@ -49,7 +49,7 @@ export const MENU_ROUTES: Routes = [
   {
     path: 'nomina',
     canActivate: [AdminGuard],
-    loadChildren: './recursos-humanos/recursos-humanos.module#RecursosHumanosModule',
+    loadChildren: () => import('./recursos-humanos/recursos-humanos.module').then(m => m.RecursosHumanosModule),
     data: {titulo: 'Recursos humanos'}
   },
   {
